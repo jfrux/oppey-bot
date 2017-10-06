@@ -15,7 +15,7 @@ class Reboot extends Command {
     try {
       await message.reply("Bot is shutting down.");
       this.client.commands.forEach(async cmd => {
-        if (cmd.shutdown) cmd.shutdown(this.client);
+        await this.client.unloadCommand(cmd);
       });
       process.exit(1);
     } catch (e) {
