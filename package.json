@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/An-Idiots-Guide/guidebot.git"
+    "url": "git+https://github.com/An-Idiots-Guide/guidebot-class.git"
   },
   "author": "The Idiot's Guide Community",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/An-Idiots-Guide/guidebot/issues"
+    "url": "https://github.com/An-Idiots-Guide/guidebot-class/issues"
   },
-  "homepage": "https://github.com/An-Idiots-Guide/guidebot#readme",
+  "homepage": "https://github.com/An-Idiots-Guide/guidebot-class#readme",
   "dependencies": {
     "discord.js": "^11.1.0",
     "enmap": "^0.3.2",
