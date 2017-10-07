@@ -9,6 +9,7 @@ const Discord = require("discord.js");
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 const Enmap = require("enmap");
+const EnmapLevel = require("enmap-level");
 
 class GuideBot extends Discord.Client {
   constructor(options) {
@@ -27,7 +28,7 @@ class GuideBot extends Discord.Client {
     // Now we integrate the use of Evie's awesome Enhanced Map module, which
     // essentially saves a collection to disk. This is great for per-server configs,
     // and makes things extremely easy for this purpose.
-    this.settings = new Enmap({name: "settings", persistent: true});
+    this.settings = new Enmap({provider: new EnmapLevel({name: "settings"})});
   }
 
   /*
