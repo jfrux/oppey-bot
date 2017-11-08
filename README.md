@@ -25,13 +25,13 @@ for more info.
 
 In a command prompt in your projects folder (wherever that may be) run the following:
 
-`git clone https://github.com/An-Idiots-Guide/guidebot.git`
+`git clone https://github.com/An-Idiots-Guide/guidebot-class.git`
 
 Once finished:
 
-- In the folder from where you ran the git command, run `cd discordjs-bot-handler` and then run `npm install`
-- Rename `config.json.example` to `config.json`
-- Edit `config.json` and enter your token and other details as indicated. It should look like this afterwards:
+- In the folder from where you ran the git command, run `cd guidebot-class` and then run `npm install`
+- Rename `config.js.example` to `config.js`
+- Edit `config.js` and enter your token and other details as indicated. It should look like this afterwards:
 
 ```json
 {
