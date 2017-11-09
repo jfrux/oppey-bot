@@ -142,3 +142,9 @@ const init = async () => {
 };
 
 init();
+
+client.on("disconnect", () => client.logger.warn("Bot is disconnecting...")
+      .on("reconnect", () => client.logger.log("Bot reconnecting...")
+      .on("error", e => client.logger.error(e)) 
+      .on("warn", info => client.logger.warn(info);
+process.on("unhandledRejection", err => client.logger.error(`An unhandled rejection may have occured: ${e.stack || e}`));
