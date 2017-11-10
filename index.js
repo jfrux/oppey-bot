@@ -29,6 +29,9 @@ class GuideBot extends Discord.Client {
     // essentially saves a collection to disk. This is great for per-server configs,
     // and makes things extremely easy for this purpose.
     this.settings = new Enmap({provider: new EnmapLevel({name: "settings"})});
+    
+    //requiring the Logger class for easy console logging
+    this.logger = require("./Util/Logger");
   }
 
   /*
@@ -56,20 +59,10 @@ class GuideBot extends Discord.Client {
     return permlvl;
   }
 
-  /*
-  LOGGING FUNCTION
-
-  Logs to console. Future patches may include time+colors
-  */
-  log(type, msg, title) {
-    if (!title) title = "Log";
-    console.log(`[${type}] [${title}]${msg}`);
-  }
-
   loadCommand(commandName) {
     try {
       const props = new (require(`./commands/${commandName}`))(client);
-      client.log("log", `Loading Command: ${props.help.name}. 👌`);
+      client.logger.log(`Loading Command: ${props.help.name}. 👌`, "log");
       if (props.init) {
         props.init(client);
       }
@@ -118,16 +111,16 @@ const init = async () => {
   // Here we load **commands** into memory, as a collection, so they're accessible
   // here and everywhere else.
   const cmdFiles = await readdir("./commands/");
-  client.log("log", `Loading a total of ${cmdFiles.length} commands.`);
+  client.logger.log(`Loading a total of ${cmdFiles.length} commands.`);
   cmdFiles.forEach(f => {
     if (!f.endsWith(".js")) return;
     const response = client.loadCommand(f);
-    if (response) console.log(response);
+    if (response) client.logger.error(response);
   });
 
   // Then we load events, which will include our message and ready event.
   const evtFiles = await readdir("./events/");
-  client.log("log", `Loading a total of ${evtFiles.length} events.`);
+  client.logger.log(`Loading a total of ${evtFiles.length} events.`, "log");
   evtFiles.forEach(file => {
     const eventName = file.split(".")[0];
     const event = new (require(`./events/${file}`))(client);
@@ -149,3 +142,8 @@ const init = async () => {
 };
 
 init();
+
+client.on("disconnect", () => client.logger.warn("Bot is disconnecting...")) 
+  .on("reconnect", () => client.logger.log("Bot reconnecting...", "log")) 
+  .on("error", e => client.logger.error(e)) 
+  .on("warn", info => client.logger.warn(info));
