@@ -19,8 +19,14 @@ class Logger {
       }
       case "debug": {
         return console.log(`${timestamp} ${chalk.green(type)} ${content} `);
+      }
+      case "cmd": {
+        return console.log(`${timestamp} ${chalk.black.bgWhite("[CMD]")} ${content}`);
+      }
+      case "ready": {
+        return console.log(`${timestamp} ${chalk.black.bgGreen("[Ready!]")} ${content}`);
       } 
-      default: throw new TypeError("Logger type must be either warn, debug, log or error.");
+      default: throw new TypeError("Logger type must be either warn, debug, log, ready, cmd or error.");
     } 
   }
   
@@ -34,6 +40,10 @@ class Logger {
   
   static debug(content) {
     return this.log(content, "debug");
+  } 
+  
+  static cmd(content) {
+    return this.log(content, "cmd");
   } 
 }
 
