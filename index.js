@@ -10,6 +10,9 @@ const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 const Enmap = require("enmap");
 const EnmapLevel = require("enmap-level");
+const klaw = require("klaw");
+const path = require("path");
+
 
 class GuideBot extends Discord.Client {
   constructor(options) {
@@ -67,10 +70,11 @@ class GuideBot extends Discord.Client {
   that unloading happens in a consistent manner across the board.
   */
 
-  loadCommand(commandName) {
+  loadCommand(commandPath, commandName) {
     try {
-      const props = new (require(`./commands/${commandName}`))(client);
+      const props = new (require(`${commandPath}${path.sep}${commandName}`))(client);
       client.logger.log(`Loading Command: ${props.help.name}. 👌`, "log");
+      props.conf.location = commandPath;
       if (props.init) {
         props.init(client);
       }
@@ -84,7 +88,7 @@ class GuideBot extends Discord.Client {
     }
   }
 
-  async unloadCommand(commandName) {
+  async unloadCommand(commandPath, commandName) {
     let command;
     if (client.commands.has(commandName)) {
       command = client.commands.get(commandName);
@@ -96,7 +100,7 @@ class GuideBot extends Discord.Client {
     if (command.shutdown) {
       await command.shutdown(client);
     }
-    delete require.cache[require.resolve(`./commands/${commandName}.js`)];
+    delete require.cache[require.resolve(`${commandPath}${path.sep}${commandName}.js`)];
     return false;
   }
 
@@ -153,11 +157,10 @@ const init = async () => {
 
   // Here we load **commands** into memory, as a collection, so they're accessible
   // here and everywhere else.
-  const cmdFiles = await readdir("./commands/");
-  client.logger.log(`Loading a total of ${cmdFiles.length} commands.`);
-  cmdFiles.forEach(f => {
-    if (!f.endsWith(".js")) return;
-    const response = client.loadCommand(f);
+  klaw("./commands").on("data", (item) => {
+    const cmdFile = path.parse(item.path);
+    if (!cmdFile.ext || cmdFile.ext !== ".js") return;
+    const response = client.loadCommand(cmdFile.dir, `${cmdFile.name}${cmdFile.ext}`);
     if (response) client.logger.error(response);
   });
 
