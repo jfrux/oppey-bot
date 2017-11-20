@@ -28,10 +28,10 @@ class GuideBot extends Discord.Client {
     // Now we integrate the use of Evie's awesome Enhanced Map module, which
     // essentially saves a collection to disk. This is great for per-server configs,
     // and makes things extremely easy for this purpose.
-    this.settings = new Enmap({provider: new EnmapLevel({name: "settings"})});
-    
+    this.settings = new Enmap({ provider: new EnmapLevel({ name: "settings" }) });
+
     //requiring the Logger class for easy console logging
-    this.logger = require("./Util/Logger");
+    this.logger = require("./util/Logger");
   }
 
   /*
@@ -59,6 +59,14 @@ class GuideBot extends Discord.Client {
     return permlvl;
   }
 
+  /* 
+  COMMAND LOAD AND UNLOAD
+  
+  To simplify the loading and unloading of commands from multiple locations
+  including the index.js load loop, and the reload function, these 2 ensure
+  that unloading happens in a consistent manner across the board.
+  */
+
   loadCommand(commandName) {
     try {
       const props = new (require(`./commands/${commandName}`))(client);
@@ -84,12 +92,47 @@ class GuideBot extends Discord.Client {
       command = client.commands.get(client.aliases.get(commandName));
     }
     if (!command) return `The command \`${commandName}\` doesn"t seem to exist, nor is it an alias. Try again!`;
-  
+
     if (command.shutdown) {
       await command.shutdown(client);
     }
     delete require.cache[require.resolve(`./commands/${commandName}.js`)];
     return false;
+  }
+
+  /* SETTINGS FUNCTIONS
+  These functions are used by any and all location in the bot that wants to either
+  read the current *complete* guild settings (default + overrides, merged) or that
+  wants to change settings for a specific guild.
+  */
+
+  // getSettings merges the client defaults with the guild settings. guild settings in
+  // enmap should only have *unique* overrides that are different from defaults.
+  getSettings(id) {
+    const defaults = client.settings.get("default");
+    let guild = client.settings.get(id);
+    if (typeof guild != "object") guild = {};
+    const returnObject = {};
+    Object.keys(defaults).forEach((key) => {
+      returnObject[key] = guild[key] ? guild[key] : defaults[key];
+    });
+    return returnObject;
+  }
+
+  // writeSettings overrides, or adds, any configuration item that is different
+  // than the defaults. This ensures less storage wasted and to detect overrides.
+  writeSettings(id, newSettings) {
+    const defaults = client.settings.get("default");
+    let settings = client.settings.get(id);
+    if (typeof settings != "object") settings = {};
+    for (const key in newSettings) {
+      if (defaults[key] !== newSettings[key]) {
+        settings[key] = newSettings[key];
+      } else {
+        delete settings[key];
+      }
+    }
+    client.settings.set(id, settings);
   }
 }
 
@@ -97,7 +140,7 @@ class GuideBot extends Discord.Client {
 // some might call it `cootchie`. Either way, when you see `client.something`,
 // or `bot.something`, this is what we're refering to. Your client.
 const client = new GuideBot();
-console.log(client.config.permLevels.map(p=>`${p.level} : ${p.name}`));
+console.log(client.config.permLevels.map(p => `${p.level} : ${p.name}`));
 
 // Let's start by getting some useful functions that we'll use throughout
 // the bot, like logs and elevation features.
@@ -138,12 +181,12 @@ const init = async () => {
   // Here we login the client.
   client.login(client.config.token);
 
-// End top-level async/await function.
+  // End top-level async/await function.
 };
 
 init();
 
-client.on("disconnect", () => client.logger.warn("Bot is disconnecting...")) 
-  .on("reconnect", () => client.logger.log("Bot reconnecting...", "log")) 
-  .on("error", e => client.logger.error(e)) 
+client.on("disconnect", () => client.logger.warn("Bot is disconnecting..."))
+  .on("reconnect", () => client.logger.log("Bot reconnecting...", "log"))
+  .on("error", e => client.logger.error(e))
   .on("warn", info => client.logger.warn(info));

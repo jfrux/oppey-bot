@@ -11,7 +11,7 @@ class Help extends Command {
   constructor(client) {
     super(client, {
       name: "help",
-      description: "Displays all the available commands for your permission level.",
+      description: "Displays all the available commands for you.",
       category: "System",
       usage: "help [command]",
       aliases: ["h", "halp"]
@@ -22,7 +22,7 @@ class Help extends Command {
     // If no specific command is called, show all filtered commands.
     if (!args[0]) {
       // Load guild settings (for prefixes and eventually per-guild tweaks)
-      const settings = message.guild ? this.client.settings.get(message.guild.id) : this.client.config.defaultSettings;
+      const settings = message.settings;
       
       // Filter all commands by which are available for the user's level, using the <Collection>.filter() method.
       const myCommands = message.guild ? this.client.commands.filter(cmd => this.client.levelCache[cmd.conf.permLevel] <= level) : this.client.commands.filter(cmd => this.client.levelCache[cmd.conf.permLevel] <= level &&  cmd.conf.guildOnly !== true);
