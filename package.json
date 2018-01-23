@@ -32,6 +32,6 @@
     "inquirer": "^5.0.1",
     "klaw": "^2.1.1",
     "moment": "^2.20.1",
-    "moment-duration-format": "^2.2.0"
+    "moment-duration-format": "^2.2.1"
   }
 }
