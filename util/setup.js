@@ -16,7 +16,7 @@ const defaultSettings = `{
   "welcomeEnabled": "false"
 }`;
 
-const settings = new Enmap({provider: new EnmapLevel({name: "settings"})});
+const settings = new Enmap({ provider: new EnmapLevel({ name: "settings" }) });
 
 let prompts = [
   {
@@ -38,14 +38,14 @@ let prompts = [
   if (!settings.has("default")) {
     prompts = prompts.slice(1);
     console.log("First Start! Inserting default guild settings in the database...");
-    await settings.setAsync("default", defaultSettings);
+    await settings.set("default", defaultSettings);
   }
 
   const answers = await inquirer.prompt(prompts);
 
   if (answers.resetDefaults && answers.resetDefaults === "Yes") {
     console.log("Resetting default guild settings...");
-    await settings.setAsync("default", defaultSettings);
+    await settings.set("default", defaultSettings);
   }
 
   baseConfig = baseConfig.replace("{{token}}", `"${answers.token}"`);
@@ -53,5 +53,5 @@ let prompts = [
   fs.writeFileSync("./config.js", baseConfig);
   console.log("REMEMBER TO NEVER SHARE YOUR TOKEN WITH ANYONE!");
   console.log("Configuration has been written, enjoy!");
-  await settings.close();
+  await settings.db.close();
 }());

@@ -1,10 +1,10 @@
 // This will check if the node version you are running is the required
 // Node version, if it isn't it will throw the following error to inform
 // you.
-if (process.version.slice(1).split(".")[0] < 8) throw new Error("Node 8.0.0 or higher is required. Update Node on your system.");
+if (Number(process.version.slice(1).split(".")[0]) < 8) throw new Error("Node 8.0.0 or higher is required. Update Node on your system.");
 
 // Load up the discord.js library
-const Discord = require("discord.js");
+const { Client, Collection } = require("discord.js");
 // We also load the rest of the things we need in this file:
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
@@ -14,7 +14,7 @@ const klaw = require("klaw");
 const path = require("path");
 
 
-class GuideBot extends Discord.Client {
+class GuideBot extends Client {
   constructor(options) {
     super(options);
 
@@ -25,8 +25,8 @@ class GuideBot extends Discord.Client {
 
     // Aliases and commands are put in collections where they can be read from,
     // catalogued, listed, etc.
-    this.commands = new Enmap();
-    this.aliases = new Enmap();
+    this.commands = new Collection();
+    this.aliases = new Collection();
 
     // Now we integrate the use of Evie's awesome Enhanced Map module, which
     // essentially saves a collection to disk. This is great for per-server configs,
