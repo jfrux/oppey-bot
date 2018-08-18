@@ -9,13 +9,13 @@ const { Client, Collection } = require("discord.js");
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 const Enmap = require("enmap");
-const EnmapLevel = require("enmap-level");
+const EnampSQLite = require("enmap-sqlite");
 const klaw = require("klaw");
 const path = require("path");
 
 
 class GuideBot extends Client {
-  constructor(options) {
+  constructor (options) {
     super(options);
 
     // Here we load the config.js file that contains our token and our prefix values.
@@ -31,10 +31,10 @@ class GuideBot extends Client {
     // Now we integrate the use of Evie's awesome Enhanced Map module, which
     // essentially saves a collection to disk. This is great for per-server configs,
     // and makes things extremely easy for this purpose.
-    this.settings = new Enmap({ provider: new EnmapLevel({ name: "settings" }) });
+    this.settings = new Enmap({ provider: new EnampSQLite({ name: "settings" }) });
 
     //requiring the Logger class for easy console logging
-    this.logger = require("./util/Logger");
+    this.logger = require("./modules/Logger");
   }
 
   /*
@@ -46,7 +46,7 @@ class GuideBot extends Client {
   command including the VERY DANGEROUS `eval` command!
 
   */
-  permlevel(message) {
+  permlevel (message) {
     let permlvl = 0;
 
     const permOrder = this.config.permLevels.slice(0).sort((p, c) => p.level < c.level ? 1 : -1);
@@ -70,7 +70,7 @@ class GuideBot extends Client {
   that unloading happens in a consistent manner across the board.
   */
 
-  loadCommand(commandPath, commandName) {
+  loadCommand (commandPath, commandName) {
     try {
       const props = new (require(`${commandPath}${path.sep}${commandName}`))(this);
       this.logger.log(`Loading Command: ${props.help.name}. 👌`, "log");
@@ -88,7 +88,7 @@ class GuideBot extends Client {
     }
   }
 
-  async unloadCommand(commandPath, commandName) {
+  async unloadCommand (commandPath, commandName) {
     let command;
     if (this.commands.has(commandName)) {
       command = this.commands.get(commandName);
@@ -112,7 +112,7 @@ class GuideBot extends Client {
 
   // getSettings merges the client defaults with the guild settings. guild settings in
   // enmap should only have *unique* overrides that are different from defaults.
-  getSettings(id) {
+  getSettings (id) {
     const defaults = this.settings.get("default");
     let guild = this.settings.get(id);
     if (typeof guild != "object") guild = {};
@@ -125,7 +125,7 @@ class GuideBot extends Client {
 
   // writeSettings overrides, or adds, any configuration item that is different
   // than the defaults. This ensures less storage wasted and to detect overrides.
-  writeSettings(id, newSettings) {
+  writeSettings (id, newSettings) {
     const defaults = this.settings.get("default");
     let settings = this.settings.get(id);
     if (typeof settings != "object") settings = {};
@@ -169,6 +169,7 @@ const init = async () => {
   client.logger.log(`Loading a total of ${evtFiles.length} events.`, "log");
   evtFiles.forEach(file => {
     const eventName = file.split(".")[0];
+    client.logger.log(`Loading Event: ${eventName}`);
     const event = new (require(`./events/${file}`))(client);
     // This line is awesome by the way. Just sayin'.
     client.on(eventName, (...args) => event.run(...args));

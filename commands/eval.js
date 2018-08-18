@@ -9,7 +9,7 @@
 const Command = require("../base/Command.js");
 
 class Eval extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: "eval",
       description: "Evaluates arbitrary Javascript.",
@@ -20,7 +20,7 @@ class Eval extends Command {
     });
   }
 
-  async run(message, args, level) { // eslint-disable-line no-unused-vars
+  async run (message, args, level) { // eslint-disable-line no-unused-vars
     const code = args.join(" ");
     try {
       const evaled = eval(code);

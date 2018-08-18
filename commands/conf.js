@@ -10,7 +10,7 @@ your bot. The `del` action removes the key also from every guild, and loses its 
 const Command = require("../base/Command.js");
 
 class Conf extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: "conf",
       description: "Modify the default configuration for all guilds.",
@@ -22,7 +22,7 @@ class Conf extends Command {
     });
   }
 
-  async run(message, [action, key, ...value], level) { // eslint-disable-line no-unused-vars
+  async run (message, [action, key, ...value], level) { // eslint-disable-line no-unused-vars
     
   // Retrieve Default Values from the default settings in the bot.
     const defaults = this.client.settings.get("default");

@@ -13,7 +13,7 @@
 const Command = require("../base/Command.js");
 
 class Set extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: "set",
       description: "View or change settings for your server.",
@@ -25,7 +25,7 @@ class Set extends Command {
     });
   }
 
-  async run(message, [action, key, ...value], level) { // eslint-disable-line no-unused-vars
+  async run (message, [action, key, ...value], level) { // eslint-disable-line no-unused-vars
 
     // First we need to retrieve current guild settings
     const settings = message.settings;

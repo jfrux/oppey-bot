@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
 const Enmap = require("enmap");
-const EnmapLevel = require("enmap-level");
+const EnampSQLite = require("enmap-sqlite");
 const fs = require("fs");
 
 let baseConfig = fs.readFileSync("./util/setup_base.txt", "utf8");
@@ -16,7 +16,7 @@ const defaultSettings = `{
   "welcomeEnabled": "false"
 }`;
 
-const settings = new Enmap({ provider: new EnmapLevel({ name: "settings" }) });
+const settings = new Enmap({ provider: new EnampSQLite({ name: "settings" }) });
 
 let prompts = [
   {
@@ -32,7 +32,7 @@ let prompts = [
   }
 ];
 
-(async function() {
+(async function () {
   console.log("Setting Up GuideBot Configuration...");
   await settings.defer;
   if (!settings.has("default")) {

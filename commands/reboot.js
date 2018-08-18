@@ -1,7 +1,7 @@
 const Command = require("../base/Command.js");
 
 class Reboot extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: "reboot",
       description: "If running under PM2, bot will restart.",
@@ -12,7 +12,7 @@ class Reboot extends Command {
     });
   }
 
-  async run(message, args, level) { // eslint-disable-line no-unused-vars
+  async run (message, args, level) { // eslint-disable-line no-unused-vars
     try {
       await message.reply("Bot is shutting down.");
       this.client.commands.forEach(async cmd => {

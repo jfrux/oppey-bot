@@ -3,11 +3,11 @@
 // goes `client, other, args` when this function is run.
 
 module.exports = class {
-  constructor(client) {
+  constructor (client) {
     this.client = client;
   }
 
-  async run(message) {
+  async run (message) {
 
     // It's good practice to ignore other bots. This also makes your bot ignore itself
     //  and not get into a spam loop (we call that "botception").
@@ -24,6 +24,12 @@ module.exports = class {
     // to the message object, so `message.settings` is accessible.
     message.settings = settings;
 
+    // Checks if the bot was mentioned, with no message after it, returns the prefix.
+    const prefixMention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
+    if (message.content.match(prefixMention)) {
+      return message.reply(`My prefix on this guild is \`${settings.prefix}\``);
+    }
+
     // Also good practice to ignore any message that does not start with our prefix,
     // which is set in the configuration file.
     if (message.content.indexOf(settings.prefix) !== 0) return;
@@ -34,6 +40,9 @@ module.exports = class {
     // args = ["Is", "this", "the", "real", "life?"]
     const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
+
+    // If the member on a guild is invisible or not cached, fetch them.
+    if (message.guild && !message.member) await message.guild.fetchMember(message.author);
 
     // Get the user or member's permission level from the elevation
     const level = this.client.permlevel(message);
