@@ -1,7 +1,7 @@
 {
-  "name": "guidebot",
-  "version": "5.0.0",
-  "description": "A boilerplate example bot with command handler and reloadable commands. Updated and Maintained by the Idiot's Guide Community",
+  "name": "oppey-bot",
+  "version": "0.0.1",
+  "description": "A documentation engine and assistant for the Openpilot Community.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,17 +13,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/An-Idiots-Guide/guidebot-class.git"
+    "url": "git+https://github.com/openpilot-community/oppey-bot.git"
   },
-  "author": "Evelyne Lachance <eslachance@gmail.com> (http://evie.codes)",
+  "author": "Joshua Rountree <joshua@swodev.com> (https://opc.ai/)",
   "contributors": [
-    "York (http://anidiots.guide)"
+    "Tyler Neal"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/An-Idiots-Guide/guidebot-class/issues"
+    "url": "https://github.com/openpilot-community/oppey-bot/issues"
   },
-  "homepage": "https://github.com/An-Idiots-Guide/guidebot-class#readme",
+  "homepage": "https://github.com/openpilot-community/oppey-bot#readme",
   "dependencies": {
     "better-sqlite-pool": "github:eslachance/better-sqlite-pool",
     "chalk": "^2.4.1",
