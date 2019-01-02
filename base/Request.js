@@ -31,8 +31,9 @@ class Request extends Command {
     return this.normalizeResponse(json);
   }
 
-  async run (message, args, level) { // eslint-disable-line no-unused-vars
-    let requestUrl = `${this.getBaseURL()}${this.getEndpoint()}.json?q=${args[0]}`;
+  async run (message, [...value], level) { // eslint-disable-line no-unused-vars
+    let requestUrl = `${this.getBaseURL()}${this.getEndpoint()}.json?q=${value.join(" ")}`;
+    
     console.log("Sending request to opc.ai:\n",requestUrl);
     fetch(requestUrl)
       .then(res => res.json())

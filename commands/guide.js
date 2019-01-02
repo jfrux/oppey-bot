@@ -10,8 +10,9 @@ class GuideRequest extends Request {
       description: "Query a Guide for linking to users.",
       category: "System",
       usage: "guide <search>",
+      aliases: ["g"],
       guildOnly: true,
-      permLevel: "Bot Admin"
+      permLevel: "User"
     });
   }
 
