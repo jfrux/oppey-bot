@@ -8,7 +8,7 @@ class GuideRequest extends Request {
       name: "vehicle",
       endpoint: "/vehicles.json",
       description: "Search for a Vehicle",
-      category: "Data",
+      category: "System",
       usage: "vehicle <search>",
       aliases: ["v"],
       guildOnly: true,

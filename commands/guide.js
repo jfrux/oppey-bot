@@ -8,7 +8,7 @@ class GuideRequest extends Request {
       name: "guide",
       endpoint: "/guides.json",
       description: "Search for a Guide",
-      category: "Data",
+      category: "System",
       usage: "guide <search>",
       aliases: ["g"],
       guildOnly: true,
