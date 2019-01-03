@@ -5,19 +5,19 @@ const fetch = require('node-fetch');
 class GuideRequest extends Request {
   constructor (client) {
     super(client, {
-      name: "guide",
-      endpoint: "/guides.json",
-      description: "Search for a Guide",
+      name: "vehicle",
+      endpoint: "/vehicles.json",
+      description: "Search for a Vehicle",
       category: "Data",
-      usage: "guide <search>",
-      aliases: ["g"],
+      usage: "vehicle <search>",
+      aliases: ["v"],
       guildOnly: true,
       permLevel: "User"
     });
   }
 
   getEndpoint() {
-    return '/guides';
+    return '/vehicles';
   }
 
   // /**
