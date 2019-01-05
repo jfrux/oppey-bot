@@ -4,11 +4,7 @@ const fetch = require('node-fetch');
 
 class Request extends Command {
   getBaseURL() {
-    if (process.env.NODE_ENV !== 'production') {
-      return "http://localhost:3000";
-    } else {
-      return "https://opc.ai";
-    }
+    return process.env.OPC_BASE_URL || "https://opc.ai";
   }
 
   /**
