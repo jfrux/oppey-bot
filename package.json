@@ -27,12 +27,14 @@
   "dependencies": {
     "better-sqlite-pool": "github:eslachance/better-sqlite-pool",
     "chalk": "^2.4.1",
-    "discord.js": "^11.4.2",
+    "discord.js": "git+https://github.com/discordjs/discord.js.git",
     "enmap": "^4.3.2",
+    "js-beautify": "^1.8.9",
     "klaw": "^2.1.1",
     "moment": "^2.22.2",
     "moment-duration-format": "^2.2.2",
     "node-fetch": "^2.3.0",
-    "readline-sync": "^1.4.9"
+    "readline-sync": "^1.4.9",
+    "util": "^0.11.1"
   }
 }
