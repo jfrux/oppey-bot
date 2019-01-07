@@ -10,7 +10,7 @@ class VehicleRequest extends Request {
       description: "Search for a Vehicle",
       category: "System",
       usage: "vehicle <search>",
-      aliases: ["v"],
+      aliases: ["v","veh"],
       guildOnly: true,
       permLevel: "User"
     });

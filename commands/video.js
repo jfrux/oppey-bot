@@ -10,7 +10,7 @@ class VideoRequest extends Request {
       description: "Search for a Video",
       category: "System",
       usage: "video <search>",
-      aliases: ["g"],
+      aliases: ["vid"],
       guildOnly: true,
       permLevel: "User"
     });
