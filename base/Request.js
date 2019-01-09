@@ -1,5 +1,5 @@
 const Command = require("./Command.js");
-const { version, RichEmbed } = require("discord.js");
+const { version, MessageEmbed } = require("discord.js");
 const fetch = require('node-fetch');
 
 class Request extends Command {
@@ -16,7 +16,7 @@ class Request extends Command {
   embedResponse(resp) {
     const publicUrl = `${this.getBaseURL()}${this.getEndpoint()}/${resp.slug || resp.id}`
     
-    const embed = new RichEmbed();
+    const embed = new MessageEmbed();
     /*
     * Alternatively, use "#00AE86", [0, 174, 134] or an integer number.
     */
