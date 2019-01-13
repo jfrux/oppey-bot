@@ -13,7 +13,7 @@ const klaw = require("klaw");
 const path = require("path");
 
 
-class GuideBot extends Client {
+class OppeyBot extends Client {
   constructor (options) {
     super(options);
 
@@ -163,7 +163,7 @@ class GuideBot extends Client {
 // This is your client. Some people call it `bot`, some people call it `self`,
 // some might call it `cootchie`. Either way, when you see `client.something`,
 // or `bot.something`, this is what we're refering to. Your client.
-const client = new GuideBot();
+const client = new OppeyBot();
 console.log(client.config.permLevels.map(p => `${p.level} : ${p.name}`));
 
 // We're doing real fancy node 8 async/await stuff here, and to do that
