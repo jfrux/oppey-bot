@@ -25,10 +25,18 @@ class Role extends Command {
     });
     
     this.availableRoles = [
-      ["acura", "Acura Owner"],
-      ["gm", "GM Owner"],
-      ["honda", "Honda Owner"],
-      ["tesla", "Tesla Owner"]
+      ["acura", "Acura"],
+      ["chrysler", "Chrylser"],
+      ["gm", "General Motors"],
+      ["genesis", "Genesis"],
+      ["honda", "Honda"],
+      ["hyundai", "Hyundai"
+      ["kia", "Kia"],],
+      ["lexus", "Lexus"],
+      ["mazda", "Mazda"],
+      ["subaru", "Subaru"],
+      ["tesla", "Tesla"],
+      ["toyota", "Toyota"]
     ];
   }
 
