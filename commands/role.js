@@ -45,6 +45,7 @@ class Role extends Command {
     const roles = new Map(this.availableRoles);
     // First we need to retrieve current guild settings
     const settings = message.settings;
+    roleChoice = roleChoice.toLowerCase();
     let rolesString = "";
     this.availableRoles.forEach((role) => {
       const roleKey = role[0];
