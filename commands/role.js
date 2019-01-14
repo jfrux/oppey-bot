@@ -27,6 +27,7 @@ class Role extends Command {
     this.availableRoles = [
       ["acura", "Acura"],
       ["chrysler", "Chrylser"],
+      ["ford", "Ford"],
       ["gm", "General Motors"],
       ["genesis", "Genesis"],
       ["honda", "Honda"],
@@ -36,7 +37,8 @@ class Role extends Command {
       ["mazda", "Mazda"],
       ["subaru", "Subaru"],
       ["tesla", "Tesla"],
-      ["toyota", "Toyota"]
+      ["toyota", "Toyota"],
+      ["volkswagen", "Volkswagen"]
     ];
   }
 
@@ -45,7 +47,9 @@ class Role extends Command {
     const roles = new Map(this.availableRoles);
     // First we need to retrieve current guild settings
     const settings = message.settings;
-    roleChoice = roleChoice.toLowerCase();
+    if (roleChoice) {
+      roleChoice = roleChoice.toLowerCase();
+    }
     let rolesString = "";
     this.availableRoles.forEach((role) => {
       const roleKey = role[0];
