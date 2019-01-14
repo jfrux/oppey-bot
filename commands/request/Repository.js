@@ -2,19 +2,24 @@ const Request = require("../Request.js");
 const { version } = require("discord.js");
 const fetch = require('node-fetch');
 
-class VehicleRequest extends Request {
+class RepositoryRequest extends Request {
   constructor (client) {
     super(client, {
-      name: "vehicle",
-      description: "Search for a Vehicle",
+      name: "repo",
+      description: "Search for a fork of Openpilot",
       category: "Knowledge Base",
-      usage: "vehicle <search>",
-      aliases: ["v","veh"],
+      usage: "repo <search>",
+      aliases: ["repo","fork"],
       guildOnly: true,
       permLevel: "User"
     });
   }
-
+  getEndpoint() {
+    return "/repositories";
+  }
+  getLabel() {
+    return "Openpilot Repository";
+  }
   // /**
   //  * Override this to format the response.
   //  * @param {*} json 
@@ -34,4 +39,4 @@ class VehicleRequest extends Request {
 
 }
 
-module.exports = VehicleRequest;
+module.exports = RepositoryRequest;

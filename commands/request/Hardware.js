@@ -2,19 +2,24 @@ const Request = require("../Request.js");
 const { version } = require("discord.js");
 const fetch = require('node-fetch');
 
-class VehicleRequest extends Request {
+class HardwareRequest extends Request {
   constructor (client) {
     super(client, {
-      name: "vehicle",
-      description: "Search for a Vehicle",
+      name: "hw",
+      description: "Search for a Hardware",
       category: "Knowledge Base",
-      usage: "vehicle <search>",
-      aliases: ["v","veh"],
+      usage: "hardware <search>",
+      aliases: ["hardware"],
       guildOnly: true,
       permLevel: "User"
     });
   }
-
+  getEndpoint() {
+    return "/hardware_items";
+  }
+  getLabel() {
+    return "Hardware";
+  }
   // /**
   //  * Override this to format the response.
   //  * @param {*} json 
@@ -34,4 +39,4 @@ class VehicleRequest extends Request {
 
 }
 
-module.exports = VehicleRequest;
+module.exports = HardwareRequest;

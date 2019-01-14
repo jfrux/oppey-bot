@@ -16,7 +16,7 @@ const config = {
   // DO NOT REMOVE THIS BEFORE YOUR BOT IS LOADED AND FUNCTIONAL.
   
   defaultSettings: {
-  "prefix": "-",
+  "prefix": process.env.DISCORD_COMMAND_PREFIX || "-",
   "modLogChannel": "mod-log",
   "modRole": "Moderator",
   "adminRole": "Administrator",

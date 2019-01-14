@@ -29,6 +29,7 @@
     "chalk": "^2.4.1",
     "discord.js": "git+https://github.com/discordjs/discord.js.git",
     "enmap": "^4.3.2",
+    "inflection": "^1.12.0",
     "js-beautify": "^1.8.9",
     "klaw": "^2.1.1",
     "moment": "^2.22.2",

@@ -2,19 +2,24 @@ const Request = require("../Request.js");
 const { version } = require("discord.js");
 const fetch = require('node-fetch');
 
-class VehicleRequest extends Request {
+class CapabilityRequest extends Request {
   constructor (client) {
     super(client, {
-      name: "vehicle",
-      description: "Search for a Vehicle",
+      name: "pr",
+      description: "Search for a Pull Request",
       category: "Knowledge Base",
-      usage: "vehicle <search>",
-      aliases: ["v","veh"],
+      usage: "pr <search>",
+      aliases: ["pull_request"],
       guildOnly: true,
       permLevel: "User"
     });
   }
-
+  getEndpoint() {
+    return "/pull_requests";
+  }
+  getLabel() {
+    return "Pull Request";
+  }
   // /**
   //  * Override this to format the response.
   //  * @param {*} json 
@@ -34,4 +39,4 @@ class VehicleRequest extends Request {
 
 }
 
-module.exports = VehicleRequest;
+module.exports = CapabilityRequest;

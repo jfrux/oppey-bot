@@ -1,8 +1,11 @@
 const Command = require("../commands/Command.js");
 const { version, MessageEmbed } = require("discord.js");
 const fetch = require('node-fetch');
-
+const inflection = require("inflection");
 class Request extends Command {
+  getLabel() {
+    return inflection.titleize(this.name);
+  }
   getBaseURL() {
     return process.env.OPC_BASE_URL || "https://opc.ai";
   }
@@ -11,10 +14,10 @@ class Request extends Command {
    * Override this to set the endpoint;
    */
   getEndpoint() {
-    return '';
+    return '/' + inflection.pluralize(this.name);
   }
   embedResponse(resp) {
-    const publicUrl = `${this.getBaseURL()}${this.getEndpoint()}/${resp.slug || resp.id}`
+    const publicUrl = resp.url || `${this.getBaseURL()}${this.getEndpoint()}/${resp.slug || resp.id}`
     
     const embed = new MessageEmbed();
     /*
@@ -43,6 +46,7 @@ class Request extends Command {
   
   
     // embed.color = 3447003;
+    console.log("Image:",resp.image)
     if (resp.author) {
       embed.setAuthor(resp.author.name, resp.author.image);
     }
@@ -113,16 +117,16 @@ class Request extends Command {
 
   async run (message, [...value], level) { // eslint-disable-line no-unused-vars
     let requestUrl = `${this.getBaseURL()}${this.getEndpoint()}.json?q=${value.join(" ")}`;
-    
-    // console.log("Sending request to opc.ai:\n",requestUrl);
+    const label = this.getLabel();
+    console.log("Sending request to opc.ai:\n",requestUrl);
     fetch(requestUrl)
       .then(res => res.json())
       .then((json) => {
         let responses = this._handleResponse(json, value.join(" "));
         if (responses) {
-          message.reply(`here is the top **${this.name}** result for **${value.join(" ")}**...\n`);
+          message.reply(`here is the top **${label}** result for **${value.join(" ")}**...\n`);
         } else {
-          message.reply(`I could not find a **${this.name}** for search term **${value.join(" ")}**...`);
+          message.reply(`I could not find a **${label}** for search term **${value.join(" ")}**...`);
           return;
         }
         responses.forEach((resp, index) => {
