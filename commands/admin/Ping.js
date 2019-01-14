@@ -1,4 +1,4 @@
-const Command = require("../base/Command.js");
+const Command = require("../Command.js");
 
 class Ping extends Command {
   constructor (client) {
@@ -6,6 +6,8 @@ class Ping extends Command {
       name: "ping",
       description: "Latency and API response times.",
       usage: "ping",
+      category: "System",
+      permLevel: "Bot Admin",
       aliases: ["pong"]
     });
   }

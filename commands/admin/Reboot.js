@@ -1,4 +1,4 @@
-const Command = require("../base/Command.js");
+const Command = require("../Command.js");
 
 class Reboot extends Command {
   constructor (client) {

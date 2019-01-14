@@ -10,7 +10,7 @@
 // const action = args[0]; const key = args[1]; const value = args.slice(2);
 // OR the same as:
 // const [action, key, ...value] = args;
-const Command = require("../base/Command.js");
+const Command = require("../Command.js");
 
 class SetCMD extends Command {
   constructor (client) {
@@ -21,7 +21,7 @@ class SetCMD extends Command {
       usage: "set <view/get/edit> <key> <value>",
       guildOnly: true,
       aliases: ["setting", "settings"],
-      permLevel: "Administrator"
+      permLevel: "Bot Admin"
     });
   }
 

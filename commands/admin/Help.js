@@ -1,4 +1,4 @@
-const Command = require("../base/Command.js");
+const Command = require("../Command.js");
 
 /*
   The HELP command is used to display every command's name and description

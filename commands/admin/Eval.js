@@ -6,7 +6,7 @@
 
 // However it's, like, super ultra useful for troubleshooting and doing stuff
 // you don't want to put in a command.
-const Command = require("../base/Command.js");
+const Command = require("../Command.js");
 var beautify = require('js-beautify').js_beautify;
 var inspect = require('util').inspect;
 const Discord = require('discord.js');

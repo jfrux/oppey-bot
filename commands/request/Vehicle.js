@@ -1,4 +1,4 @@
-const Request = require("../base/Request.js");
+const Request = require("../Request.js");
 const { version } = require("discord.js");
 const fetch = require('node-fetch');
 
@@ -8,7 +8,7 @@ class VehicleRequest extends Request {
       name: "vehicle",
       endpoint: "/vehicles.json",
       description: "Search for a Vehicle",
-      category: "System",
+      category: "Knowledge Base",
       usage: "vehicle <search>",
       aliases: ["v","veh"],
       guildOnly: true,

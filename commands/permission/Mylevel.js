@@ -1,9 +1,10 @@
-const Command = require("../base/Command.js");
+const Command = require("../Permission.js");
 
 class MyLevel extends Command {
   constructor (client) {
     super(client, {
       name: "mylevel",
+      category: "Permissions",
       description: "Displays your permission level for your location.",
       usage: "mylevel",
       guildOnly: true

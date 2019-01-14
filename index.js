@@ -73,6 +73,7 @@ class OppeyBot extends Client {
   */
 
   loadCommand (commandPath, commandName) {
+    
     try {
       const props = new (require(`${commandPath}${path.sep}${commandName}`))(this);
       this.logger.log(`Loading Command: ${props.help.name}. 👌`, "log");
@@ -170,12 +171,16 @@ console.log(client.config.permLevels.map(p => `${p.level} : ${p.name}`));
 // we need to wrap stuff in an anonymous function. It's annoying but it works.
 
 const init = async () => {
-
+  const excludeFiles = [
+    "Command",
+    "Permission",
+    "Request"
+  ];
   // Here we load **commands** into memory, as a collection, so they're accessible
   // here and everywhere else.
   klaw("./commands").on("data", (item) => {
     const cmdFile = path.parse(item.path);
-    if (!cmdFile.ext || cmdFile.ext !== ".js") return;
+    if (excludeFiles.includes(cmdFile.name) || (!cmdFile.ext || cmdFile.ext !== ".js")) return;
     const response = client.loadCommand(cmdFile.dir, `${cmdFile.name}${cmdFile.ext}`);
     if (response) client.logger.error(response);
   });

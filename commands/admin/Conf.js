@@ -7,7 +7,7 @@ If a default setting is not specifically overwritten by a guild, changing a defa
 change it for that guild. The `add` action adds a key to the configuration of every guild in
 your bot. The `del` action removes the key also from every guild, and loses its value forever.
 */
-const Command = require("../base/Command.js");
+const Command = require("../Command.js");
 
 class Conf extends Command {
   constructor (client) {

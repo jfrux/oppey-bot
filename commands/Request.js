@@ -1,4 +1,4 @@
-const Command = require("./Command.js");
+const Command = require("../commands/Command.js");
 const { version, MessageEmbed } = require("discord.js");
 const fetch = require('node-fetch');
 
@@ -102,25 +102,29 @@ class Request extends Command {
 
     if (responses.length) {
       return responses;
-    } else {
-      return [`I'm sorry, I could not find a **${this.name}** for search term ***${query}***...`];
     }
     
   }
 
   _handleResponse(json, query) {
-    console.log("Handling response:", json);
+    // console.log("Handling response:", json);
     return this.normalizeResponse(json, query);
   }
 
   async run (message, [...value], level) { // eslint-disable-line no-unused-vars
     let requestUrl = `${this.getBaseURL()}${this.getEndpoint()}.json?q=${value.join(" ")}`;
     
-    console.log("Sending request to opc.ai:\n",requestUrl);
+    // console.log("Sending request to opc.ai:\n",requestUrl);
     fetch(requestUrl)
       .then(res => res.json())
       .then((json) => {
         let responses = this._handleResponse(json, value.join(" "));
+        if (responses) {
+          message.reply(`here is the top **${this.name}** result for **${value.join(" ")}**...\n`);
+        } else {
+          message.reply(`I could not find a **${this.name}** for search term **${value.join(" ")}**...`);
+          return;
+        }
         responses.forEach((resp, index) => {
           message.channel.send(resp);
         });

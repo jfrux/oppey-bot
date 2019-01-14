@@ -1,23 +1,11 @@
-// This command is to modify/edit guild configuration. Perm Level 3 for admins
-// and owners only. Used for changing prefixes and role names and such.
-
-// Note that there's no "checks" in this basic version - no config "types" like
-// Role, String, Int, etc... It's basic, to be extended with your deft hands!
-
-// Note the **destructuring** here. instead of `args` we have :
-// [action, key, ...value]
-// This gives us the equivalent of either:
-// const action = args[0]; const key = args[1]; const value = args.slice(2);
-// OR the same as:
-// const [action, key, ...value] = args;
-const Command = require("../base/Command.js");
+const Command = require("../Permission.js");
 
 class Role extends Command {
   constructor (client) {
     super(client, {
       name: "role",
       description: "Toggle a vehicle-themed role.",
-      category: "System",
+      category: "Permissions",
       usage: "role <role>",
       guildOnly: true,
       aliases: ["togglerole", "getrole", "set-vehicle"],
@@ -59,7 +47,7 @@ class Role extends Command {
     if (!roleChoice) {
       message.reply('These are the available roles:\n'+
         rolesString +
-        'use "-role `<role_name>` to join a role')
+        'Example: `-role honda` to join the Honda role.')
 
       return
     }
@@ -80,7 +68,7 @@ class Role extends Command {
     } else {
       message.reply('That is not a valid role!\nThese are the available roles:\n'+
         rolesString +
-        'use "-role `<role_name>` to join a role')
+        'Example: `-role honda` to join the Honda role.')
 
       return
     }

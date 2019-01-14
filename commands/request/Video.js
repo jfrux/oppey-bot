@@ -1,23 +1,23 @@
-const Request = require("../base/Request.js");
+const Request = require("../Request.js");
 const { version } = require("discord.js");
 const fetch = require('node-fetch');
 
-class GuideRequest extends Request {
+class VideoRequest extends Request {
   constructor (client) {
     super(client, {
-      name: "guide",
-      endpoint: "/guides.json",
-      description: "Search for a Guide",
-      category: "System",
-      usage: "guide <search>",
-      aliases: ["g"],
+      name: "video",
+      endpoint: "/videos.json",
+      description: "Search for a Video",
+      category: "Knowledge Base",
+      usage: "video <search>",
+      aliases: ["vid"],
       guildOnly: true,
       permLevel: "User"
     });
   }
 
   getEndpoint() {
-    return '/guides';
+    return '/videos';
   }
 
   // /**
@@ -39,4 +39,4 @@ class GuideRequest extends Request {
 
 }
 
-module.exports = GuideRequest;
+module.exports = VideoRequest;
