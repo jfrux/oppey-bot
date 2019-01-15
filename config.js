@@ -16,15 +16,15 @@ const config = {
   // DO NOT REMOVE THIS BEFORE YOUR BOT IS LOADED AND FUNCTIONAL.
   
   defaultSettings: {
-  "prefix": process.env.DISCORD_COMMAND_PREFIX || "-",
-  "modLogChannel": "mod-log",
-  "modRole": "Moderator",
-  "adminRole": "Administrator",
-  "systemNotice": "true",
-  "welcomeChannel": "welcome",
-  "welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
-  "welcomeEnabled": "false"
-},
+    "prefix": process.env.DISCORD_COMMAND_PREFIX || "-",
+    "modLogChannel": "moderators",
+    "modRole": "Community Moderator",
+    "adminRole": "Community Staff",
+    "systemNotice": "true",
+    "welcomeChannel": "discord-server-admin",
+    "welcomeMessage": "{{user}} joined!",
+    "welcomeEnabled": "true"
+  },
 
   // PERMISSION LEVEL DEFINITIONS.
 

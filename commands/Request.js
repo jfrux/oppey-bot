@@ -46,7 +46,6 @@ class Request extends Command {
   
   
     // embed.color = 3447003;
-    console.log("Image:",resp.image)
     if (resp.author) {
       embed.setAuthor(resp.author.name, resp.author.image);
     }

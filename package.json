@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "prepublish": "node util/setup.js"
+    "dev": "DISCORD_COMMAND_PREFIX=$ nodemon index.js"
   },
   "engines": {
     "node": ">=8"
@@ -32,10 +32,13 @@
     "inflection": "^1.12.0",
     "js-beautify": "^1.8.9",
     "klaw": "^2.1.1",
-    "moment": "^2.22.2",
+    "moment": "^2.23.0",
     "moment-duration-format": "^2.2.2",
     "node-fetch": "^2.3.0",
     "readline-sync": "^1.4.9",
     "util": "^0.11.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
   }
 }

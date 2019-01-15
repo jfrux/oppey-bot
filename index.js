@@ -1,10 +1,9 @@
-// This will check if the node version you are running is the required
-// Node version, if it isn't it will throw the following error to inform
-// you.
+const moment = require("moment");
 if (Number(process.version.slice(1).split(".")[0]) < 8) throw new Error("Node 8.0.0 or higher is required. Update Node on your system.");
 
 // Load up the discord.js library
 const { Client, Collection } = require("discord.js");
+
 // We also load the rest of the things we need in this file:
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
@@ -16,7 +15,6 @@ const path = require("path");
 class OppeyBot extends Client {
   constructor (options) {
     super(options);
-
     // Here we load the config.js file that contains our token and our prefix values.
     this.config = require("./config.js");
     // client.config.token contains the bot's token
@@ -24,14 +22,17 @@ class OppeyBot extends Client {
 
     // Aliases and commands are put in collections where they can be read from,
     // catalogued, listed, etc.
+    this.nextWelcomeMessageTime = moment();
+    this.minutesBetweenEachWelcome = 5;
     this.commands = new Collection();
     this.aliases = new Collection();
+    this.newUsers = new Collection();
 
     // Now we integrate the use of Evie's awesome Enhanced Map module, which
     // essentially saves a collection to disk. This is great for per-server configs,
     // and makes things extremely easy for this purpose.
     this.settings = new Enmap({ name: "settings", cloneLevel: "deep", fetchAll: false, autoFetch: true });
-
+    
     //requiring the Logger class for easy console logging
     this.logger = require("./modules/Logger");
 
