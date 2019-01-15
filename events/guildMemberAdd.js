@@ -73,6 +73,8 @@ module.exports = class {
         }
       }
     }
+
+    try {
     member.send(`:wave:
 Welcome to the Comma.ai Community Discord, ${member}!
 I'm Oppey - the community assistant.  
@@ -102,5 +104,8 @@ Welcome aboard!
 :heart: Oppey`, {
   split: true
 })
+    } catch (e) {
+      console.warn("Could not send message... probably a bot.");
+    }
   }
 };
