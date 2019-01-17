@@ -68,7 +68,10 @@ module.exports = class {
         member.roles.add(discordMemberRole).catch(console.error);
       }
     }
-
+    console.log("NODE_ENV: ",process.env.NODE_ENV);
+    if (process.env.NODE_ENV !== 'production') {
+      return;
+    }
     try {
     member.send(`:wave:
 Welcome to the Comma.ai Community Discord, ${member}!
