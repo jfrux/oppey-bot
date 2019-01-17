@@ -73,7 +73,10 @@ module.exports = class {
         }
       }
     }
-
+    console.log("NODE_ENV: ",process.env.NODE_ENV);
+    if (process.env.NODE_ENV !== 'production') {
+      return;
+    }
     try {
     member.send(`:wave:
 Welcome to the Comma.ai Community Discord, ${member}!
