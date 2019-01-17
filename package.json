@@ -35,10 +35,6 @@
     "moment": "^2.23.0",
     "moment-duration-format": "^2.2.2",
     "node-fetch": "^2.3.0",
-    "pg": "^7.8.0",
-    "pg-hstore": "^2.3.2",
-    "readline-sync": "^1.4.9",
-    "sequelize": "^4.42.0",
     "util": "^0.11.1"
   },
   "devDependencies": {

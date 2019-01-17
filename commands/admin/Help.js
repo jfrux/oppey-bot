@@ -19,11 +19,11 @@ class Help extends Command {
   }
 
   async run (message, args, level) {
+    const member = message.member;
     // If no specific command is called, show all filtered commands.
     if (!args[0]) {
       // Load guild settings (for prefixes and eventually per-guild tweaks)
       const settings = message.settings;
-      
       // Filter all commands by which are available for the user's level, using the <Collection>.filter() method.
       const myCommands = message.guild ? this.client.commands.filter(cmd => this.client.levelCache[cmd.conf.permLevel] <= level) : this.client.commands.filter(cmd => this.client.levelCache[cmd.conf.permLevel] <= level &&  cmd.conf.guildOnly !== true);
       
@@ -42,14 +42,19 @@ class Help extends Command {
         }
         output += `${settings.prefix}${c.help.name}${" ".repeat(longest - c.help.name.length)} :: ${c.help.description}\n`;
       });
-      message.channel.send(output, {code:"asciidoc", split: { char: "\u200b" }});
+      member.send(output, {code:"asciidoc", split: { char: "\u200b" }});
+      message.channel.send(`Hey ${member}! Just sent you some info. But use the commands back here not in the DM.`);
+      // message.channel.send(output, {code:"asciidoc", split: { char: "\u200b" }});
     } else {
       // Show individual command's help.
       let command = args[0];
       if (this.client.commands.has(command)) {
         command = this.client.commands.get(command);
         if (level < this.client.levelCache[command.conf.permLevel]) return;
-        message.channel.send(`= ${command.help.name} = \n${command.help.description}\nusage:: ${command.help.usage}\nalises:: ${command.conf.aliases.join(", ")}`, {code:"asciidoc"});
+        member.send(`= ${command.help.name} = \n${command.help.description}\nusage:: ${command.help.usage}\nalises:: ${command.conf.aliases.join(", ")}`, {code:"asciidoc"});
+        message.channel.send(`Hey ${member}! Just sent you some info. But use the commands here not in the DM.`);
+      
+        // message.channel.send(`= ${command.help.name} = \n${command.help.description}\nusage:: ${command.help.usage}\nalises:: ${command.conf.aliases.join(", ")}`, {code:"asciidoc"});
       }
     }
   }

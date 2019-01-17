@@ -25,6 +25,6 @@ module.exports = {
     "eu": "Europe"
   },
   MISC: {
-    "unsupported": "Unsupported"
+    "all": "All Channels"
   }
 };

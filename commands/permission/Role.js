@@ -1,21 +1,28 @@
 const inflection = require("inflection");
 const Command = require("../Permission.js");
 const ROLES = require("../../constants/roles");
+const hitOnDm = `I sent you a DM with a list of the channel groups.`;
+const footer = `
+For example, \`-c honda\` to join the Honda channel group.\n
+*BUT, don't do it here...*
+**NOTE:** Please send commands back in the channels or it won't work.
+If you have suggestions for how this can be better, feel free to reach out to us in #discord-server-admin...
+Or send a DM to @jfrux...`;
+
 class Role extends Command {
   constructor (client) {
     super(client, {
-      name: "role",
-      description: "Toggle a role on/off of your profile.",
+      name: "channels",
+      description: "Toggle channel groups on/off of your profile.",
       category: "Permissions",
-      usage: "role <name>",
+      usage: "c <name>",
       guildOnly: true,
-      aliases: ["roles"],
+      aliases: ["c", "roles", "role"],
       permLevel: "User"
     });
     this.roleGroups = Object.keys(ROLES);
     this.roles = ROLES;
   }
-
   async run (message, [roleChoice], level) { // eslint-disable-line no-unused-vars
     let member = message.member;
     const availableRoleKeys = {};
@@ -55,10 +62,11 @@ class Role extends Command {
       rolesString = rolesString.concat('```');
     });
     if (!roleChoice) {
-      discordServerAdmin.send(`${member}, choose one of these available roles...
+      message.channel.send(`Hey ${member}! ${hitOnDm}`);
+      
+      member.send(`Here are the available channel groups...
 ${rolesString}
-**ie. \`-role honda\` to join the Honda role.**\n
-Request new roles be added in #discord-server-admin`);
+${footer}`);
       return
     }
     // console.log("roleChoice:",roleChoice);
@@ -70,18 +78,18 @@ Request new roles be added in #discord-server-admin`);
       if(member.roles.has(myRole.id)) {
         member.roles.remove(myRole).catch(console.error);
 
-        message.reply(`I have removed the *${selectedRole}* role from you.`)
+        message.reply(`You have joined the *${selectedRole}* channel group.`)
       } else {
 
         member.roles.add(myRole).catch(console.error);
-        message.reply(`I have added the *${selectedRole}* role to you.`)
+        message.reply(`You have left the *${selectedRole}* channel group.`)
 
       }
     } else {
-      discordServerAdmin.send(`${member}, unfortunately that is not one of these available roles...
+      message.channel.send(`I can't find that on my list. ${hitOnDm}`);
+      member.send(`Here are the available channel groups you can join...
 ${rolesString}
-**ie. \`-role honda\` to join the Honda role.**\n
-Request new roles be added in #discord-server-admin`);
+${footer}`);
       return
     }
   }

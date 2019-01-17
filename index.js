@@ -11,7 +11,6 @@ const Enmap = require("enmap");
 const klaw = require("klaw");
 const path = require("path");
 
-
 class OppeyBot extends Client {
   constructor (options) {
     super(options);

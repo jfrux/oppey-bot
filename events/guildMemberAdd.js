@@ -75,35 +75,35 @@ module.exports = class {
     }
 
     try {
-    member.send(`:wave:
-Welcome to the Comma.ai Community Discord, ${member}!
-I'm Oppey - the community assistant.  
+//     member.send(`:wave:
+// Welcome to the Comma.ai Community Discord, ${member}!
+// I'm Oppey - the community assistant.  
 
-I've added the **Community Member** role for you so you now should have access to all of our standard channels. To get help or request things relating to Discord, reach out to our team in #server-discord-admin.
+// I've added the **Community Member** role for you so you now should have access to all of our standard channels. To get help or request things relating to Discord, reach out to our team in #server-discord-admin.
 
-**Start by checking out our onboarding channels :blue_car:**
-\`#welcome\` and \`#getting-started\` can be accessed at any time by clicking the Comma logo on the left and scrolling to the top of the channels list.
+// **Start by checking out our onboarding channels :blue_car:**
+// \`#welcome\` and \`#getting-started\` can be accessed at any time by clicking the Comma logo on the left and scrolling to the top of the channels list.
 
-**Next, try out some of my new commands. :fire:**
-It's important to know that while inside of our Discord channels you have access to an array of new commands that we didn't have on Slack.
-The first command most should try is \`-help\`.  I'd probably do that within \`#discord-server-admin\` as to not interupt conversations as much as possible. The help command can display all of the commands available to you from your current location.
-Most people like to use the \`-role\` command to set the vehicle manufacturer they own or are interested in. Doing this will give you access to special extended vehicle support channels.
-To see a list of the available roles, type \`-role\` in the \`#discord-server-admin\` channel.
-Then to toggle a role on/off your account, type \`-role <name>\`. For example, for Honda type \`-role honda\`.
+// **Next, try out some of my new commands. :fire:**
+// It's important to know that while inside of our Discord channels you have access to an array of new commands that we didn't have on Slack.
+// The first command most should try is \`-help\`.  I'd probably do that within \`#discord-server-admin\` as to not interupt conversations as much as possible. The help command can display all of the commands available to you from your current location.
+// Most people like to use the \`-role\` command to set the vehicle manufacturer they own or are interested in. Doing this will give you access to special extended vehicle support channels.
+// To see a list of the available roles, type \`-role\` in the \`#discord-server-admin\` channel.
+// Then to toggle a role on/off your account, type \`-role <name>\`. For example, for Honda type \`-role honda\`.
 
-**I can also find a lot of useful information for you. :mag_right:** 
-Typing one of my many search commands allows you to access different information from the opc.ai website within Discord.
-For example, to find those pesky Giraffe dip switch positions by typing something like \`-faq Toyota Giraffe Switches\`.
-To find the top video about your vehicle you could type \`-video 2017 Honda Pilot\` or maybe check for any pull requests relating to Jeep by typing \`-pr jeep\`.
+// **I can also find a lot of useful information for you. :mag_right:** 
+// Typing one of my many search commands allows you to access different information from the opc.ai website within Discord.
+// For example, to find those pesky Giraffe dip switch positions by typing something like \`-faq Toyota Giraffe Switches\`.
+// To find the top video about your vehicle you could type \`-video 2017 Honda Pilot\` or maybe check for any pull requests relating to Jeep by typing \`-pr jeep\`.
 
-There are many more commands available so feel free to check them out with \`-help\`.
+// There are many more commands available so feel free to check them out with \`-help\`.
 
-Now I'll leave you to it!
-Welcome aboard!
+// Now I'll leave you to it!
+// Welcome aboard!
 
-:heart: Oppey`, {
-  split: true
-})
+// :heart: Oppey`, {
+//   split: true
+// })
     } catch (e) {
       console.warn("Could not send message... probably a bot.");
     }
