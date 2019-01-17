@@ -62,15 +62,10 @@ module.exports = class {
       this.client.nextWelcomeMessageTime = moment().add(this.client.minutesBetweenEachWelcome, 'm');
       welcomeChannel.send(welcomeMessage).catch(console.error);
     }
-    
+  
     if (discordMemberRole) {
-      // If welcome is off, don't proceed (don't welcome the user)
-      // if (settings.welcomeEnabled !== "true") return;
-      if (discordMemberRole) {
-        if(!member.roles.has(discordMemberRole)) {
-          member.roles.add(discordMemberRole).catch(console.error);
-          // message.reply(`I have added the *${selectedRole.discordRoleName}* role to you.`)
-        }
+      if(!member.roles.has(discordMemberRole)) {
+        member.roles.add(discordMemberRole).catch(console.error);
       }
     }
 
