@@ -1,41 +1,28 @@
-if (Number(process.version.slice(1).split(".")[0]) < 8) throw new Error("Node 8.0.0 or higher is required. Update Node on your system.");
-
-// Load up the discord.js library
-const fetch = require("node-fetch");
-const { Collection } = require("discord.js");
-const moment = require("moment");
-// const ApolloBoost = require("apollo-boost");
-// const ApolloClient = ApolloBoost.default;
-const { promisify } = require("util");
-const readdir = promisify(require("fs").readdir);
-const Enmap = require("enmap");
-const klaw = require("klaw");
 const path = require("path");
-const { Client } = require('@yamdbf/core');
-const config = require('./config.js');
+const { Client, Providers } = require('@yamdbf/core');
+// const { Providers } = require("")
+const config = require('../config.js');
 const excludedBaseClasses = [
-  "Command",
-  "Permission",
-  "Request"
+  "request"
 ];
-
+console.log("Providers:",Providers);
 class Oppey extends Client {
 	constructor()
 	{
 		super({
-      name: 'Oppey',
+      name: 'Oppey - Dev',
       // commandsDir: path.join(__dirname, 'commands'),
-      disableBase: excludedBaseClasses,
+      // disableBase: excludedBaseClasses,
       token: config.token,
       pause: true,
+      provider: Providers.PostgresProvider(process.env.DATABASE_URL, true),
 			statusText: 'try @mention help',
 			readyText: 'Client is ready!',
-			// commandsDir: path.join(__dirname, 'commands')
+			commandsDir: path.join(__dirname, 'commands')
 		});
-
 		this.on('pause', async () => {
       const defaultSettingKeys = Object.keys(config.defaultSettings);
-      await this.setDefaultSetting('provider',process.env.DATABASE_URL);
+      await this.setDefaultSetting('disableBase',excludedBaseClasses);
       await this.setDefaultSetting('prefix', config.defaultSettings.prefix);
       // await defaultSettingKeys.forEach(async (key) => {
         
@@ -44,7 +31,8 @@ class Oppey extends Client {
     });
 
 		this.once('clientReady', () => {
-			console.log(`Client ready! Serving ${this.guilds.size} guilds.`);
+      // this.user.setAvatar("./avatar.gif");
+			console.log(`Client ready! Serving Comma.ai ${this.guilds.size}`);
 		});
 	}
 }
