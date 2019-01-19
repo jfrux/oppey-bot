@@ -78,11 +78,11 @@ ${footer}`);
       if(member.roles.has(myRole.id)) {
         member.roles.remove(myRole).catch(console.error);
 
-        message.reply(`You have joined the *${selectedRole}* channel group.`)
+        message.reply(`You have **left** the **${selectedRole}** channel group.`)
       } else {
 
         member.roles.add(myRole).catch(console.error);
-        message.reply(`You have left the *${selectedRole}* channel group.`)
+        message.reply(`You have **joined** the **${selectedRole}** channel group.`)
 
       }
     } else {
