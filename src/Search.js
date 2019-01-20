@@ -4,9 +4,9 @@ const { MessageEmbed } = require("discord.js");
 const fetch = require('node-fetch');
 module.exports = class extends Command
 {
-	// constructor(options) {
-	// 	super(options);
-  // }
+	constructor(options) {
+		super(options);
+  }
   getLabel() {
     return inflection.titleize(this.name);
   }
@@ -123,6 +123,5 @@ module.exports = class extends Command
     } else {
       message.reply(`You must specify a search query to find a **${label}**...`);
     }
-    message.delete(500);
   }
 }

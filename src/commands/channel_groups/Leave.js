@@ -1,6 +1,6 @@
 const inflection = require("inflection");
 const { Command } = require('@yamdbf/core');
-const ROLES = require("../constants/roles");
+const ROLES = require("../../constants/roles");
 const hitOnDm = `I sent you a DM with a list of the channel groups.`;
 const footer = `
 For example, \`-c honda\` to join the Honda channel group.\n
@@ -12,21 +12,12 @@ module.exports = class extends Command
 {
 	constructor() {
 		super({
-      name: 'join',
-			desc: 'Join / Leave a Channel Group',
-			usage: '<prefix>join',
-			aliases: ['channels','c','role'],
-			info: 'Join / Leave a Channel Group',
+      name: 'leave',
+			desc: 'Leave a Channel Group',
+			usage: '<prefix>leave <channel_group>',
+			info: 'Leave a Channel Group',
 			group: 'Chat',
-			// clientPermissions: [],
-			// callerPermissions: [],
 			roles: ["Community Member"],
-			// guildOnly: false,
-			// ownerOnly: false,
-			// hidden: false,
-			// argOpts: { separator: ',' },
-			// overloads: 'ping',
-			// ratelimit: '1/10s'
     });
     
     this.roleGroups = Object.keys(ROLES);
@@ -34,14 +25,13 @@ module.exports = class extends Command
 	}
 
 	action(message, [...roleChoice]) {
-    console.log("roleChoice:",roleChoice);
     let member = message.member;
     const availableRoleKeys = {};
-    const discordServerAdmin = this.client.channels.find(c => c.name === "discord-server-admin");
+    // const discordServerAdmin = this.client.channels.find(c => c.name === "discord-server-admin");
       
     const settings = message.settings;
     if (roleChoice) {
-      roleChoice = roleChoice.toLowerCase().trim();
+      roleChoice = roleChoice.join(" ").toLowerCase().trim();
     }
     let rolesString = "";
     this.roleGroups.forEach((group,index) => {
@@ -88,11 +78,10 @@ ${footer}`);
       if(member.roles.has(myRole.id)) {
         member.roles.remove(myRole).catch(console.error);
 
-        message.reply(`You have joined the *${selectedRole}* channel group.`)
+        message.reply(`You have **left** the **${selectedRole}** channel group.`)
       } else {
-
-        member.roles.add(myRole).catch(console.error);
-        message.reply(`You have left the *${selectedRole}* channel group.`)
+        // member.roles.add(myRole).catch(console.error);
+        message.reply(`You're not in the **${selectedRole}** channel group.`)
 
       }
     } else {
