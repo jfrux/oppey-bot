@@ -1,7 +1,4 @@
-const Request = require("../Request.js");
-const { version } = require("discord.js");
-const fetch = require('node-fetch');
-
+const Request = require("../../Request.js");
 module.exports = class extends Request {
   constructor () {
     super({
@@ -9,7 +6,6 @@ module.exports = class extends Request {
       desc: "Search for a Vehicle Capability",
       group: "Knowledge Base",
       usage: "<prefix>cap <search>",
-      roles: ["Community Member"],
       aliases: ["cap","term", "feat"]
     });
   }

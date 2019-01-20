@@ -6,8 +6,8 @@ module.exports = class {
   }
   
   async run (member) {
-    const guild = member.guild;
-    const settings = this.client.getSettings(member.guild);
+    // const guild = member.guild;
+    // const settings = this.client.getSettings(member.guild);
     const currentTime = moment();
     const discordMemberRole = member.guild.roles.find(role => role.name === MEMBER_ROLE);
     // let otherUser = this.client.users.find(user => user.username == "jfrux");
@@ -24,7 +24,7 @@ module.exports = class {
     // console.log("nextWelcomeMessageTime:", this.client.nextWelcomeMessageTime);
     if (currentTime.isAfter(this.client.nextWelcomeMessageTime)) {
       // console.log("currentTime is after nextWelcomeMessageTime!");
-      const welcomeChannel = member.guild.channels.find(c => c.name === settings.welcomeChannel);
+      const welcomeChannel = member.guild.channels.find(c => c.name === "discord-server-admin");
       // const welcomeMessage = settings.welcomeMessage.replace("{{user}}", member.user.tag);
       let welcomeMessage = `{{member}} joined`;
       let otherMembers;
@@ -73,7 +73,7 @@ module.exports = class {
         }
       }
     }
-    console.log("NODE_ENV: ",process.env.NODE_ENV);
+    // console.log("NODE_ENV: ",process.env.NODE_ENV);
     if (process.env.NODE_ENV !== 'production') {
       return;
     }
