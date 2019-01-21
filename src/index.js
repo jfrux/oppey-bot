@@ -17,7 +17,7 @@ class Oppey extends Client {
       name: 'Oppey',
       token: config.token,
       pause: true,
-			statusText: 'try @mention help',
+			statusText: `opc.ai | Try -help`,
 			readyText: 'Oppey is ready for service!',
       commandsDir: path.join(__dirname, 'commands'),
       // plugins: [commandUsage("533856957707190302")],
