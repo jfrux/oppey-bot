@@ -16,7 +16,7 @@ module.exports = class extends Command
 			desc: 'Join a Channel Group',
 			usage: '<prefix>join <channel_group>',
 			info: 'Join a Channel Group',
-			group: 'Chat',
+			group: 'chat',
 			roles: ["Community Member"],
     });
     

@@ -16,7 +16,7 @@ module.exports = class extends Command
 			desc: 'Leave a Channel Group',
 			usage: '<prefix>leave <channel_group>',
 			info: 'Leave a Channel Group',
-			group: 'Chat',
+			group: 'chat',
 			roles: ["Community Member"],
     });
     

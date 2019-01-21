@@ -4,7 +4,7 @@ module.exports = class extends Request {
     super({
       name: "vehicle",
       desc: "Search for a Vehicle",
-      group:  "Knowledge Base",
+      group:  "database",
       usage: "<prefix>vehicle <search>",
       aliases: ["v","veh"],
       roles: ["Community Member"]

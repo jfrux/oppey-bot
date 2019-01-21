@@ -16,7 +16,7 @@ module.exports = class extends Command
 			usage: '<prefix>channels <channel_group>',
 			aliases: ['c','role'],
 			info: 'Join / Leave a Channel Group',
-			group: 'Chat',
+			group: 'chat',
 			// clientPermissions: [],
 			// callerPermissions: [],
 			roles: ["Community Member"],

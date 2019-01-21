@@ -4,7 +4,7 @@ module.exports = class extends Request {
     super({
       name: "repo",
       desc: "Search for a fork of Openpilot",
-      group:  "Knowledge Base",
+      group:  "database",
       usage: "<prefix>repo <search>",
       aliases: ["repo","fork"],
       roles: ["Community Member"]
