@@ -23,7 +23,7 @@
 
 "@yamdbf/core@yamdbf/core#indev":
   version "4.0.0"
-  resolved "https://codeload.github.com/yamdbf/core/tar.gz/ac6d2a9626c100aae1e20e200f726f70cf6a0e95"
+  resolved "https://codeload.github.com/yamdbf/core/tar.gz/7b9c861d5ed974f3178b81c4b5147246d0babb3a"
   dependencies:
     discord.js discordjs/discord.js
     glob "7.1.2"
