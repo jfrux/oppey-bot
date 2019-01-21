@@ -3,20 +3,16 @@ const { Client, Providers } = require('@yamdbf/core');
 const { Collection } = require("discord.js");
 const moment = require("moment");
 const { commandUsage } = require('@yamdbf/command-usage');
-// const { Providers } = require("")
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 const config = require('../config.js');
-// const excludedBaseClasses = [
-//   "request"
-// ];
 class Oppey extends Client {
-	constructor()
-	{
+	constructor() {
 		super({
       name: 'Oppey',
       token: config.token,
       pause: true,
+      localeDir: path.join(__dirname, 'lang'),
 			statusText: `opc.ai | Try -help`,
 			readyText: 'Oppey is ready for service!',
       commandsDir: path.join(__dirname, 'commands'),

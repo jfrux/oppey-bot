@@ -4,7 +4,7 @@ module.exports = class extends Request {
     super({
       name: "pr",
       desc: "Search for a Pull Request",
-      group:  "Knowledge Base",
+      group:  "database",
       usage: "<prefix>pr <search>",
       aliases: ["pull_request"],
       roles: ["Community Member"]
