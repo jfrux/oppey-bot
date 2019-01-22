@@ -4,7 +4,8 @@ module.exports = class ProfileCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'profile',
-			group: 'me',
+      group: 'me',
+      guildOnly: true,
 			memberName: 'profile',
 			description: 'Responds with a user\'s profile.',
       example: [ `profle`, 'profile @Oppey#0001', 'profile 0000000000000000000' ],
