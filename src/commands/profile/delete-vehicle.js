@@ -5,9 +5,10 @@ module.exports = class ProfileCommand extends Command {
 		super(client, {
 			name: 'delete-vehicle',
 			group: 'me',
-			memberName: 'delete-vehicle',
-			description: 'Deletes a vehicle from your profile.',
-      example: [ 'delete-vehicle 2017 Honda Pilot', 'delete-vehicle 2019 Honda Accord Touring' ],
+      memberName: 'delete-vehicle',
+      aliases: ['remove-vehicle'],
+			description: 'Removes a vehicle from your profile.',
+      example: [ 'remove-vehicle 2017 Honda Pilot', 'remove-vehicle 2019 Honda Accord Touring' ],
 			args: [
 				{
 					key: 'year',
@@ -68,7 +69,7 @@ module.exports = class ProfileCommand extends Command {
         await result.destroy();
       });
       if (results.length) {
-        message.reply("That vehicle has been deleted.");
+        message.reply("I have removed the vehicle from your profile.");
       } else {
         message.reply("I could not find that vehicle in your profile.")
       }

@@ -77,7 +77,7 @@ module.exports = class ProfileCommand extends Command {
     let vehicleMatches = await user.discord_user_vehicles.where(vehicle);
     console.log("vehicleMatches:",JSON.stringify(vehicleMatches));
     if (vehicleMatches.length) {
-      message.reply("You have already added this vehicle!");
+      message.reply("You have already added this vehicle to your profile.");
       return;
     }
 
