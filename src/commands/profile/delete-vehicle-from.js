@@ -3,13 +3,20 @@ const Command = require('../../structures/Command');
 module.exports = class ProfileCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'delete-vehicle',
-			group: 'me',
-			memberName: 'delete-vehicle',
+			name: 'delete-vehicle-from',
+			group: 'moderators',
+			userPermissions: ['MANAGE_MESSAGES','MANAGE_CHANNELS'],
+      memberName: 'delete-vehicle-from',
+			guildOnly: true,
 			description: 'Deletes a vehicle from your profile.',
       example: [ 'delete-vehicle 2017 Honda Pilot', 'delete-vehicle 2019 Honda Accord Touring' ],
 			args: [
 				{
+					key: 'user',
+					prompt: 'Which user do you want to delete the vehicle from?',
+					type: 'user'
+        },
+        {
 					key: 'year',
 					prompt: 'What year is the vehicle? (i.e. 2017)',
           type: 'integer',
@@ -38,15 +45,15 @@ module.exports = class ProfileCommand extends Command {
 		});
 	}
 
-	async run(message, { year, make, model, trim }) {
+	async run(message, { user, year, make, model, trim }) {
     const client = this.client;
     const User = client.orm.Model('DiscordUser');
     const messageUser = message.author;
     
-    let user = await User.find(messageUser.id);
+    let userModel = await User.find(user.id);
 
-    if (!user) {
-      message.reply("You have not added any vehicles yet!");
+    if (!userModel) {
+      message.channel.send(`${user} does not have any vehicles yet.`);
       return;
     }
 
@@ -58,19 +65,17 @@ module.exports = class ProfileCommand extends Command {
       vehicle_model: model,
       vehicle_trim: trim
     }
-    // if (trim) {
-    //   vehicle.vehicle_trim = trim;
-    // }
     
-    let vehiclesToDelete = await user.discord_user_vehicles.where(vehicle).then((results) => {
+    let vehiclesToDelete = await userModel.discord_user_vehicles.where(vehicle).then((results) => {
       console.log("Deleting Record:",results.toJSON());
       results.forEach(async (result) => {
         await result.destroy();
       });
       if (results.length) {
-        message.reply("That vehicle has been deleted.");
+        message.channel.send(`I deleted that vehicle from ${user}'s profile`);
+      
       } else {
-        message.reply("I could not find that vehicle in your profile.")
+        message.channel.send(`I could not find that vehicle in ${user}'s profile.`);
       }
     });
   }

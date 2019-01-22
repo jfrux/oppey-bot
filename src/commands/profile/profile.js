@@ -21,58 +21,61 @@ module.exports = class ProfileCommand extends Command {
 
 	async run(message, { user }) {
     const client = this.client;
-    // if (message.mentions.users.size) {
-    //   user = message.mentions.users.first();
-    // } else if (args.id) {
-    //   user = await client.utils.fetchMember(message.guild, args.id);
-    //   if (user) {
-    //     user = user.user;
-    //   }
-    // }
-    // if (!user) {
-    //   user = message.author;
-    // }
-    console.log("models",client.database.models);
-
-    let userModel = await client.database.models.discord_user.findOne({
-      attributes: [ 'avatar', 'info', 'location' ],
-      where: {
-        userid: user.id
-      }
-    });
-
+    const User = client.orm.Model('DiscordUser');
+    
+    let userModel = await User.find(user.id);
+    let isSelf = (message.author.id === user.id);
     if (!userModel) {
-      userModel = await client.database.models.discord_user.create({
-        userid: user.id,
+      console.log("USER NOT FOUND, CREATING IT!");
+      userModel = await User.create({
+        id: user.id,
         avatar: user.displayAvatarURL(),
         username: user.username
       });
     }
-    let info;
-    if (userModel && userModel.dataValues.info) {
-      info = await client.utils.decompressString(userModel.dataValues.info);
-    }
 
     let profileData = [];
-
-    if (userModel && userModel.dataValues.location) {
-      profileData.push({
-        name: 'Location',
-        value: userModel.dataValues.location,
-        inline: true
-      });
-    }
-    const vehicles = await userModel.getVehicles();
+    const vehicles = await userModel.discord_user_vehicles;
     if (vehicles) {
       let vehiclesOutput = [];
       vehicles.forEach((vehicle) => {
-        vehiclesOutput.push(`**${vehicle.year} ${vehicle.make} ${vehicle.model} ${vehicle.trim}**`)
+        console.log("vehicle:",vehicle)
+        let vehicleString = [];
+        if (vehicle.vehicle_year) {
+          vehicleString.push(vehicle.vehicle_year);
+        }
+        if (vehicle.vehicle_make) {
+          vehicleString.push(vehicle.vehicle_make);
+        }
+        if (vehicle.vehicle_model) {
+          vehicleString.push(vehicle.vehicle_model);
+        }
+        if (vehicle.vehicle_trim) {
+          vehicleString.push(vehicle.vehicle_trim);
+        }
+        vehiclesOutput.push(`**${vehicleString.join(" ")}**`)
       })
-      profileData.push({
-        name: 'Vehicles',
-        value: vehiclesOutput.join("\n"),
-        inline: true
-      });
+      if (vehicles.length) {
+        profileData.push({
+          name: 'Vehicles',
+          value: vehiclesOutput.join("\n"),
+          inline: true
+        });
+      } else {
+        if (isSelf) {
+          profileData.push({
+            name: 'Vehicles',
+            value: "No vehicles yet!\nAdd vehicles by running:\n `-add-vehicle <year> <make> <model> <trim>`",
+            inline: true
+          });
+        } else {
+          profileData.push({
+            name: 'Vehicles',
+            value: "No vehicles yet!\nAsk them to use the `-add-vehicle` command.",
+            inline: true
+          });
+        }
+      }
     }
     await message.channel.send({
       embed: {
@@ -81,7 +84,7 @@ module.exports = class ProfileCommand extends Command {
         },
         fields: profileData,
         thumbnail: {
-          url: userModel && userModel.dataValues.avatar ? userModel.dataValues.avatar : user.displayAvatarUrl()
+          url: userModel && userModel.avatar ? userModel.avatar : user.displayAvatarUrl()
         },
         footer: {
           text: ``

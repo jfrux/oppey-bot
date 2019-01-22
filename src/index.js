@@ -28,6 +28,7 @@ client.registry
 		['database', 'Openpilot Database'],
 		['search', 'Search'],
 		['me', 'Manage Your Info'],
+		['moderators', 'Moderator Commands'],
 		['other', 'Other']
   ])
   .registerCommandsIn(path.join(__dirname, "commands"))

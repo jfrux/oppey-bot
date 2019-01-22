@@ -1,6 +1,9 @@
 const { SettingProvider } = require('discord.js-commando');
+const { DATABASE_URL } = process.env;
+const path = require("path");
+const Store = require('openrecord/store/postgres')
 const Sequelize = require('sequelize');
-
+const models = require("../util/models.js");
 /**
  * Uses an PostgreSQL database to store settings with guilds
  * @extends {SettingProvider}
@@ -50,7 +53,7 @@ class SequelizeProvider extends SettingProvider {
 		 * @type {SequelizeModel}
 		 * @private
 		 */
-		this.model = this.db.define('settings', {
+		this.model = this.db.define('discord_settings', {
 			guild: {
 				type: Sequelize.STRING,
 				allowNull: false,
@@ -58,8 +61,11 @@ class SequelizeProvider extends SettingProvider {
 				primaryKey: true
 			},
 			settings: { type: Sequelize.TEXT }
-		});
-
+    },
+    {
+      underscored: true
+    });
+    
 		/**
 		 * @external SequelizeModel
 		 * @see {@link http://docs.sequelizejs.com/en/latest/api/model/}
@@ -67,8 +73,19 @@ class SequelizeProvider extends SettingProvider {
 	}
 
 	async init(client) {
-		this.client = client;
-		// await this.db.sync();
+    this.client = client;
+    const migrationsPath = path.join(__dirname, "db/migrations/*");
+    console.log("Migrations loading from:",migrationsPath);
+    this.client.orm = new Store({
+      migrations: [
+        require('../db/migrations/20190122090701_add_initial_structure.js')
+      ],
+      connection: DATABASE_URL,
+      autoLoad: true
+    })
+    this.models = models(this.client);
+    await this.client.orm.ready();
+		await this.model.sync({force: true})
 
 		// Load all settings
 		const rows = await this.model.findAll();
