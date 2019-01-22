@@ -1,4 +1,14 @@
 module.exports = function (){
+  try {
+    this.removeTable('discord_users');
+  } catch (e) {
+    console.log("[ERR] Could not delete discord_users table.");
+  }
+  try {
+    this.removeTable('discord_user_vehicles');
+  } catch (e) {
+    console.log("[ERR] Could not delete discord_user_vehicles table.");
+  }
   this.createTable('discord_users', {
     id: false
   }, function(){
