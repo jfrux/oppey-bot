@@ -3,12 +3,19 @@ const Command = require('../../structures/Command');
 module.exports = class ProfileCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'add-vehicle',
-			group: 'me',
-			memberName: 'add-vehicle',
-			description: 'Adds a vehicle to your profile.',
-      example: [ 'add-vehicle 2017 Honda Pilot', 'add-vehicle 2019 Honda Accord Touring' ],
+			name: 'add-vehicle-to',
+      group: 'moderators',
+      userPermissions: ['MANAGE_MESSAGES','MANAGE_CHANNELS'],
+      memberName: 'add-vehicle-to',
+      guildOnly: true,
+			description: 'Adds a vehicle to a user\'s profile.',
+      example: [ 'add-vehicle-to @jfrux#0001 2017 Honda Pilot', 'add-vehicle-to @jfrux#0001 2019 Honda Accord Touring' ],
 			args: [
+        {
+					key: 'user',
+					prompt: 'Which user do you want to add the vehicle to?',
+					type: 'user'
+				},
 				{
 					key: 'year',
 					prompt: 'What year is the vehicle? (i.e. 2017)',
@@ -38,20 +45,20 @@ module.exports = class ProfileCommand extends Command {
 		});
 	}
 
-	async run(message, { year, make, model, trim }) {
+	async run(message, { user, year, make, model, trim }) {
     const client = this.client;
     const User = client.orm.Model('DiscordUser');
     const UserVehicle = client.orm.Model('DiscordUserVehicle');
     const messageUser = message.author;
     
-    let user = await User.find(messageUser.id);
+    let userModel = await User.find(user.id);
 
-    if (!user) {
+    if (!userModel) {
       console.log("USER NOT FOUND, CREATING IT!");
-      user = await User.create({
-        id: messageUser.id,
-        avatar: messageUser.displayAvatarURL(),
-        username: messageUser.username
+      userModel = await User.create({
+        id: user.id,
+        avatar: user.displayAvatarURL(),
+        username: user.username
       });
     }
 
@@ -65,24 +72,22 @@ module.exports = class ProfileCommand extends Command {
     }
     let profileData = [];
 
-    if (messageUser && messageUser.username) {
+    if (user && user.username) {
       profileData.push({
         name: 'Username',
-        value: messageUser.username,
+        value: user.username,
         inline: true
       });
     }
-    console.log("Adding vehicle...",vehicle);
     
-    let vehicleMatches = await user.discord_user_vehicles.where(vehicle);
-    console.log("vehicleMatches:",JSON.stringify(vehicleMatches));
+    let vehicleMatches = await userModel.discord_user_vehicles.where(vehicle);
     if (vehicleMatches.length) {
-      message.reply("You have already added this vehicle!");
+      message.channel.send(`${user} already has this vehicle.`);
       return;
     }
 
-    const vehicles = await user.discord_user_vehicles;
+    const vehicles = await userModel.discord_user_vehicles;
     await vehicles.create(vehicle);
-    message.reply("I added that vehicle to your profile.");
+    message.channel.send(`I added that vehicle to ${user}'s profile`);
   }
 }

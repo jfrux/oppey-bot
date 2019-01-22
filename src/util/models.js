@@ -1,175 +1,19 @@
-const fs = require('fs');
-const Sequelize = require("sequelize");
-const { DATABASE_URL } = process.env;
-
 module.exports = (client) => {
   // Models
-  const database = client.database;
+  const store = client.orm;
   
-  const User = database.define('discord_user', {
-    userid: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      primaryKey: true
-    },
-    avatar: {
-      type: Sequelize.STRING(2048)
-    },
-    username: {
-      type: Sequelize.STRING
-    },
-    info: {
-      type: Sequelize.BLOB
-    },
-    location: {
-      type: Sequelize.STRING
-    },
-    afk: {
-      type: Sequelize.BOOLEAN,
-      allowNull: false,
-      defaultValue: false
-    },
-    afkmessage: {
-      type: Sequelize.BLOB
-    },
-    blacklisted: {
-      type: Sequelize.BOOLEAN,
-      allowNull: false,
-      defaultValue: false
-    }
-  }, {
-    underscored: true
+  store.Model('DiscordUser', function(){
+    // this is the `definition scope`
+    this.hasMany('discord_user_vehicles', { })
+  });
+
+  store.Model('DiscordUserVehicle', function(){
+    // this is the `definition scope`
+    this.belongsTo('discord_user', {
+      model: "DiscordUser"
+    })
   });
   
-  const Vehicle = database.define('discord_user_vehicle', {
-    userid: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    vehicle_config_id: {
-      type: Sequelize.INTEGER
-    },
-    year: {
-      type: Sequelize.INTEGER
-    },
-    make: {
-      type: Sequelize.STRING
-    },
-    model: {
-      type: Sequelize.STRING
-    },
-    trim: {
-      type: Sequelize.STRING
-    }
-  }, {
-    underscored: true
-  });
-  const VehicleConfig = database.define('vehicle_config', {
-    title: {
-      type: Sequelize.STRING
-    },
-    year: {
-      type: Sequelize.INTEGER
-    },
-    vehicle_make_id: {
-      type: Sequelize.BIGINT
-    },
-    vehicle_model_id: {
-      type: Sequelize.BIGINT
-    },
-    vehicle_trim_id: {
-      type: Sequelize.BIGINT
-    },
-    vehicle_config_status_id: {
-      type: Sequelize.BIGINT
-    },
-    description: {
-      type: Sequelize.TEXT
-    },
-    vehicle_make_package_id: {
-      type: Sequelize.BIGINT
-    },
-    slug: {
-      type: Sequelize.STRING
-    },
-    vehicle_config_type_id: {
-      type: Sequelize.BIGINT
-    },
-    parent_id: {
-      type: Sequelize.INTEGER
-    },
-    lft: {
-      type: Sequelize.INTEGER
-    },
-    rgt: {
-      type: Sequelize.INTEGER
-    },
-    depth: {
-      type: Sequelize.INTEGER
-    },
-    children_count: {
-      type: Sequelize.INTEGER
-    },
-    year_end: {
-      type: Sequelize.INTEGER
-    },
-    trim_styles_count: {
-      type: Sequelize.INTEGER
-    },
-    refreshing: {
-      type: Sequelize.BOOLEAN
-    },
-    cached_votes_total: {
-      type: Sequelize.INTEGER
-    },
-    cached_votes_score: {
-      type: Sequelize.INTEGER
-    },
-    cached_votes_up: {
-      type: Sequelize.INTEGER
-    },
-    cached_votes_down: {
-      type: Sequelize.INTEGER
-    },
-    cached_weighted_score: {
-      type: Sequelize.INTEGER
-    },
-    cached_weighted_total: {
-      type: Sequelize.INTEGER
-    },
-    cached_weighted_average: {
-      type: Sequelize.DOUBLE
-    },
-    primary_repository_id: {
-      type: Sequelize.INTEGER
-    },
-    primary_pull_request_id: {
-      type: Sequelize.INTEGER
-    },
-    source_image_url: {
-      type: Sequelize.STRING
-    },
-    user_count: {
-      type: Sequelize.INTEGER
-    },
-    views_count: {
-      type: Sequelize.INTEGER
-    },
-    followers_count: {
-      type: Sequelize.INTEGER
-    },
-    thredded_messageboard_id: {
-      type: Sequelize.BIGINT
-    }
-  }, {
-    underscored: true
-  });
-  User.Vehicles = User.hasMany(Vehicle, {
-    as: "Vehicles",
-    foreignKey: 'userid',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
-  });
   // Associations
   // Guild.Items = Guild.hasMany(Items, {
   //   foreignKey: 'guildid',
@@ -249,9 +93,9 @@ module.exports = (client) => {
   // database.sync({
   //   force: true
   // });
-  User.sync({force: true});
-  Vehicle.sync({force: true});
+  // User.sync({force: true});
+  // Vehicle.sync({force: true});
 
   // Return models
-  return database.models;
+  // return database.models;
 };

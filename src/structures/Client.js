@@ -1,5 +1,5 @@
 const { CommandoClient } = require('discord.js-commando');
-const { OPPEY_PREFIX } = process.env;
+const { OPPEY_PREFIX, DATABASE_URL } = process.env;
 const { WebhookClient, Collection } = require('discord.js');
 const moment = require("moment");
 const Database = require('./PostgreSQL.js');
@@ -21,10 +21,9 @@ module.exports = class OppeyClient extends CommandoClient {
 				winston.format.printf(log => `[oppey-bot][${log.timestamp}] ${log.message}`)
 			)
     });
-    this.database = Database.db;
-    this.models = models(this);
-		// this.redis = Redis.db;
+    
 
+    this.database = Database.db;
     Database.start();
     // Redis.start();
 	}
