@@ -3,7 +3,7 @@ const Command = require("../../structures/Command");
 const ROLES = require("../../constants/roles");
 const hitOnDm = `I sent you a DM with a list of the channel groups.`;
 const footer = `
-For example, \`-c honda\` to join the Honda channel group.\n
+For example, \`-join honda\` to join the Honda channel group.\n
 *BUT, don't do it here...*
 **NOTE:** Please send commands back in the channels or it won't work.
 If you have suggestions for how this can be better, feel free to reach out to us in #discord-server-admin...`;
@@ -18,14 +18,16 @@ module.exports = class extends Command {
 			info: 'Join / Leave a Channel Group',
 			group: 'chat',
 			// clientPermissions: [],
-			// callerPermissions: [],
+      // callerPermissions: [],
+      examples: ['join Honda','leave Toyota', 'channels Honda'],
       guildOnly: true,
 			roles: ["Community Member"],
       args: [
 				{
 					key: 'channel_group',
           prompt: 'Which channel group would you like to toggle?',
-          type: 'string'
+          type: 'string',
+          default: ""
 				}
 			]
 			// guildOnly: false,
