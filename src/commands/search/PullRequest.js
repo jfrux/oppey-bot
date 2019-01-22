@@ -1,9 +1,11 @@
-const Request = require("../../Request.js");
-module.exports = class extends Request {
-  constructor () {
-    super({
+const Command = require("../../structures/commands/Request.js");
+module.exports = class extends Command {
+	constructor(client) {
+		super(client, {
       name: "pr",
-      desc: "Search for a Pull Request",
+      memberName: 'pr',
+      guildOnly: false,
+      description: "Search for a Pull Request",
       group:  "database",
       usage: "<prefix>pr <search>",
       aliases: ["pull_request"],

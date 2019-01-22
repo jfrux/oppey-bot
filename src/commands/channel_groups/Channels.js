@@ -1,5 +1,5 @@
 const inflection = require("inflection");
-const { Command } = require('@yamdbf/core');
+const Command = require("../../structures/Command");
 const ROLES = require("../../constants/roles");
 const hitOnDm = `I sent you a DM with a list of the channel groups.`;
 const footer = `
@@ -7,19 +7,27 @@ For example, \`-c honda\` to join the Honda channel group.\n
 *BUT, don't do it here...*
 **NOTE:** Please send commands back in the channels or it won't work.
 If you have suggestions for how this can be better, feel free to reach out to us in #discord-server-admin...`;
-module.exports = class extends Command
-{
-	constructor() {
-		super({
+module.exports = class extends Command {
+	constructor(client) {
+		super(client, {
       name: 'channels',
-			desc: 'Join / Leave a Channel Group',
+      memberName: 'channels',
+			description: 'Join / Leave a Channel Group',
 			usage: '<prefix>channels <channel_group>',
 			aliases: ['c','role'],
 			info: 'Join / Leave a Channel Group',
 			group: 'chat',
 			// clientPermissions: [],
 			// callerPermissions: [],
+      guildOnly: true,
 			roles: ["Community Member"],
+      args: [
+				{
+					key: 'channel_group',
+          prompt: 'Which channel group would you like to toggle?',
+          type: 'string'
+				}
+			]
 			// guildOnly: false,
 			// ownerOnly: false,
 			// hidden: false,
@@ -32,20 +40,23 @@ module.exports = class extends Command
     this.availableRoles = ROLES;
 	}
 
-	action(message, [...roleChoice]) {
+  // TODO: Needs refactored to use master class to DRY up some of this code.
+	run(message, args) {
     let member = message.member;
     const availableRoleKeys = {};
+    // const discordServerAdmin = this.client.channels.find(c => c.name === "discord-server-admin");
+    let roleChoice = args['channel_group'];
     // const discordServerAdmin = this.client.channels.find(c => c.name === "discord-server-admin");
       
     const settings = message.settings;
     if (roleChoice.length) {
-      roleChoice = roleChoice.join(" ").toLowerCase().trim();
+      roleChoice = roleChoice.toLowerCase().trim();
     }
     let rolesString = "";
     this.roleGroups.forEach((group,index) => {
       // console.log("Group:",group);
       rolesString = rolesString.concat(`\n**${inflection.titleize(group)}**`);
-      console.log(this.availableRoles[group]);
+      // console.log(this.availableRoles[group]);
       const roles = this.availableRoles[group];
       const roleKeys = Object.keys(roles);
       rolesString = rolesString.concat('```yaml\n');

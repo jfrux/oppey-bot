@@ -1,7 +1,7 @@
 [CMD_HELP_COMMAND_LIST]
 ##! <namesOnly?: boolean, isGuild: boolean, commandList: string[], shortcuts: string[], usage: string, mentionUsage: string>
 Available commands: (Commands marked with `*` are server-only)
-```ldif
+```yaml
 {{!
 	if (args.namesOnly)
 	{

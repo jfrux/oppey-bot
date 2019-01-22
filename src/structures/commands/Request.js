@@ -1,12 +1,20 @@
+require('dotenv').config();
 const inflection = require("inflection");
-const { Command } = require('@yamdbf/core');
+// const { Command } = require('@yamdbf/core');
+const Command = require("../Command");
 const { MessageEmbed } = require("discord.js");
 const fetch = require('node-fetch');
-module.exports = class extends Command
-{
-	// constructor(options) {
-	// 	super(options);
-  // }
+module.exports = class extends Command {
+  constructor(client, info) {
+    super(client, info);
+
+    this.args = [
+      {
+        key: 'query',
+        prompt: 'You must enter a search query...'
+      }
+    ]
+  }
   getLabel() {
     return inflection.titleize(this.name);
   }
@@ -101,28 +109,31 @@ module.exports = class extends Command
     // console.log("Handling response:", json);
     return this.normalizeResponse(json, query);
   }
-  action(message, [...value]) {
-    let requestUrl = `${this.getBaseURL()}${this.getEndpoint()}.json?q=${value.join(" ")}`;
+  run(message, value) {
+    let requestUrl = `${this.getBaseURL()}${this.getEndpoint()}.json?q=${value}`;
     const label = this.getLabel();
     if (value.length) {
-      // console.log("Sending request to opc.ai:\n",requestUrl);
+      console.log("Sending request to opc.ai:\n",requestUrl);
       fetch(requestUrl)
-        .then(res => res.json())
-        .then((json) => {
-          let responses = this._handleResponse(json, value.join(" "));
-          if (responses) {
-            message.reply(`here is the top **${label}** result for **${value.join(" ")}**...\n`);
-          } else {
-            message.reply(`I could not find a **${label}** for search term **${value.join(" ")}**...`);
-            return;
-          }
-          responses.forEach((resp, index) => {
-            message.channel.send(resp);
-          });
+      .then(res => res.json())
+      .then((json) => {
+        let responses = this._handleResponse(json, value);
+        console.log("json:",json);
+        if (responses) {
+          message.reply(`Here is the top **${label}** result for **${value}**...\n`);
+        } else {
+          message.reply(`I could not find a **${label}** for search term **${value}**...`);
+          return;
+        }
+        responses.forEach((resp, index) => {
+          message.channel.send(resp);
         });
+      }).catch((error) => {
+        console.log(error);
+      });
     } else {
       message.reply(`You must specify a search query to find a **${label}**...`);
     }
-    message.delete(500);
+    // message.delete(500);
   }
 }
