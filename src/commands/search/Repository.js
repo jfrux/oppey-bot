@@ -1,9 +1,11 @@
-const Request = require("../../Request.js");
-module.exports = class extends Request {
-  constructor () {
-    super({
+const Command = require("../../structures/commands/Request.js");
+module.exports = class extends Command {
+	constructor(client) {
+		super(client, {
       name: "repo",
-      desc: "Search for a fork of Openpilot",
+      memberName: 'repo',
+      guildOnly: false,
+      description: "Search for a fork of Openpilot",
       group:  "database",
       usage: "<prefix>repo <search>",
       aliases: ["repo","fork"],

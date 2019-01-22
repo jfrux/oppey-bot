@@ -1,5 +1,5 @@
 const inflection = require("inflection");
-const { Command } = require('@yamdbf/core');
+const Command = require("../../structures/Command");
 const ROLES = require("../../constants/roles");
 const hitOnDm = `I sent you a DM with a list of the channel groups.`;
 const footer = `
@@ -10,34 +10,45 @@ If you have suggestions for how this can be better, feel free to reach out to us
 Or send a DM to @jfrux...`;
 module.exports = class extends Command
 {
-	constructor() {
-		super({
+	constructor(client) {
+		super(client, {
       name: 'join',
-			desc: 'Join a Channel Group',
+      memberName: 'join',
+			description: 'Join a Channel Group',
 			usage: '<prefix>join <channel_group>',
 			info: 'Join a Channel Group',
 			group: 'chat',
+      guildOnly: true,
 			roles: ["Community Member"],
+      args: [
+				{
+					key: 'channel_group',
+					prompt: 'Which channel group would you like to join?',
+          type: 'string'
+				}
+			]
     });
     
     this.roleGroups = Object.keys(ROLES);
     this.availableRoles = ROLES;
 	}
 
-	action(message, [...roleChoice]) {
+  // TODO: Needs refactored to use master class to DRY up some of this code.
+	run(message, args) {
     let member = message.member;
     const availableRoleKeys = {};
     // const discordServerAdmin = this.client.channels.find(c => c.name === "discord-server-admin");
-    console.warn("args:",arguments);
     const settings = message.settings;
+    let roleChoice = args['channel_group'];
     if (roleChoice) {
-      roleChoice = roleChoice.join(" ").toLowerCase().trim();
+      roleChoice = roleChoice.toLowerCase().trim();
     }
+    // console.warn(`Requesting to join ${roleChoice}`);
     let rolesString = "";
     this.roleGroups.forEach((group,index) => {
       // console.log("Group:",group);
       rolesString = rolesString.concat(`\n**${inflection.titleize(group)}**`);
-      console.log(this.availableRoles[group]);
+      // console.log(this.availableRoles[group]);
       const roles = this.availableRoles[group];
       const roleKeys = Object.keys(roles);
       rolesString = rolesString.concat('```yaml\n');

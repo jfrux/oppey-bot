@@ -6,8 +6,7 @@ module.exports = class {
   }
   
   async run (member) {
-    // const guild = member.guild;
-    // const settings = this.client.getSettings(member.guild);
+    this.client.logger.info(`[guildMemberAdd] New member has joined: ${member}`);
     const currentTime = moment();
     const discordMemberRole = member.guild.roles.find(role => role.name === MEMBER_ROLE);
     // let otherUser = this.client.users.find(user => user.username == "jfrux");
@@ -19,9 +18,11 @@ module.exports = class {
 
     let newUsers = this.client.newUsers;
     newUsers.set(member.id, member.user);
-    // console.log("User Joined!");
-    // console.log("currentTime:", currentTime);
-    // console.log("nextWelcomeMessageTime:", this.client.nextWelcomeMessageTime);
+    // console.info("User Joined!");
+    // console.info("currentTime:", currentTime);
+    // console.info("nextWelcomeMessageTime:", this.client.nextWelcomeMessageTime);
+    // console.log("currentTime",currentTime.toString());
+    // console.log("nextWelcomeMessageTime",this.client.nextWelcomeMessageTime.toString());
     if (currentTime.isAfter(this.client.nextWelcomeMessageTime)) {
       // console.log("currentTime is after nextWelcomeMessageTime!");
       const welcomeChannel = member.guild.channels.find(c => c.name === "discord-server-admin");
