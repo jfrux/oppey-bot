@@ -109,28 +109,25 @@ module.exports = class extends Command {
     // console.log("Handling response:", json);
     return this.normalizeResponse(json, query);
   }
-  run(message, value) {
+  async run(message, value) {
     let requestUrl = `${this.getBaseURL()}${this.getEndpoint()}.json?q=${value}`;
     const label = this.getLabel();
     if (value.length) {
       console.log("Sending request to opc.ai:\n",requestUrl);
-      fetch(requestUrl)
-      .then(res => res.json())
-      .then((json) => {
-        let responses = this._handleResponse(json, value);
-        console.log("json:",json);
-        if (responses) {
-          message.reply(`Here is the top **${label}** result for **${value}**...\n`);
-        } else {
-          message.reply(`I could not find a **${label}** for search term **${value}**...`);
-          return;
-        }
-        responses.forEach((resp, index) => {
-          message.channel.send(resp);
-        });
-      }).catch((error) => {
-        console.log(error);
+      const resp = await fetch(requestUrl);
+      const json = await resp.json();
+      let responses = this._handleResponse(json, value);
+      console.log("json:",json);
+      if (responses) {
+        message.reply(`Here is the top **${label}** result for **${value}**...\n`);
+      } else {
+        message.reply(`I could not find a **${label}** for search term **${value}**...`);
+        return;
+      }
+      responses.forEach((resp, index) => {
+        message.channel.send(resp);
       });
+    
     } else {
       message.reply(`You must specify a search query to find a **${label}**...`);
     }

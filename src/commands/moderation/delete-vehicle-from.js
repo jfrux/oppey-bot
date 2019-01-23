@@ -4,7 +4,7 @@ module.exports = class ProfileCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'delete-vehicle-from',
-			group: 'moderators',
+			group: 'moderation',
 			userPermissions: ['MANAGE_MESSAGES','MANAGE_CHANNELS'],
       memberName: 'delete-vehicle-from',
 			guildOnly: true,

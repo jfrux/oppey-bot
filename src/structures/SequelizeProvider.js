@@ -1,6 +1,8 @@
 const { SettingProvider } = require('discord.js-commando');
 const { DATABASE_URL } = process.env;
 const path = require("path");
+const nhtsa = require('nhtsa');
+const fetch = require("node-fetch");
 const Store = require('openrecord/store/postgres')
 const Sequelize = require('sequelize');
 const models = require("../util/models.js");
@@ -74,6 +76,14 @@ class SequelizeProvider extends SettingProvider {
 
 	async init(client) {
     this.client = client;
+
+    // fetch makes
+    try {
+      const { data } = await nhtsa.getAllMakes();
+      this.client.makeList = data;
+    } catch (error) {
+      console.log("[MAKE_LIST] ERROR FETCHING MAKE LIST!",error);
+    }
     const migrationsPath = path.join(__dirname, "db/migrations/*");
     console.log("Migrations loading from:",migrationsPath);
     this.client.orm = new Store({

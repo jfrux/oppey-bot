@@ -9,7 +9,6 @@ const winston = require('winston');
 module.exports = class OppeyClient extends CommandoClient {
 	constructor(options) {
     super(options);
-    
     this.prefix = OPPEY_PREFIX;
     this.newUsers = new Collection();
     this.nextWelcomeMessageTime = moment();
