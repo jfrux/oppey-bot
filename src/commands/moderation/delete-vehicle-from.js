@@ -61,9 +61,9 @@ module.exports = class ProfileCommand extends Command {
     let vehicle = {
       discord_user_id: user.id,
       vehicle_year: year,
-      vehicle_make: make,
-      vehicle_model: model,
-      vehicle_trim: trim
+      vehicle_make: inflection.titleize(make),
+      vehicle_model: inflection.capitalize(model),
+      vehicle_trim: inflection.capitalize(trim)
     }
     
     let vehiclesToDelete = await userModel.discord_user_vehicles.where(vehicle).then((results) => {

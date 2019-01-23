@@ -16,13 +16,23 @@ module.exports = class AddFaqCommand extends Command {
 			args: [
 				{
 					key: 'question',
-					prompt: `What is the question?`,
-          type: 'string'
+					prompt: `What is the question?\n*Note: Must end in ? and be a min. of 25 characters.*`,
+          type: 'string',
+          validate: text => {
+            text = text.trim();
+            if (text.endsWith('?') && text.length >= 15) return true;
+            return "The question must end in '?' and must be at least 15 characters."
+          }
         },
         {
 					key: 'answer',
-					prompt: `What is the answer?`,
-          type: 'string'
+					prompt: `What is the answer?\n*Note: min. of 2 characters.*`,
+          type: 'string',
+          validate: text => {
+            text = text.trim();
+            if (text.length > 2) return true;
+            return "The answer must be at least 2 characters."
+          }
         }
 			]
 		});

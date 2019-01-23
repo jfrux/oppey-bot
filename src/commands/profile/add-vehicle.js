@@ -7,11 +7,11 @@ module.exports = class ProfileCommand extends Command {
 			group: 'me',
 			memberName: 'add-vehicle',
 			description: 'Adds a vehicle to your profile.',
-      example: [ 'add-vehicle 2017 Honda Pilot', 'add-vehicle 2019 Honda Accord Touring' ],
+      example: [ "add-vehicle 2017 Honda Pilot", "add-vehicle 2018 Toyota RAV4 'XLE Hybrid'", "add-vehicle 2018 'Alfa Romeo' Giulia" ],
 			args: [
 				{
 					key: 'year',
-					prompt: 'What year is the vehicle? (i.e. 2017)',
+					prompt: `What year is the vehicle? (i.e. ${new Date().getFullYear()}`,
           type: 'integer',
           validate: text => {
             if (text.length === 4) return true;
@@ -20,17 +20,17 @@ module.exports = class ProfileCommand extends Command {
         },
         {
 					key: 'make',
-					prompt: 'What make is the vehicle? (i.e. Toyota, Honda, etc.)',
+					prompt: 'What make is the vehicle?\ni.e. Toyota, \'Alfa Romeo\', Honda, etc.\nWrap multi-word makes with single-quote.',
 					type: 'string'
 				},
         {
 					key: 'model',
-					prompt: 'What model is the vehicle? (i.e. Prius, Pilot, etc.)',
+					prompt: 'What model is the vehicle?\ni.e. Prius, Pilot, etc.',
 					type: 'string'
 				},
         {
 					key: 'trim',
-					prompt: 'What model is the vehicle? (i.e. Prius, Pilot, etc.)',
+					prompt: 'What model is the vehicle?\ni.e. Prius, Pilot, etc.',
           type: 'string',
           default: ''
 				}
@@ -60,8 +60,8 @@ module.exports = class ProfileCommand extends Command {
       discord_user_id: user.id,
       vehicle_year: year,
       vehicle_make: inflection.titleize(make),
-      vehicle_model: inflection.titleize(model),
-      vehicle_trim: trim
+      vehicle_model: inflection.capitalize(model),
+      vehicle_trim: inflection.capitalize(trim)
     }
     let profileData = [];
 

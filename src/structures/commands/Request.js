@@ -2,8 +2,21 @@ require('dotenv').config();
 const inflection = require("inflection");
 // const { Command } = require('@yamdbf/core');
 const Command = require("../Command");
-const { MessageEmbed } = require("discord.js");
+
+const RC = require('reaction-core');
 const fetch = require('node-fetch');
+const emojis = [
+  //"\u0030\u20E3",//zero
+  "\u0031\u20E3", //:one:
+  "\u0032\u20E3", //:two:
+  "\u0033\u20E3", //:three:
+  "\u0034\u20E3", //:four:
+  "\u0035\u20E3", //:five:
+  // "\u0036\u20E3",
+  // "\u0037\u20E3",
+  // "\u0038\u20E3",
+  // "\u0039\u20E3"
+];
 module.exports = class extends Command {
   constructor(client, info) {
     super(client, info);
@@ -30,42 +43,51 @@ module.exports = class extends Command {
     return '/' + inflection.pluralize(this.name);
   }
 
-  embedResponse(resp) {
+  buildEmbed(resp) {
     const publicUrl = resp.url || `${this.getBaseURL()}${this.getEndpoint()}/${resp.slug || resp.id}`
     
-    const embed = new MessageEmbed();
-    
+    const embed = {};
+    embed.color = 0x00AE86;
+   
     /*
     * Alternatively, use "#00AE86", [0, 174, 134] or an integer number.
     */
-    embed.setColor(0x00AE86);
+    // embed.setColor(0x00AE86);
   
     // embed.color = 3447003;
     if (resp.author) {
-      embed.setAuthor(resp.author.name, resp.author.image);
+      embed.author = {
+        name: resp.author.name,
+        iconURL: resp.author.image
+      }
     }
     if (resp.image) {
+      embed.thumbnail = {
+        url: resp.author.image
+      }
       // embed.setImage(`${resp.image}`);
-      embed.setThumbnail(`${resp.image}`);
     }
     if (resp.title) {
-      embed.setTitle(resp.title);
+      embed.title = resp.title;
     }
     if (publicUrl) {
-      embed.setURL(publicUrl);
+      embed.url = publicUrl;
     }
     if (resp.body) {
-      embed.setDescription(resp.body);
+      embed.description = resp.body;
     }
     if (resp.fields) {
+      embed.fields = [];
       resp.fields.forEach((field) => {
-        embed.addField(field.name, field.value, true);
+        embed.fields.push({
+          name: field.name,
+          value: field.value,
+          inline: true
+        })
       });
     }
 
-    return {
-      embed: embed
-    };
+    return embed;
   }
 
   individualResponse(resp) {
@@ -88,13 +110,13 @@ module.exports = class extends Command {
    */
   normalizeResponse(json, query) {
     let currIndex = 0;
-    let maxIndex = 1;
+    let maxIndex = emojis.length-1;
     let responses = [];
     let displayingCount = json.length > maxIndex ? maxIndex : json.length;
     if (json.length) {
       json.forEach((resp, index) => {
-        if (index < maxIndex) {
-          responses.push(this.embedResponse(resp));
+        if (index <= maxIndex) {
+          responses.push(this.buildEmbed(resp));
           currIndex++;
         }
       });
@@ -104,7 +126,18 @@ module.exports = class extends Command {
       return responses;
     }
   }
-
+  _buildButtons(responses) {
+    let responseButtons = [];
+    responses.forEach((response,index) => {
+      responseButtons.push({ 
+        emoji: emojis[index],
+        run: (user, message) => {
+          message.edit({ embed: response })
+        }
+      })
+    })
+    return responseButtons;
+  }
   _handleResponse(json, query) {
     // console.log("Handling response:", json);
     return this.normalizeResponse(json, query);
@@ -117,17 +150,47 @@ module.exports = class extends Command {
       const resp = await fetch(requestUrl);
       const json = await resp.json();
       let responses = this._handleResponse(json, value);
-      console.log("json:",json);
-      if (responses) {
-        message.reply(`Here is the top **${label}** result for **${value}**...\n`);
-      } else {
+      
+      
+      if (!responses) {
         message.reply(`I could not find a **${label}** for search term **${value}**...`);
         return;
       }
-      responses.forEach((resp, index) => {
-        message.channel.send(resp);
+      let buttons = this._buildButtons(responses);
+      
+      // responses.forEach((resp, index) => {
+      //   message.channel.send(resp);
+      // });f
+      message.reply(`here are the top results for your search. Choose the result you would like to show.`);
+      const newMenu = new RC.Menu(responses[0], buttons, {
+        owner: message.author.id
       });
+      this.client.menuHandler.addMenus(newMenu);
+
+      const menuMessage = await message.channel.sendMenu(newMenu);
+      // const menuFilter = (reaction, user) => {
+      //   console.dir(reaction.emoji.name)
+      //   console.dir(emojis);
+      //   console.log("emojis.includes(reaction.emoji.name)", emojis.includes(reaction.emoji.name));
+      //   console.log("user.id === message.author.id", user.id === message.author.id);
+      //   return user.id === message.author.id && emojis.includes(reaction.emoji.toString());
+      // }
+      // emojis.forEach((emoji) => {
+      //   menuMessage.react(emoji)
+      // });
+      // const collected = await menuMessage.awaitReactions(menuFilter, { time: 30000 })
     
+      // console.log("Collected response!", collected);
+      // const chosen = reaction.emoji.name;
+      // buttons.forEach((button) => {
+      //   console.log("buttonChoice:",button);
+      //   if (chosen === button.emoji) {
+      //     console.log("Chosen!");
+      //     button.run(message)
+      //   }
+      // })
+        // collector.stop();
+      // });
     } else {
       message.reply(`You must specify a search query to find a **${label}**...`);
     }

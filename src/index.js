@@ -18,7 +18,10 @@ const client = new Client({
 	unknownCommandResponse: false,
 	disabledEvents: ['TYPING_START']
 });
+// client.reactionHandler = reactionHandler;
+
 client.setProvider(new SequelizeProvider(client.database));
+
 client.registry
   .registerDefaults()
   .registerGroups([
@@ -33,8 +36,10 @@ client.registry
   ])
   .registerCommandsIn(path.join(__dirname, "commands"))
 	.registerTypesIn(path.join(__dirname, 'types'))
+// client.on('messageReactionAdd', (messageReaction, user) => reactionHandler.handle(messageReaction,user));
 const onNewMember = require("./events/guildMemberAdd.js");
 
+client.on("messageReactionAdd", (messageReaction, user) => client.menuHandler.handle(messageReaction, user));
 client.on("guildMemberAdd", (member) => {
   client.logger.info(`[MEMBER] New Member Joined: ${member}`);
 	
