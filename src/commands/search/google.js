@@ -1,6 +1,9 @@
+const Discord = require("discord.js");
 const Command = require('../../structures/Command');
 const request = require('node-superfetch');
-const cheerio = require('cheerio');
+// const cheerio = require('cheerio');
+const Markdown = require('turndown')
+const markdown = new Markdown();
 const querystring = require('querystring');
 const { GOOGLE_KEY, GOOGLE_CUSTOM_SEARCH_ID } = process.env;
 
@@ -40,10 +43,10 @@ module.exports = class GoogleCommand extends Command {
 		// 		href = `http://lmgtfy.com/?iie=1&q=${encodeURIComponent(query)}`;
 		// 	}
     // }
-    href = await this.customSearch(query, nsfw);
-    if (!href) return msg.channel.send('Could not find any results.');
-    console.log("href:",href);
-		return msg.channel.send(href);
+    let searchEmbed = await this.customSearch(query, nsfw);
+    if (!searchEmbed) return msg.channel.send('Could not find any results.');
+    // console.log("searchEmbed:",searchEmbed);
+		return msg.channel.send(searchEmbed);
 	}
 
 	async searchGoogle(query, nsfw) {
@@ -71,7 +74,40 @@ module.exports = class GoogleCommand extends Command {
 				safe: nsfw ? 'off' : 'active',
 				q: query
 			});
-		if (!body.items) return null;
-		return body.items[0].formattedUrl;
+    if (!body.items) return null;
+    const firstResult = body.items[0];
+    const searchEmbed = new Discord.MessageEmbed();
+    let pageThumbnail;
+    let pageImage;
+    if (firstResult.pagemap && firstResult.pagemap.cse_image && firstResult.pagemap.cse_image.length) {
+      pageImage = firstResult.pagemap.cse_image[0].src;
+    }
+    
+
+    if (!pageImage) {
+      if (firstResult.pagemap && firstResult.pagemap.cse_thumbnail && firstResult.pagemap.cse_thumbnail.length) {
+        pageThumbnail = firstResult.pagemap.cse_thumbnail[0].src;
+      }
+
+      if (!pageThumbnail) {
+        pageThumbnail = "https://community.comma.ai/wiki/resources/assets/comma.gif";
+      }
+    }
+
+    searchEmbed.type = 'link';
+    searchEmbed
+      .setTitle(markdown.turndown(firstResult.htmlTitle),encodeURI(pageImage))
+      .setColor("#000000")
+      .setURL(firstResult.link)
+      .setDescription(markdown.turndown(firstResult.htmlSnippet))
+      .setFooter(firstResult.displayLink)
+    if (pageImage) {
+      searchEmbed.setImage(pageImage);
+    }
+    if (pageThumbnail) {
+      searchEmbed.setThumbnail(pageThumbnail);
+    }
+
+		return searchEmbed;
 	}
 };
