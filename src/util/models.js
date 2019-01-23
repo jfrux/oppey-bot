@@ -13,7 +13,9 @@ module.exports = (client) => {
       model: "DiscordUser"
     })
   });
-  
+
+  store.Model('Guide', function(){
+  });
   // Associations
   // Guild.Items = Guild.hasMany(Items, {
   //   foreignKey: 'guildid',

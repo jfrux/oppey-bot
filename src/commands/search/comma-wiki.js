@@ -1,61 +1,81 @@
 const Discord = require("discord.js");
 const commando = require('discord.js-commando');
-const moment = require('moment');
-const superagent = require('superagent');
+const h2p = require('html2plaintext')
+const Promise = require("bluebird");
+const MediaWiki = require('nodemw');
+const moment = require("moment");
+const Markdown = require('turndown')
+const markdown = new Markdown();
+const path = require("path");
+const inflection = require("inflection");
 
-module.exports = class wikipediaCommand extends commando.Command {
-    constructor(client) {
-        super(client, {
-            name: 'wiki',
-            group: 'search',
-            memberName: 'wiki',
-            description: 'Get info from a Comma.ai Wiki page',
-            examples: ['wiki {thing}', 'wiki Install Openpilot'],
-            guildOnly: false,
+const commaWiki = new MediaWiki({
+  server: 'community.comma.ai',
+  path: '/wiki',
+  protocol: 'https', 
+  debug: true
+})
 
-            args: [{
-                key: 'input',
-                prompt: 'What page do you want to get info from?',
-                type: 'string'
-            }]
-        });
-    }
+Promise.promisifyAll( commaWiki );
+module.exports = class WikiCommand extends commando.Command {
+  constructor(client) {
+    super(client, {
+      name: 'wiki',
+      group: 'search',
+      memberName: 'wiki',
+      description: 'Search the Comma.ai Wiki and return top result.',
+      examples: ['wiki Giraffe', 'wiki Install Openpilot'],
+      guildOnly: false,
+      args: [{
+        key: 'query',
+        prompt: 'What would you like to search for in the Comma Wiki?',
+        type: 'string'
+      }]
+    });
 
-    async run(msg, args) {
-        superagent.get(
-                `https://community.comma.ai/wiki/api.php?action=query&list=search&srwhat=text&srprop=sectionsnippet&format=json&srsearch=${args.input}`
-            )
-            .then((res) => res.body.query.search)
-            .then((results) => {
-                if (!results[0]) return Promise.reject('NO RESULTS');
-                return results[0];
-            })
-            .then((result) => superagent.get(
-                `https://community.comma.ai/wiki/api.php?format=json&action=query&titles=${encodeURIComponent(result.title)}`
-            ))
-            .then((res) => res.body.query.pages[Object.keys(res.body.query.pages)])
-            .then((page) => {
-                const url = `https://community.comma.ai/wiki/${encodeURIComponent(page.title)}`;
-                const wikiData = {
-                    url: url,
-                    pageTitle: page.title,
-                    pageExtract: `${page.extract.substring(0, 500)}... [Read more](${url.replace(/\(/, '%28').replace(/\)/, '%29')})`
-                }
-                return wikiData
-            })
-            .then((wikiData) => {
-                const wikiEmbed = new Discord.RichEmbed();
-                wikiEmbed
-                    .setAuthor(`Comma.ai Wiki - ${wikiData.pageTitle}`, "https://favna.s-ul.eu/dYdFA880")
-                    .setColor("#FF0000")
-                    .setFooter(`Comma.ai Wiki result pulled on ${moment().format('MMMM Do YYYY HH:mm:ss')}`)
-                    .setURL(wikiData.url)
-                    .setDescription(wikiData.pageExtract);
-                msg.embed(wikiEmbed, wikiData.url);
-            })
-            .catch((err) => {
-                console.error(err);
-                msg.reply('**No results found!**');
-            });
-    }
+    this.baseWikiUrl = "https://community.comma.ai/wiki/index.php/";
+  }
+  async run(msg, {query}) {
+      const results = await commaWiki.getAllAsync(
+        {
+          action: 'query',
+          list: 'search',
+          srsearch: query,
+          srprop: 'timestamp|snippet',
+          srlimit: 5000
+        },
+        'search'
+      );
+      const firstResult = results[0];
+      const pageTitle = firstResult.title;
+      const pageSnippet = firstResult.snippet;
+      const pageTimestamp = firstResult.timestamp;
+      const pageContent = await commaWiki.getArticleAsync(pageTitle);
+      const pageImages = await commaWiki.getImagesFromArticleAsync(pageTitle);
+      let pageImage = "https://community.comma.ai/wiki/resources/assets/comma.gif";
+      if (pageImages.length) {
+        pageImage = pageImages[0].url;
+      }
+      console.dir(pageImages);
+      const parsed = await commaWiki.parseAsync(pageContent,pageTitle);
+      // const parsedMd = markdown.turndown(parsed);
+      const parsedPlainText = h2p(parsed).replace(/\n/g,'');
+      const pageUrl = encodeURI(this.baseWikiUrl + pageTitle);
+      const wikiEmbed = new Discord.MessageEmbed();
+      console.log("Wiki URL:",pageUrl);
+      console.log("Image URL:",pageImage);
+      wikiEmbed
+      .setTitle(pageTitle)
+      .setAuthor('Comma.ai Wiki',pageImage)
+      .setColor("#000000")
+      .setURL(pageUrl)
+      .setDescription(`${parsedPlainText.slice(0, 150)}
+      [Read more](${pageUrl})`)
+      // .setThumbnail(encodeURI(pageImage))
+      .setFooter(`Page last updated ${moment(pageTimestamp).format('MMMM Do YYYY HH:mm:ss')}`)
+
+      // await msg.edit(msg.content,wikiEmbed);
+      // msg.embeds.push(wikiEmbed);
+      msg.channel.send(wikiEmbed);
+  }
 };
