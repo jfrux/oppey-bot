@@ -2,16 +2,16 @@ const Command = require('../../structures/Command');
 const request = require('node-superfetch');
 const cheerio = require('cheerio');
 const querystring = require('querystring');
-const { GOOGLE_KEY, CUSTOM_SEARCH_ID } = process.env;
+const { GOOGLE_KEY, GOOGLE_CUSTOM_SEARCH_ID } = process.env;
 
 module.exports = class GoogleCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'google',
-			aliases: ['search'],
+			name: 'search',
+			aliases: ['s','find','lookup'],
 			group: 'search',
-			memberName: 'google',
-			description: 'Searches Google for your query.',
+			memberName: 'search',
+			description: 'Searches for relevant content from the community returning the top result.',
 			args: [
 				{
 					key: 'query',
@@ -29,21 +29,25 @@ module.exports = class GoogleCommand extends Command {
 	async run(msg, { query }) {
 		let href;
 		const nsfw = msg.channel.nsfw || false;
-		try {
-			href = await this.searchGoogle(query, nsfw);
-		} catch (err) {
-			try {
-				href = await this.customSearch(query, nsfw);
-			} catch (err2) {
-				href = `http://lmgtfy.com/?iie=1&q=${encodeURIComponent(query)}`;
-			}
-		}
-    if (!href) return msg.say('Could not find any results.');
-    
-		return msg.say(href);
+		// try {
+		// 	href = await this.searchGoogle(query, nsfw);
+		// } catch (err) {
+    //   console.log(err);
+		// 	try {
+				
+		// 	} catch (err2) {
+    //     console.log(err2);
+		// 		href = `http://lmgtfy.com/?iie=1&q=${encodeURIComponent(query)}`;
+		// 	}
+    // }
+    href = await this.customSearch(query, nsfw);
+    if (!href) return msg.channel.send('Could not find any results.');
+    console.log("href:",href);
+		return msg.channel.send(href);
 	}
 
 	async searchGoogle(query, nsfw) {
+    console.log("searchingGoogle:",query);
 		const { text } = await request
 			.get('https://www.google.com/search')
 			.query({
@@ -58,11 +62,12 @@ module.exports = class GoogleCommand extends Command {
 	}
 
 	async customSearch(query, nsfw) {
+    console.log("customSearch:",query);
 		const { body } = await request
 			.get('https://www.googleapis.com/customsearch/v1')
 			.query({
 				key: GOOGLE_KEY,
-				cx: CUSTOM_SEARCH_ID,
+				cx: GOOGLE_CUSTOM_SEARCH_ID,
 				safe: nsfw ? 'off' : 'active',
 				q: query
 			});
