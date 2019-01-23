@@ -55,13 +55,13 @@ module.exports = class ProfileCommand extends Command {
       });
     }
 
-    trim = trim.length ? trim : null
+    trim = trim.length ? inflection.capitalize(trim) : null
     let vehicle = {
       discord_user_id: user.id,
       vehicle_year: year,
       vehicle_make: inflection.titleize(make),
       vehicle_model: inflection.capitalize(model),
-      vehicle_trim: inflection.capitalize(trim)
+      vehicle_trim: trim
     }
     let profileData = [];
 
