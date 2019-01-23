@@ -23,6 +23,6 @@ module.exports = class mathCommand extends commando.Command {
     async run(msg, args) {
         let toCalc = args.equation;
         msg.delete();
-        await msg.say(`\`The answer to ${toCalc} is ${scalc(toCalc)}\``)
+        await msg.say(`\`${toCalc} = ${scalc(toCalc)}\``);
     }
 };

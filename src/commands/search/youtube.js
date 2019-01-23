@@ -30,7 +30,9 @@ module.exports = class DefineCommand extends Command {
       search(query, opts, (err, results) => {
         if(err) return console.log(err);
         if (results.length) {
-          return msg.channel.send(results[0].link);
+          msg.channel.send(results[0].link);
+          msg.delete(1000);
+          return 
         } else {
           return msg.channel.send(`No results found for **${query}**`)
         }
