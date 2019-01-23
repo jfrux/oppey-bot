@@ -1,4 +1,5 @@
 const Command = require('../../structures/Command');
+const inflection = require("inflection");
 
 module.exports = class ProfileCommand extends Command {
 	constructor(client) {
