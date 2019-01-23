@@ -1,5 +1,5 @@
 const Command = require('../../structures/Command');
-
+const inflection = require("inflection");
 module.exports = class ProfileCommand extends Command {
 	constructor(client) {
 		super(client, {
@@ -59,8 +59,8 @@ module.exports = class ProfileCommand extends Command {
     let vehicle = {
       discord_user_id: user.id,
       vehicle_year: year,
-      vehicle_make: make,
-      vehicle_model: model,
+      vehicle_make: inflection.titleize(make),
+      vehicle_model: inflection.titleize(model),
       vehicle_trim: trim
     }
     let profileData = [];

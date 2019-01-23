@@ -1,4 +1,5 @@
 const Command = require("../../structures/commands/Request.js");
+
 module.exports = class extends Command {
 	constructor(client) {
 		super(client, {

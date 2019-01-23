@@ -22,7 +22,7 @@ client.setProvider(new SequelizeProvider(client.database));
 client.registry
   .registerDefaults()
   .registerGroups([
-		['tool', 'Tools'],
+		['utilities', 'Utilities'],
 		['info', 'Discord Information'],
 		['chat', 'Chat'],
 		['database', 'Openpilot Database'],
