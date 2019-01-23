@@ -40,7 +40,6 @@ module.exports = class GoogleCommand extends Command {
 		}
     if (!href) return msg.say('Could not find any results.');
     
-    msg.delete();
 		return msg.say(href);
 	}
 
