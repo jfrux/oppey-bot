@@ -97,6 +97,20 @@ class SequelizeProvider extends SettingProvider {
     await this.client.orm.ready();
 		await this.model.sync({force: true})
 
+    const User = this.client.orm.Model('DiscordUser');
+    this.client.guilds.first().members.each((member) => {
+      const user = member.user;
+      User.find(user.id).then((userModel) => {
+        if (!userModel) {
+          console.log("Creating new user...", user.username);
+          User.create({
+            id: user.id,
+            avatar: user.displayAvatarURL(),
+            username: user.username
+          });
+        }
+      });
+    });
 		// Load all settings
 		const rows = await this.model.findAll();
 		for (const row of rows) {

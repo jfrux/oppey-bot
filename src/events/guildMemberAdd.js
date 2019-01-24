@@ -69,6 +69,23 @@ module.exports = class {
         member.roles.add(discordMemberRole).catch(console.error);
       }
     }
+
+    try {
+      const User = this.client.orm.Model('DiscordUser');
+      const user = member.user;
+      User.find(user.id).then((userModel) => {
+        if (!userModel) {
+          console.log("Creating new user...", user.username);
+          User.create({
+            id: user.id,
+            avatar: user.displayAvatarURL(),
+            username: user.username
+          });
+        }
+      });
+    } catch (e) {
+      console.error("Failed to create user database record.");
+    }
     // console.log("NODE_ENV: ",process.env.NODE_ENV);
     if (process.env.NODE_ENV !== 'production') {
       return;

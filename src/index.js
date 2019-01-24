@@ -46,7 +46,7 @@ client.on("guildMemberAdd", (member) => {
   return new onNewMember(client).run(member)
 });
 
-client.on('ready', () => {
+client.on('ready', async () => {
   client.logger.info(`[READY] Logged in as ${client.user.tag}! ID: ${client.user.id}`);
   
   client.user.setActivity("opc.ai | Try -help", { type: "PLAYING" });
