@@ -62,8 +62,8 @@ module.exports = class extends Command {
       }
     }
     if (resp.image) {
-      embed.image = {
-        url: resp.image
+      embed.thumbnail = {
+        url: resp.author.image
       }
       // embed.setImage(`${resp.image}`);
     }
@@ -131,8 +131,8 @@ module.exports = class extends Command {
     responses.forEach((response,index) => {
       responseButtons.push({ 
         emoji: emojis[index],
-        run: async (user, message) => {
-          await message.edit('',{ embed: response })
+        run: (user, message) => {
+          message.edit({ embed: response })
         }
       })
     })
@@ -161,7 +161,7 @@ module.exports = class extends Command {
       // responses.forEach((resp, index) => {
       //   message.channel.send(resp);
       // });f
-      message.reply();
+      message.reply(`here are the top results for your search. Choose the result you would like to show.`);
       const newMenu = new RC.Menu(responses[0], buttons, {
         owner: message.author.id
       });
