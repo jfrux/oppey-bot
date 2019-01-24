@@ -6,7 +6,7 @@ module.exports = class {
   }
   
   async run (member) {
-    this.client.logger.info(`[guildMemberAdd] New member has joined: ${member}`);
+    this.client.logger.info(`[NEW_USER] New member has joined: ${member}`);
     const currentTime = moment();
     const discordMemberRole = member.guild.roles.find(role => role.name === MEMBER_ROLE);
     // let otherUser = this.client.users.find(user => user.username == "jfrux");
@@ -62,6 +62,7 @@ module.exports = class {
       newUsers.clear();
       this.client.nextWelcomeMessageTime = moment().add(this.client.minutesBetweenEachWelcome, 'm');
       welcomeChannel.send(welcomeMessage).catch(console.error);
+      this.client.logger.info(`[NEW_USER] Sent join message to channel...`);
     }
   
     if (discordMemberRole) {

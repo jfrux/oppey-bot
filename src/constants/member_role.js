@@ -1,1 +1,1 @@
-module.exports = "Community Member"
+module.exports = "community member"

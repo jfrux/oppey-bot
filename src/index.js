@@ -35,7 +35,9 @@ client.registry
 		['other', 'Other']
   ])
   .registerCommandsIn(path.join(__dirname, "commands"))
-	.registerTypesIn(path.join(__dirname, 'types'))
+  .registerTypesIn(path.join(__dirname, 'types'));
+
+// xrequire(path.join(__dirname, './events');
 // client.on('messageReactionAdd', (messageReaction, user) => reactionHandler.handle(messageReaction,user));
 const onNewMember = require("./events/guildMemberAdd.js");
 
