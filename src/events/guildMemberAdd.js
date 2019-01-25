@@ -1,29 +1,24 @@
 const moment = require("moment");
 const MEMBER_ROLE = require("../constants/member_role");
-module.exports = class {
-  constructor (client) {
-    this.client = client;
-  }
-  
-  async run (member) {
-    this.client.logger.info(`[NEW_USER] New member has joined: ${member}`);
+module.exports = (client, member) => {
+    client.logger.info(`[NEW_USER] New member has joined: ${member}`);
     const currentTime = moment();
     const discordMemberRole = member.guild.roles.find(role => role.name === MEMBER_ROLE);
-    // let otherUser = this.client.users.find(user => user.username == "jfrux");
-    // let anotherUser = this.client.users.find(user => user.username == "Oppey");
-    // let lastUser = this.client.users.find(user => user.username == "OPCServerOwner");
-    // this.client.newUsers.set(otherUser.id, otherUser);
-    // this.client.newUsers.set(anotherUser.id, anotherUser);
-    // this.client.newUsers.set(lastUser.id, lastUser);
+    // let otherUser = client.users.find(user => user.username == "jfrux");
+    // let anotherUser = client.users.find(user => user.username == "Oppey");
+    // let lastUser = client.users.find(user => user.username == "OPCServerOwner");
+    // client.newUsers.set(otherUser.id, otherUser);
+    // client.newUsers.set(anotherUser.id, anotherUser);
+    // client.newUsers.set(lastUser.id, lastUser);
 
-    let newUsers = this.client.newUsers;
+    let newUsers = client.newUsers;
     newUsers.set(member.id, member.user);
     // console.info("User Joined!");
     // console.info("currentTime:", currentTime);
-    // console.info("nextWelcomeMessageTime:", this.client.nextWelcomeMessageTime);
+    // console.info("nextWelcomeMessageTime:", client.nextWelcomeMessageTime);
     // console.log("currentTime",currentTime.toString());
-    // console.log("nextWelcomeMessageTime",this.client.nextWelcomeMessageTime.toString());
-    if (currentTime.isAfter(this.client.nextWelcomeMessageTime)) {
+    // console.log("nextWelcomeMessageTime",client.nextWelcomeMessageTime.toString());
+    if (currentTime.isAfter(client.nextWelcomeMessageTime)) {
       // console.log("currentTime is after nextWelcomeMessageTime!");
       const welcomeChannel = member.guild.channels.find(c => c.name === "discord-server-admin");
       // const welcomeMessage = settings.welcomeMessage.replace("{{user}}", member.user.tag);
@@ -60,19 +55,20 @@ module.exports = class {
       welcomeMessage = `*${welcomeMessage}.*`;
 
       newUsers.clear();
-      this.client.nextWelcomeMessageTime = moment().add(this.client.minutesBetweenEachWelcome, 'm');
+      client.nextWelcomeMessageTime = moment().add(client.minutesBetweenEachWelcome, 'm');
       welcomeChannel.send(welcomeMessage).catch(console.error);
-      this.client.logger.info(`[NEW_USER] Sent join message to channel...`);
+      client.logger.info(`[NEW_USER] Sent join message to channel...`);
     }
   
     if (discordMemberRole) {
       if(!member.roles.has(discordMemberRole)) {
         member.roles.add(discordMemberRole).catch(console.error);
+        client.logger.info(`[NEW_USER] Added community member to user.`);
       }
     }
 
     try {
-      const User = this.client.orm.Model('DiscordUser');
+      const User = client.orm.Model('DiscordUser');
       const user = member.user;
       User.find(user.id).then((userModel) => {
         if (!userModel) {
@@ -125,4 +121,3 @@ Welcome aboard!
       console.warn("Could not send message... probably a bot.");
     }
   }
-};

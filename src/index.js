@@ -1,12 +1,13 @@
 require('dotenv').config();
 
+
 const { OPPEY_TOKEN, OWNERS, OPPEY_PREFIX, INVITE, DATABASE_URL, OPPEY_WEBHOOK_ID, OPPEY_WEBHOOK_TOKEN } = process.env;
 const path = require("path");
-const { Collection } = require("discord.js");
-const moment = require("moment");
-const { promisify } = require("util");
-const readdir = require("fs").readdirSync;
-const config = require('../config.js');
+// const { Collection } = require("discord.js");
+// const moment = require("moment");
+// const { promisify } = require("util");
+// const readdir = require("fs").readdirSync;
+// const config = require('../config.js');
 const Client = require('./structures/Client');
 const SequelizeProvider = require("./structures/SequelizeProvider.js");
 const client = new Client({
@@ -36,17 +37,38 @@ client.registry
   ])
   .registerCommandsIn(path.join(__dirname, "commands"))
   .registerTypesIn(path.join(__dirname, 'types'));
-
-// xrequire(path.join(__dirname, './events');
 // client.on('messageReactionAdd', (messageReaction, user) => reactionHandler.handle(messageReaction,user));
-const onNewMember = require("./events/guildMemberAdd.js");
+const events = [
+  "channelCreate",
+  "channelDelete",
+  "channelUpdate",
+  "error",
+  "guildBanAdd",
+  "guildBanRemove",
+  "guildCreate",
+  "guildDelete",
+  "guildMemberAdd",
+  "guildMemberRemove",
+  "guildUpdate",
+  "message",
+  "messageDelete",
+  "messageReactionAdd",
+  "messageReactionRemove",
+  "messageUpdate",
+  "presenceUpdate",
+  "ready",
+  "roleCreate",
+  "roleDelete",
+  "roleUpdate",
+  "warn"
+]
+
+events.forEach((eventName) => {
+  const event = require(`./events/${eventName}.js`);
+  client.on(eventName, (...args) => event(client, ...args));
+});
 
 client.on("messageReactionAdd", (messageReaction, user) => client.menuHandler.handle(messageReaction, user));
-client.on("guildMemberAdd", (member) => {
-  client.logger.info(`[MEMBER] New Member Joined: ${member}`);
-	
-  return new onNewMember(client).run(member)
-});
 
 client.on('ready', async () => {
   client.logger.info(`[READY] Logged in as ${client.user.tag}! ID: ${client.user.id}`);

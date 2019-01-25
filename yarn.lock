@@ -1338,11 +1338,6 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-i@~0.3.1:
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/i/-/i-0.3.6.tgz#d96c92732076f072711b6b10fd7d4f65ad8ee23d"
-  integrity sha1-2WyScyB28HJxG2sQ/X1PZa2O4j0=
-
 iconv-lite@0.4.24, iconv-lite@^0.4.4, iconv-lite@^0.4.8:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -3215,11 +3210,6 @@ underscore@^1.7.0, underscore@^1.9.1:
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.1.tgz#06dce34a0e68a7babc29b365b8e74b8925203961"
   integrity sha512-5/4etnCkd9c8gwgowi5/om/mYO5ajCaOgdzj/oW+0eQV9WxKBDZw5+ycmKmeaTXjInS/W0BzpGLo2xR2aBwZdg==
 
-underscore@~1.4.3:
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.4.4.tgz#61a6a32010622afa07963bf325203cf12239d604"
-  integrity sha1-YaajIBBiKvoHljvzJSA88SI51gQ=
-
 union-value@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/union-value/-/union-value-1.0.0.tgz#5c71c34cb5bad5dcebe3ea0cd08207ba5aa1aea4"
@@ -3487,14 +3477,6 @@ xml2js@~0.2.8:
   integrity sha1-m4FpCTFjH/CdGVdUn69U9PmAs8I=
   dependencies:
     sax "0.5.x"
-
-xrequire@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/xrequire/-/xrequire-0.4.0.tgz#fb46d502b385194d6156cfc2fc351f792c3ffda4"
-  integrity sha1-+0bVArOFGU1hVs/C/DUfeSw//aQ=
-  dependencies:
-    i "~0.3.1"
-    underscore "~1.4.3"
 
 xtend@^4.0.0:
   version "4.0.1"
