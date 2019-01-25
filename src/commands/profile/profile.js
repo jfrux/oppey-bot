@@ -55,7 +55,8 @@ module.exports = class ProfileCommand extends Command {
           vehicleString.push(vehicle.vehicle_trim);
         }
         vehiclesOutput.push(`**${vehicleString.join(" ")}**`)
-      })
+      });
+
       if (vehicles.length) {
         profileData.push({
           name: 'Vehicles',
@@ -66,9 +67,10 @@ module.exports = class ProfileCommand extends Command {
         if (isSelf) {
           profileData.push({
             name: 'Vehicles',
-            value: "No vehicles yet!\nAdd vehicles by running:\n `-add-vehicle <year> <make> <model> <trim>`",
+            value: "No vehicles yet!\nAdd vehicles by running:\n `-add-vehicle year make model trim`",
             inline: true
           });
+          message.author.send(`Did you know that you can edit your profile outside of Discord now?\nManage your profile and gain access to more resources and preferences.\nFollow the link below to update your profile:\nhttps://opc.ai/users/${message.author.username}/edit`);
         } else {
           profileData.push({
             name: 'Vehicles',
@@ -78,6 +80,7 @@ module.exports = class ProfileCommand extends Command {
         }
       }
     }
+    
     await message.channel.send({
       embed: {
         author: {
@@ -87,6 +90,7 @@ module.exports = class ProfileCommand extends Command {
         thumbnail: {
           url: userModel && userModel.avatar ? userModel.avatar : user.displayAvatarUrl()
         },
+        description: `[Manage your profile](https://opc.ai/users/${message.author.username}/edit)`,
         footer: {
           text: ``
         }
