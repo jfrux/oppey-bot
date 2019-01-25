@@ -5,10 +5,10 @@ module.exports = class ProfileCommand extends Command {
 		super(client, {
 			name: 'profile',
       group: 'me',
-      guildOnly: true,
+      guildOnly: false,
 			memberName: 'profile',
 			description: 'Responds with a user\'s profile.',
-      example: [ `profle`, 'profile @Oppey#0001', 'profile 0000000000000000000' ],
+      example: [ `profle`, 'profile Oppey#0001', 'profile 0000000000000000000' ],
 			args: [
 				{
 					key: 'user',
@@ -22,6 +22,7 @@ module.exports = class ProfileCommand extends Command {
 
 	async run(message, { user }) {
     const client = this.client;
+    const isDM = message.channel.type === "dm";
     const User = client.orm.Model('DiscordUser');
     
     let userModel = await User.find(user.id);
@@ -81,7 +82,7 @@ module.exports = class ProfileCommand extends Command {
       }
     }
     
-    await message.channel.send({
+    await message.author.send({
       embed: {
         author: {
           name: user.tag
@@ -96,5 +97,14 @@ module.exports = class ProfileCommand extends Command {
         }
       }
     });
+    if (isDM) return;
+    if (isSelf) {
+      let newMessage = await message.reply("I just sent you a DM with your profile info.");
+      setTimeout(() => {
+        newMessage.delete(500);
+      },5000);
+    } else {
+      message.delete(500);
+    }
 	}
 };

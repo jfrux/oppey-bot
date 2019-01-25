@@ -15,14 +15,17 @@ const client = new Client({
 	commandPrefix: OPPEY_PREFIX,
 	owner: OWNERS.split(','),
 	invite: INVITE,
-	disableEveryone: true,
+  disableEveryone: true,
 	unknownCommandResponse: false,
 	disabledEvents: ['TYPING_START']
 });
 // client.reactionHandler = reactionHandler;
 
 client.setProvider(new SequelizeProvider(client.database));
-
+client.on("commandCancelled",(command, reason, message) => {
+  message.delete(500);
+  return false;
+})
 client.registry
   .registerDefaults()
   .registerGroups([
