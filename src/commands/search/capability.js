@@ -8,7 +8,7 @@ module.exports = class extends Command {
       description: "Search for a Vehicle Capability",
       group: "database",
       usage: "<prefix>cap <search>",
-      aliases: ["cap","term", "feat"]
+      aliases: ["cap","term"]
     });
   }
   getEndpoint() {
