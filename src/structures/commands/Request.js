@@ -63,7 +63,7 @@ module.exports = class extends Command {
     }
     if (resp.image) {
       embed.thumbnail = {
-        url: resp.author.image
+        url: resp.image
       }
       // embed.setImage(`${resp.image}`);
     }

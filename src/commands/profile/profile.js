@@ -89,7 +89,7 @@ module.exports = class ProfileCommand extends Command {
           name: 'Openpilot Experience',
           value: userProfile.openpilot_experience,
           inline: true
-        })
+        });
       }
       let socialLinks = [];
       if (userProfile.youtube_channel_url) {

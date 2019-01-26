@@ -11,7 +11,7 @@ const path = require("path");
 const Client = require('./structures/Client');
 const SequelizeProvider = require("./structures/SequelizeProvider.js");
 const client = new Client({
-  name: "Oppey - the openpilot ",
+  name: "Oppey",
 	commandPrefix: OPPEY_PREFIX,
 	owner: OWNERS.split(','),
 	invite: INVITE,
