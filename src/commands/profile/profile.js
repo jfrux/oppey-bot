@@ -23,13 +23,14 @@ module.exports = class ProfileCommand extends Command {
 	async run(message, { user }) {
     const client = this.client;
     const isDM = message.channel.type === "dm";
-    const User = client.orm.Model('DiscordUser');
-    
-    let userModel = await User.find(user.id);
+    const DiscordUser = client.orm.Model('DiscordUser');
+    // const User = client.orm.Model("User");
+    let discordUserModel = await DiscordUser.find(user.id);
+    let userProfile = await discordUserModel.user;
     let isSelf = (message.author.id === user.id);
-    if (!userModel) {
+    if (!discordUserModel) {
       console.log("USER NOT FOUND, CREATING IT!");
-      userModel = await User.create({
+      discordUserModel = await DiscordUser.create({
         id: user.id,
         avatar: user.displayAvatarURL(),
         username: user.username
@@ -37,7 +38,7 @@ module.exports = class ProfileCommand extends Command {
     }
 
     let profileData = [];
-    const vehicles = await userModel.discord_user_vehicles;
+    const vehicles = await discordUserModel.discord_user_vehicles;
     if (vehicles) {
       let vehiclesOutput = [];
       vehicles.forEach((vehicle) => {
@@ -55,7 +56,7 @@ module.exports = class ProfileCommand extends Command {
         if (vehicle.vehicle_trim) {
           vehicleString.push(vehicle.vehicle_trim);
         }
-        vehiclesOutput.push(`**${vehicleString.join(" ")}**`)
+        vehiclesOutput.push(`${vehicleString.join(" ")}`)
       });
 
       if (vehicles.length) {
@@ -81,6 +82,30 @@ module.exports = class ProfileCommand extends Command {
         }
       }
     }
+
+    if (userProfile) {
+      if (userProfile.openpilot_experience) {
+        profileData.push({
+          name: 'Openpilot Experience',
+          value: userProfile.openpilot_experience,
+          inline: true
+        })
+      }
+      let socialLinks = [];
+      if (userProfile.youtube_channel_url) {
+        socialLinks.push(`[[YouTube](${userProfile.youtube_channel_url})]`);
+      }
+      if (userProfile.github_username) {
+        socialLinks.push(`[[GitHub](https://github.com/${userProfile.github_username})]`);
+      }
+
+      profileData.push({
+        name: 'Social',
+        value: socialLinks.join(" "),
+        inline: true
+      })
+    }
+    
     
     await message.author.send({
       embed: {
@@ -89,9 +114,9 @@ module.exports = class ProfileCommand extends Command {
         },
         fields: profileData,
         thumbnail: {
-          url: userModel && userModel.avatar ? userModel.avatar : user.displayAvatarUrl()
+          url: discordUserModel && discordUserModel.avatar ? discordUserModel.avatar : user.displayAvatarUrl()
         },
-        description: `[Manage your profile](https://opc.ai/users/${message.author.username}/edit)`,
+        description: isSelf ? `[Manage your profile](https://opc.ai/users/${message.author.username}/edit)` : null,
         footer: {
           text: ``
         }
