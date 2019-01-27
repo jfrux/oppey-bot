@@ -98,12 +98,13 @@ module.exports = class ProfileCommand extends Command {
       if (userProfile.github_username) {
         socialLinks.push(`[[GitHub](https://github.com/${userProfile.github_username})]`);
       }
-
-      profileData.push({
-        name: 'Social',
-        value: socialLinks.join(" "),
-        inline: true
-      })
+      if (socialLinks.length) {
+        profileData.push({
+          name: 'Social',
+          value: socialLinks.join(" "),
+          inline: true
+        })
+      }
     }
     
     
