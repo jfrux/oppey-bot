@@ -23,16 +23,20 @@ module.exports = class PruneCommand extends Command {
     });
   }
 
-  run(message, args) {
+  async run(message, args) {
     const messagecount = args.toPrune;
-    message.channel.fetchMessages({
-      limit: 100
-    }).then(messages => {
-      let msgArray = messages.array();
-      msgArray = msgArray.filter(m => m.author.id === this.client.user.id);
-      msgArray.length = messagecount + 1;
-      msgArray.map(m => m.delete().catch(console.error));
-      message.channel.send(`:fire: Clean Complete :fire:\nPurged: ${messagecount}`);
+    const messages = await message.channel.messages.fetch({ limit: 100 });
+    let msgArray = messages.array();
+    console.log("msgArray:",msgArray);
+    msgArray = msgArray.filter(m => {
+      console.log("messageAuthor:",m.author.id);
+      console.log("clientId:",this.client.user.id);
+      return m.author.id === this.client.user.id;
     });
+    console.log("msgArray:",msgArray);
+    msgArray.length = messagecount + 1;
+    msgArray.map(m => m.delete().catch(console.error));
+    message.channel.send(`:fire: I'm removing **__my__** last ${messagecount} messages.`);
+
   }
 };

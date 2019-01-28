@@ -30,18 +30,16 @@ module.exports = class PurgeCommand extends Command {
     });
   }
 
-  run(message, args) {
-    const modrole = message.guild.settings.get('modrole');
-    const adminrole = message.guild.settings.get('adminrole');
-    const modlog = message.guild.settings.get('modlog');
+  async run(message, args) {
+    const modrole = await message.guild.settings.get('modrole');
+    const adminrole = await message.guild.settings.get('adminrole');
+    const modlog = await message.guild.settings.get('modlog');
     if (!modrole || !adminrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`mod\`, \`admin\`, and \`modlog\` settings.`);
     if (!message.member.roles.has(modrole)) {
       if (!message.member.roles.has(adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('modrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add mod @role\``);
     }
-    message.channel.send('PURGING');
-    message.channel.bulkDelete(args.toPurge + 1)
-      .then(() => {
-        message.channel.send('🔥 PURGE COMPLETE 🔥');
-      });
+    let purgingMessage = await message.channel.send(`:clock: Purging the last ${args.toPurge+1} messages from the channel.`);
+    let deleted = await message.channel.bulkDelete(args.toPurge + 1);
+    message.channel.send(`:fire: I removed the last ${args.toPurge+1} messages from the channel.`)
   }
 };

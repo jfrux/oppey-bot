@@ -26,7 +26,7 @@ module.exports = class QuoteCommand extends Command {
     });
   }
 
-  run(message, args) {
+  async run(message, args) {
     const quoteUser = args.user.user;
     message.channel
       .fetchMessages({ limit: 100 })

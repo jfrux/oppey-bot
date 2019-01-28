@@ -84,11 +84,11 @@ module.exports = class SettingsCommand extends Command {
         const state = value;
         if (state.toLowerCase() === 'on') {
           await message.guild.settings.set('announcements', state);
-          const newSetting = message.guild.settings.get('announcements');
+          const newSetting = await message.guild.settings.get('announcements');
           message.reply(`Set the announcement state to "${newSetting}" \nDo \`${message.guild.commandPrefix}settings add announcements off\` to disable announcements.`);
         } else if (state.toLowerCase() === 'off') {
           await message.guild.settings.set('announcements', state);
-          const newSetting = message.guild.settings.get('announcements');
+          const newSetting = await message.guild.settings.get('announcements');
           message.reply(`Set the announcement state to "${newSetting}" \nDo \`${message.guild.commandPrefix}settings add announcements on\` to enable announcements.`);
         } else { return message.reply('Invaid state! Use `on` or  `off`.'); }
         break;
@@ -171,7 +171,7 @@ module.exports = class SettingsCommand extends Command {
       switch (setting.toLowerCase()) {
       case 'mod':
       {
-        const modrole = message.guild.settings.get('modrole');
+        const modrole = await message.guild.settings.get('modrole');
         // console.log(modrole)
         const rawRole = message.guild.roles.find(role => role.name === modrole);
         if (!role.name || !role) return message.reply('There is currently no mod role set.');
@@ -194,7 +194,7 @@ module.exports = class SettingsCommand extends Command {
       }
       case 'announcements':
       {
-        const state = message.guild.settings.get('announcements');
+        const state = await message.guild.settings.get('announcements');
         if (!state) return message.reply('There is currently no announcements state set.');
         message.reply(`The announcements state is "${state}"`);
         break;
@@ -228,7 +228,7 @@ module.exports = class SettingsCommand extends Command {
         let modRole = message.guild.roles.get(message.guild.settings.get('modrole'));
         let adminRole = message.guild.roles.get(message.guild.settings.get('adminrole'));
         let modlog = message.guild.channels.get(message.guild.settings.get('modlog'));
-        let announcements = message.guild.settings.get('announcements');
+        let announcements = await message.guild.settings.get('announcements');
         let autoRole = message.guild.roles.get(message.guild.settings.get('autorole'));
         let starboard = message.guild.channels.get(message.guild.settings.get('starboard'));
         if (!modRole || !modRole.name) modRole = 'not set';

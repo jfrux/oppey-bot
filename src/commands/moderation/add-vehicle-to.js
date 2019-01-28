@@ -45,9 +45,9 @@ module.exports = class ProfileCommand extends Command {
 	}
 
 	async run(message, { user, year, make, model, trim }) {
-    const adminrole = message.guild.settings.get('adminrole');
-    const modrole = message.guild.settings.get('modrole');
-    const modlog = message.guild.settings.get('modlog');
+    const adminrole = await message.guild.settings.get('adminrole');
+    const modrole = await message.guild.settings.get('modrole');
+    const modlog = await message.guild.settings.get('modlog');
     if (!adminrole || !modrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`admin\` and \`modlog\` settings.`);
     if (!message.member.roles.has(modrole)) {
       if (!message.member.roles.has(adminrole)) return message.reply(`You do not have permission to do this!\`Role Required: ${message.guild.roles.get('modrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add mod @role\``);
