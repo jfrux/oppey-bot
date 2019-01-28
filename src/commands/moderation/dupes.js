@@ -45,12 +45,14 @@ module.exports = class PruneCommand extends Command {
       const dupeEmbed = new MessageEmbed()
       dupeEmbed.setAuthor(`${user.username}#${user.discriminator}`,user.displayAvatarURL())
         .setColor("#000000")
-        .setDescription(moment(user.createdAt).format(DATE_FORMAT))
+        .setDescription(`${moment(user.createdAt).format(DATE_FORMAT)}
+\`${this.client.commandPrefix}kick ${user.id} duplicate profile\``)
       
       const dupeEmbed2 = new MessageEmbed()
       dupeEmbed2.setAuthor(`${user.dupeUser.username}#${user.dupeUser.discriminator}`,user.dupeUser.displayAvatarURL())
         .setColor("#FF0000")
-        .setDescription(moment(user.dupeUser.createdAt).format(DATE_FORMAT))
+        .setDescription(`${moment(user.dupeUser.createdAt).format(DATE_FORMAT)}
+\`${this.client.commandPrefix}kick ${user.id} duplicate profile\``)
       console.log(`Sending embed for ${user.username}#${user.discriminator}`);
       msg.channel.send(dupeEmbed)
       console.log(`Sending embed for ${user.dupeUser.username}#${user.dupeUser.discriminator}`);
