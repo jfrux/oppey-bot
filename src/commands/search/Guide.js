@@ -6,7 +6,7 @@ module.exports = class extends Command {
       memberName: 'guide',
       guildOnly: false,
       description: "Search for a Guide",
-      group:  "database",
+      group: "search",
       usage: "<prefix>guide <search>",
       aliases: ["g"],
       roles: ["Community Member"]

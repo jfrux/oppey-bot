@@ -6,7 +6,7 @@ module.exports = class extends Command {
       memberName: 'release',
       guildOnly: false,
       description: "Search for an openpilot release by feature key words or version number.",
-      group:  "database",
+      group: "search",
       usage: "<prefix>release <search>",
       aliases: ["r","feature"],
       roles: ["Community Member"]

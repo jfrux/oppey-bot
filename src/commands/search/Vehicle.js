@@ -6,7 +6,7 @@ module.exports = class extends Command {
       memberName: "vehicle",
       guildOnly: false,
       description: "Search for a Vehicle",
-      group:  "database",
+      group: "search",
       usage: "<prefix>vehicle <search>",
       aliases: ["v","veh"],
       roles: ["Community Member"]

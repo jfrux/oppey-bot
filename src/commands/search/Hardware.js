@@ -6,7 +6,7 @@ module.exports = class extends Command {
       memberName: 'hardware',
       guildOnly: false,
       description: "Search for a Hardware",
-      group:  "database",
+      group: "search",
       usage: "<prefix>hw <search>",
       aliases: ["hw"],
       roles: ["Community Member"]

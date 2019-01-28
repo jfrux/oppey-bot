@@ -33,7 +33,6 @@ client.registry
 		['utilities', 'Utilities'],
 		['info', 'Discord Information'],
 		['chat', 'Chat'],
-		['database', 'Openpilot Database'],
 		['search', 'Search'],
 		['me', 'Manage Your Info'],
 		['moderation', 'Moderation Commands'],

@@ -6,7 +6,7 @@ module.exports = class extends Command {
       memberName: 'pr',
       guildOnly: false,
       description: "Search for a Pull Request",
-      group:  "database",
+      group: "search",
       usage: "<prefix>pr <search>",
       aliases: ["pull_request"],
       roles: ["Community Member"]

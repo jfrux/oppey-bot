@@ -7,7 +7,7 @@ module.exports = class extends Command {
       memberName: "video",
       guildOnly: false,
       description: "Search for a Video",
-      group: "database",
+      group: "search",
       usage: "<prefix>video <search>",
       aliases: ["vid"],
       roles: ["Community Member"]

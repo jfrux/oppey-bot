@@ -36,17 +36,20 @@ module.exports = class WikiCommand extends commando.Command {
     this.baseWikiUrl = "https://community.comma.ai/wiki/index.php/";
   }
   async run(msg, {query}) {
-      const results = await commaWiki.getAllAsync(
-        {
-          action: 'query',
-          list: 'search',
-          srsearch: query,
-          srprop: 'timestamp|snippet',
-          srlimit: 5000
-        },
-        'search'
-      );
-      const firstResult = results[0];
+    let newMessage = await msg.channel.send(`Searching comma.ai wiki for ${query}...`);
+        
+    const results = await commaWiki.getAllAsync(
+      {
+        action: 'query',
+        list: 'search',
+        srsearch: query,
+        srprop: 'timestamp|snippet',
+        srlimit: 5000
+      },
+      'search'
+    );
+    const firstResult = results[0];
+    if (firstResult) {
       const pageTitle = firstResult.title;
       const pageSnippet = firstResult.snippet;
       const pageTimestamp = firstResult.timestamp;
@@ -65,17 +68,21 @@ module.exports = class WikiCommand extends commando.Command {
       console.log("Wiki URL:",pageUrl);
       console.log("Image URL:",pageImage);
       wikiEmbed
-      .setTitle(pageTitle)
-      .setAuthor('Comma.ai Wiki',pageImage)
-      .setColor("#000000")
-      .setURL(pageUrl)
-      .setDescription(`${parsedPlainText.slice(0, 150)}
-      [Read more](${pageUrl})`)
+        .setTitle(pageTitle)
+        .setAuthor('Comma.ai Wiki',pageImage)
+        .setColor("#000000")
+        .setURL(pageUrl)
+        .setDescription(`${parsedPlainText.slice(0, 150)}
+        [Read more](${pageUrl})`)
       // .setThumbnail(encodeURI(pageImage))
       .setFooter(`Page last updated ${moment(pageTimestamp).format('MMMM Do YYYY HH:mm:ss')}`)
 
       // await msg.edit(msg.content,wikiEmbed);
       // msg.embeds.push(wikiEmbed);
       msg.channel.send(wikiEmbed);
+      await newMessage.edit("Found the following result for your search...");
+    } else {
+      await newMessage.edit("Could not find any results...");
+    }
   }
 };
