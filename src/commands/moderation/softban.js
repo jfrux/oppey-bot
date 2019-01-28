@@ -20,7 +20,7 @@ module.exports = class SoftBanCommand extends Command {
         key: 'user',
         label: 'user',
         prompt: 'What user would you like to softban? Please specify one only.',
-        type: 'member',
+        type: 'user',
         infinite: false
       },
       {

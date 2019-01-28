@@ -22,7 +22,7 @@ module.exports = class MuteCommand extends Command {
         key: 'user',
         label: 'user',
         prompt: 'What user would you like to mute? Please specify one only.',
-        type: 'member',
+        type: 'user',
         infinite: false
       },
       {

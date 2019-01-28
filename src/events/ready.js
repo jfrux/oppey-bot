@@ -16,7 +16,8 @@ module.exports = async client => {
   client.orm = new Store({
     migrations: [
       require('../db/migrations/20190122090701_add_initial_structure.js'),
-      require('../db/migrations/20190122090705_add_field_to_discord_users.js')
+      require('../db/migrations/20190122090705_add_field_to_discord_users.js'),
+      require('../db/migrations/20190122090709_add_last_seen_to_discord_users.js')
     ],
     connection: DATABASE_URL,
     autoLoad: true

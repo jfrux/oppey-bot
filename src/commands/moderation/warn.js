@@ -19,7 +19,7 @@ module.exports = class WarnCommand extends Command {
         key: 'user',
         label: 'user',
         prompt: 'Who would you like to warn? Please mention one only.',
-        type: 'member',
+        type: 'user',
         infinite: false
       },
       {

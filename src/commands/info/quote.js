@@ -19,7 +19,7 @@ module.exports = class QuoteCommand extends Command {
         key: 'user',
         label: 'user',
         prompt: 'What user would you like to quote? Please specify one only.',
-        type: 'member',
+        type: 'user',
         infinite: false
       }],
       guarded: true
