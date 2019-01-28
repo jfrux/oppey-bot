@@ -5,7 +5,6 @@ module.exports = class ProfileCommand extends Command {
 		super(client, {
 			name: 'add-vehicle-to',
       group: 'moderation',
-      userPermissions: ['MANAGE_MESSAGES','MANAGE_CHANNELS'],
       memberName: 'add-vehicle-to',
       guildOnly: true,
 			description: 'Adds a vehicle to a user\'s profile.',
@@ -46,6 +45,13 @@ module.exports = class ProfileCommand extends Command {
 	}
 
 	async run(message, { user, year, make, model, trim }) {
+    const adminrole = message.guild.settings.get('adminrole');
+    const modrole = message.guild.settings.get('modrole');
+    const modlog = message.guild.settings.get('modlog');
+    if (!adminrole || !modrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`admin\` and \`modlog\` settings.`);
+    if (!message.member.roles.has(modrole)) {
+      if (!message.member.roles.has(adminrole)) return message.reply(`You do not have permission to do this!\`Role Required: ${message.guild.roles.get('modrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add mod @role\``);
+    }
     const client = this.client;
     const User = client.orm.Model('DiscordUser');
     const UserVehicle = client.orm.Model('DiscordUserVehicle');

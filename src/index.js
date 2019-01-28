@@ -9,7 +9,8 @@ const path = require("path");
 // const readdir = require("fs").readdirSync;
 // const config = require('../config.js');
 const Client = require('./structures/Client');
-const SequelizeProvider = require("./structures/SequelizeProvider.js");
+const Keyv = require('keyv');
+const KeyvProvider = require('commando-provider-keyv');
 const client = new Client({
   name: "Oppey",
 	commandPrefix: OPPEY_PREFIX,
@@ -21,7 +22,7 @@ const client = new Client({
 });
 // client.reactionHandler = reactionHandler;
 
-client.setProvider(new SequelizeProvider(client.database));
+client.setProvider(new KeyvProvider(new Keyv(DATABASE_URL, { table: 'discord_caches' })));
 client.on("commandCancelled",(command, reason, message) => {
   message.delete(500);
   return false;

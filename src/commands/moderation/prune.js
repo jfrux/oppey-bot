@@ -1,40 +1,47 @@
-const Command = require('../../structures/Command');
+const { Command } = require('discord.js-commando');
+const { oneLine } = require('common-tags');
 
-module.exports = class PruneCommand extends Command {
-	constructor(client) {
-		super(client, {
-			name: 'prune',
-			aliases: ['clear'],
-			group: 'moderation',
-			memberName: 'prune',
-			description: 'Deletes up to 99 messages from the current channel.',
-			guildOnly: true,
-			throttling: {
-				usages: 1,
-				duration: 10
-			},
-			clientPermissions: ['READ_MESSAGE_HISTORY', 'MANAGE_MESSAGES'],
-			userPermissions: ['MANAGE_MESSAGES'],
-			args: [
-				{
-					key: 'count',
-					label: 'amount of messages',
-					prompt: 'How many messages do you want to delete? Limit of up to 99.',
-					type: 'integer',
-					min: 1,
-					max: 99
-				}
-			]
-		});
-	}
+module.exports = class PurgeCommand extends Command {
+  constructor(client) {
+    super(client, {
+      name: 'prune',
+      aliases: ['apocalypse', 'clear', 'clean'],
+      group: 'moderation',
+      memberName: 'prune',
+      description: 'Deletes a specific number of messages.',
+      details: oneLine`
+        This command deletes a specific number of messages.
+        Can only delete between 2 and 99 messages at a time due to Discord ratelimits.
+			`,
+      examples: ['prune 25'],
+      args: [{
+        key: 'toPurge',
+        label: 'prune',
+        prompt: 'how many messages?',
+        type: 'float',
+        validate: text => {
+          if (text <= 99 && text > 2) return true;
+          return 'You can only delete 2-99 messages at a time!';
+        },
+        infinite: false
+      }],
+      guildOnly: true,
+      guarded: true
+    });
+  }
 
-	async run(msg, { count }) {
-		try {
-			const messages = await msg.channel.messages.fetch({ limit: count + 1 });
-			await msg.channel.bulkDelete(messages, true);
-			return null;
-		} catch (err) {
-			return msg.reply('There are no messages younger than two weeks that can be deleted.');
-		}
-	}
+  run(message, args) {
+    const modrole = message.guild.settings.get('modrole');
+    const adminrole = message.guild.settings.get('adminrole');
+    const modlog = message.guild.settings.get('modlog');
+    if (!modrole || !adminrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`mod\`, \`admin\`, and \`modlog\` settings.`);
+    if (!message.member.roles.has(modrole)) {
+      if (!message.member.roles.has(adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('modrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add mod @role\``);
+    }
+    message.channel.send('PURGING');
+    message.channel.bulkDelete(args.toPurge + 1)
+      .then(() => {
+        message.channel.send('🔥 PURGE COMPLETE 🔥');
+      });
+  }
 };

@@ -5,7 +5,8 @@ module.exports = class ProfileCommand extends Command {
 		super(client, {
 			name: 'add-vehicle',
 			group: 'me',
-			memberName: 'add-vehicle',
+      memberName: 'add-vehicle',
+      aliases: ['addvehicle'],
 			description: 'Adds a vehicle to your profile.',
       example: [ "add-vehicle 2017 Honda Pilot", "add-vehicle 2018 Toyota RAV4 'XLE Hybrid'", "add-vehicle 2018 'Alfa Romeo' Giulia" ],
 			args: [

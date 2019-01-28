@@ -1,11 +1,7 @@
 const { SettingProvider } = require('discord.js-commando');
-const { DATABASE_URL } = process.env;
 const path = require("path");
-const nhtsa = require('nhtsa');
 const fetch = require("node-fetch");
-const Store = require('openrecord/store/postgres')
 const Sequelize = require('sequelize');
-const models = require("../util/models.js");
 /**
  * Uses an PostgreSQL database to store settings with guilds
  * @extends {SettingProvider}
@@ -20,14 +16,15 @@ class SequelizeProvider extends SettingProvider {
 	 * @param {SQLDatabase} db - Database for the provider
 	 */
 	constructor(db) {
+    console.log("[SequelizeProvider] Constructor...");
 		super();
-
 		/**
 		 * Database that will be used for storing/retrieving settings
 		 * @type {SQLDatabase}
 		 */
 		this.db = db;
 
+    console.log("[SequelizeProvider] Set db...",db.config.database);
 		/**
 		 * Client that the provider is for (set once the client is ready, after using {@link CommandoClient#setProvider})
 		 * @name SequelizeProvider#client
@@ -43,12 +40,14 @@ class SequelizeProvider extends SettingProvider {
 		 */
 		this.settings = new Map();
 
+    console.log("[SequelizeProvider] Set settings to",this.settings);
 		/**
 		 * Listeners on the Client, mapped by the event name
 		 * @type {Map}
 		 * @private
 		 */
 		this.listeners = new Map();
+    console.log("[SequelizeProvider] Set listeners to",this.listeners);
 
 		/**
 		 * Sequelize Model Object
@@ -62,11 +61,12 @@ class SequelizeProvider extends SettingProvider {
 				unique: true,
 				primaryKey: true
 			},
-			settings: { type: Sequelize.TEXT }
+			settings: { type: Sequelize.JSONB }
     },
     {
       underscored: true
     });
+    console.log("[SequelizeProvider] Set model");
     
 		/**
 		 * @external SequelizeModel
@@ -76,82 +76,27 @@ class SequelizeProvider extends SettingProvider {
 
 	async init(client) {
     this.client = client;
-
+    console.log("[SequelizeProvider] Init provider with client...")
     // fetch makes
-    try {
-      const { data } = await nhtsa.getAllMakes();
-      this.client.makeList = data;
-    } catch (error) {
-      console.log("[MAKE_LIST] ERROR FETCHING MAKE LIST!",error);
-    }
-    const migrationsPath = path.join(__dirname, "db/migrations/*");
-    console.log("Migrations loading from:",migrationsPath);
-    this.client.orm = new Store({
-      migrations: [
-        require('../db/migrations/20190122090701_add_initial_structure.js'),
-        require('../db/migrations/20190122090705_add_field_to_discord_users.js')
-      ],
-      connection: DATABASE_URL,
-      autoLoad: true
-    })
-    this.models = models(this.client);
-    await this.client.orm.ready();
-		await this.model.sync({force: true})
+    
+    console.log("[SequelizeProvider] Syncing settings model...");
+		await this.model.sync({force: false})
+    console.log("[SequelizeProvider] Synced settings model.");
 
-    const User = this.client.orm.Model('DiscordUser');
-    // this.client.guilds.first().members.each((member) => {
-    //   const user = member.user;
-    //   User.find(user.id).then((userModel) => {
-    //     if (!userModel) {
-    //       console.log("Creating new user...", user.username);
-    //       User.create({
-    //         id: user.id,
-    //         avatar: user.displayAvatarURL(),
-    //         username: user.username
-    //       });
-    //     }
-    //   });
-    // });
-		// Load all settings
-		const rows = await this.model.findAll();
-		for (const row of rows) {
-			let settings;
-			try {
-				settings = JSON.parse(row.dataValues.settings);
-			} catch (err) {
-				client.emit('warn', `SequelizeProvider couldn't parse the settings stored for guild ${row.dataValues.guild}.`);
-				continue;
-			}
+    // Load all settings
+    let oppeyGuilds = client.guilds.map(g => g.id);
+    console.log("Oppey Guild:", oppeyGuilds);
+    
+    // guilds = guilds.map(guild => guild.guild);
 
-			const guild = row.dataValues.guild !== '0' ? row.dataValues.guild : 'global';
+    /*
+    * Add guilds to the DB which was added client when it was offline.
+    */
+    
+    console.log("[SequelizeProvider] Loading existing settings...");
+		const rows = await client.database.models.discord_settings.findAll();
+		
 
-			this.settings.set(guild, settings);
-			if (guild !== 'global' && !client.guilds.has(row.dataValues.guild)) continue;
-			this.setupGuild(guild, settings);
-		}
-
-		// Listen for changes
-		this.listeners
-			.set('commandPrefixChange', (guild, prefix) => this.set(guild, 'prefix', prefix))
-			.set('commandStatusChange', (guild, command, enabled) => this.set(guild, `cmd-${command.name}`, enabled))
-			.set('groupStatusChange', (guild, group, enabled) => this.set(guild, `grp-${group.id}`, enabled))
-			.set('guildCreate', guild => {
-				const settings = this.settings.get(guild.id);
-				if (!settings) return;
-				this.setupGuild(guild.id, settings);
-			})
-			.set('commandRegister', command => {
-				for (const [guild, settings] of this.settings) {
-					if (guild !== 'global' && !client.guilds.has(guild)) continue;
-					this.setupGuildCommand(client.guilds.get(guild), command, settings);
-				}
-			})
-			.set('groupRegister', group => {
-				for (const [guild, settings] of this.settings) {
-					if (guild !== 'global' && !client.guilds.has(guild)) continue;
-					this.setupGuildGroup(client.guilds.get(guild), group, settings);
-				}
-			});
 		for (const [event, listener] of this.listeners) client.on(event, listener);
 	}
 
@@ -167,6 +112,7 @@ class SequelizeProvider extends SettingProvider {
 	}
 
 	async set(guild, key, val) {
+    console.log(`[SequelizeProvider] Settings '${key}' to '${value}'...`)
 		guild = this.constructor.getGuildID(guild);
 		let settings = this.settings.get(guild);
 		if (!settings) {
@@ -179,7 +125,8 @@ class SequelizeProvider extends SettingProvider {
 			{ guild: guild !== 'global' ? guild : '0', settings: JSON.stringify(settings) },
 			{ where: { guild: guild !== 'global' ? guild : '0' } }
 		);
-		if (guild === 'global') this.updateOtherShards(key, val);
+    if (guild === 'global') this.updateOtherShards(key, val);
+    console.log(`[SequelizeProvider] Set '${key}' to '${value}' complete.`)
 		return val;
 	}
 
@@ -214,11 +161,10 @@ class SequelizeProvider extends SettingProvider {
 	setupGuild(guild, settings) {
 		if (typeof guild !== 'string') throw new TypeError('The guild must be a guild ID or "global".');
 		guild = this.client.guilds.get(guild) || null;
-
+    console.log("[SequelizeProvider] Setting up guild...", guild)
 		// Load the command prefix
-		if (typeof settings.prefix !== 'undefined') {
-			if (guild) guild._commandPrefix = settings.prefix;
-			else this.client._commandPrefix = settings.prefix;
+		if (typeof this.client.commandPrefix !== 'undefined') {
+			if (guild) guild._commandPrefix = this.client.commandPrefix;
 		}
 
 		// Load all command/group statuses
