@@ -51,6 +51,7 @@ const events = [
   "guildCreate",
   "guildDelete",
   "guildMemberAdd",
+  "guildMemberUpdate",
   "guildMemberRemove",
   "guildUpdate",
   "message",
