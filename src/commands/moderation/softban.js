@@ -1,6 +1,6 @@
 const { Command } = require('discord.js-commando');
 const { oneLine, stripIndents } = require('common-tags');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class SoftBanCommand extends Command {
   constructor(bot) {
@@ -50,7 +50,7 @@ module.exports = class SoftBanCommand extends Command {
         await args.user.send(stripIndents`You have been softbanned from the server "${message.guild}"!
         Staff member: ${message.author.username}
         Reason: '${args.reason}'`);
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
           .setTitle(':bangbang: **Moderation action** :scales:')
           .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
           .setColor(0xFF0000)

@@ -1,6 +1,6 @@
 const { Command } = require('discord.js-commando');
 const { oneLine } = require('common-tags');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class BanCommand extends Command {
   constructor(client) {
@@ -57,7 +57,7 @@ module.exports = class BanCommand extends Command {
 Staff member: ${message.author.tag}
 Reason: "${args.reason}"`)
           .catch(console.error);
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
           .setTitle(':bangbang: **Moderation action** :scales:')
           .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
           .setColor(0xFF0000)

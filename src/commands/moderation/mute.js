@@ -1,6 +1,6 @@
 const { Command } = require('discord.js-commando');
 const { oneLine } = require('common-tags');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const ms = require('ms');
 
 module.exports = class MuteCommand extends Command {
@@ -73,7 +73,7 @@ module.exports = class MuteCommand extends Command {
       }).then(() => {
         message.delete(1);
         message.channel.send(`:loud_sound: ${args.user.user.tag} unmuted by ${message.author.tag}.`);
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
           .setTitle(':bangbang: **Moderation action** :scales:')
           .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
           .setColor(0x00FF00)
@@ -103,7 +103,7 @@ module.exports = class MuteCommand extends Command {
             count++;
             message.delete(1);
             message.channel.send(`:mute: ${args.user.user.tag} muted for ${ms(ms(args.time), { 'long': true })} by ${message.author.tag}. (Do \`${message.guild.commandPrefix}mute unmute ${args.user} <reason>\` to unmute.)`).then(() => {
-              const embed = new RichEmbed()
+              const embed = new MessageEmbed()
                 .setTitle(':bangbang: **Moderation action** :scales:')
                 .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
                 .setColor(0xCC5200)
@@ -123,7 +123,7 @@ module.exports = class MuteCommand extends Command {
                     if (count2 === 0) {
                       count2++;
                       message.channel.send(`:loud_sound: ${args.user.user.tag} unmuted.`);
-                      const embed = new RichEmbed()
+                      const embed = new MessageEmbed()
                         .setTitle(':bangbang: **Moderation action** :scales:')
                         .setAuthor(`${client.user.tag} (${client.user.id})`, `${client.user.avatarURL}`)
                         .setColor(0x00FF00)

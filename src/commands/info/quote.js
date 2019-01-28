@@ -1,6 +1,6 @@
 const { Command } = require('discord.js-commando');
 const { oneLine, stripIndents } = require('common-tags');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 require('moment-duration-format');
 
@@ -47,7 +47,7 @@ module.exports = class QuoteCommand extends Command {
         9: \`${msgs[8].cleanContent}\`
         10: \`${msgs[9].cleanContent}\`
       `;
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
           .setTitle('**Quotes**')
           .setAuthor(quoteUser.username, quoteUser.avatarURL)
           .setColor(0x00CCFF)
@@ -77,7 +77,7 @@ module.exports = class QuoteCommand extends Command {
             const rawTime = Date.now() - collected[`${quote}`].createdAt;
             console.log(rawTime);
             const sentAgo = moment.duration(rawTime).format(' D [days], H [hours], m [minutes] & s [seconds]');
-            const quoteEmbed = new RichEmbed()
+            const quoteEmbed = new MessageEmbed()
               .setTitle('')
               .setAuthor(quoteUser.username, quoteUser.avatarURL)
               .setColor(0x00CCFF)
