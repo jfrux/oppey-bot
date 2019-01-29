@@ -1,12 +1,7 @@
 const Command = require('../../structures/Command');
 const { MessageEmbed } = require('discord.js');
 const moment = require("moment");
-const excludeChannels = [
-  "532205411709747212",
-  "533856957707190302",
-  "534515065601261599",
-  "534726138791198737"
-]
+const excludeChannels = require("../../constants/exclude_channels.js");
 module.exports = class AvatarCommand extends Command {
 	constructor(client) {
 		super(client, {

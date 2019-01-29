@@ -1,5 +1,5 @@
 let starredMessages = [];
 
-module.exports = async (reaction, user) => {
-  
+module.exports = async (client, reaction, user) => {
+  return client.menuHandler.handle(reaction, user)
 };

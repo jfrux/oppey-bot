@@ -28,7 +28,13 @@ client.on("commandCancelled",(command, reason, message) => {
   return false;
 })
 client.registry
-  .registerDefaults()
+  .registerDefaultTypes()
+  .registerDefaultGroups()
+  .registerDefaultCommands({
+    help: true,
+    prefix: false,
+    unknownCommand: false
+  })
   .registerGroups([
 		['utilities', 'Utilities'],
 		['info', 'Discord Information'],
@@ -40,7 +46,7 @@ client.registry
   ])
   .registerCommandsIn(path.join(__dirname, "commands"))
   .registerTypesIn(path.join(__dirname, 'types'));
-// client.on('messageReactionAdd', (messageReaction, user) => reactionHandler.handle(messageReaction,user));
+
 const events = [
   "channelCreate",
   "channelDelete",
@@ -70,14 +76,6 @@ const events = [
 events.forEach((eventName) => {
   const event = require(`./events/${eventName}.js`);
   client.on(eventName, (...args) => event(client, ...args));
-});
-
-client.on("messageReactionAdd", (messageReaction, user) => client.menuHandler.handle(messageReaction, user));
-
-client.on('ready', async () => {
-  client.logger.info(`[READY] Logged in as ${client.user.tag}! ID: ${client.user.id}`);
-  
-  client.user.setActivity("opc.ai | Try -help", { type: "PLAYING" });
 });
 
 client.on('disconnect', event => {

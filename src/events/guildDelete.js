@@ -1,2 +1,2 @@
-module.exports = guild => {
+module.exports = (client, guild) => {
 };

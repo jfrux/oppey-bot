@@ -1,3 +1,3 @@
-module.exports = async (oldMember, newMember) => {
+module.exports = async (client, oldMember, newMember) => {
   
 };

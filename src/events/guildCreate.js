@@ -1,4 +1,4 @@
-module.exports = guild => {
+module.exports = (client, guild) => {
   console.log("GUILD CREATE");
   // /**
   //  * TODO: Use <Model>.create() when Sequelize supports ignore option with it,

@@ -26,69 +26,26 @@ module.exports = class QuoteCommand extends Command {
     });
   }
 
-  async run(message, args) {
-    const quoteUser = args.user.user;
-    message.channel
-      .fetchMessages({ limit: 100 })
-      .then(collected => {
-        collected = collected.filterArray(fetchedMsg => fetchedMsg.author.id === args.user.id);
-        const msgs = collected.map(m => m.content);
-        if (msgs.size < 10) return message.reply('This user does not have enough recent messages!');
-        // TODO Use a loop to generate this
-        const quotes = stripIndents`
-        1: \`${msgs[0].cleanContent}\`
-        2: \`${msgs[1].cleanContent}\`
-        3: \`${msgs[2].cleanContent}\`
-        4: \`${msgs[3].cleanContent}\`
-        5: \`${msgs[4].cleanContent}\`
-        6: \`${msgs[5].cleanContent}\`
-        7: \`${msgs[6].cleanContent}\`
-        8: \`${msgs[7].cleanContent}\`
-        9: \`${msgs[8].cleanContent}\`
-        10: \`${msgs[9].cleanContent}\`
-      `;
-        const embed = new MessageEmbed()
-          .setTitle('**Quotes**')
-          .setAuthor(quoteUser.username, quoteUser.avatarURL)
-          .setColor(0x00CCFF)
-          .setDescription(quotes)
-          .setFooter('QBot')
-          .setTimestamp();
-        message.channel.send('The last 10 messages of the user are below.');
-        message.channel.send('The message can be picked by doing `option <number>` for the quote you want. Say `cancel` to cancel this command. This prompt times out in 30 seconds.');
-        message.channel.send({ embed });
-        const collector = message.channel.createCollector(msg => msg.author === message.author, { time: 30000 });
-        // ! This is leaking a lot of memory
-        collector.on('message', msg => {
-          if (msg.content === 'cancel') collector.stop('aborted');
-          if (msg.content.startsWith('option')) collector.stop('success');
-        });
-        collector.on('end', (collected, reason) => {
-          if (reason === 'time') return message.channel.send('The command timed out.');
-          if (reason === 'aborted') {
-            message.reply('Command canceled.');
-          }
-          if (reason === 'success') {
-            let quote = collected.last().content.split(' ').slice(1);
-            quote = parseInt(quote, 10);
-            quote -= 1;
-            const toQuote = msgs[`${quote}`];
-            console.log(collected[`${quote}`].createdAt);
-            const rawTime = Date.now() - collected[`${quote}`].createdAt;
-            console.log(rawTime);
-            const sentAgo = moment.duration(rawTime).format(' D [days], H [hours], m [minutes] & s [seconds]');
-            const quoteEmbed = new MessageEmbed()
-              .setTitle('')
-              .setAuthor(quoteUser.username, quoteUser.avatarURL)
-              .setColor(0x00CCFF)
-              .setDescription(`"${toQuote}"`)
-              .setFooter(`Message sent ${sentAgo} ago.`);
-            message.channel.bulkDelete(5)
-              .then(() => {
-                message.channel.send({ quoteEmbed });
-              });
-          }
-        });
-      });
+  async run(message, {user}) {
+    const quoteUser = user;
+    const messages = await message.channel.messages.fetch({ limit: 100 });
+      
+    const collected = messages.array().filter(fetchedMsg => fetchedMsg.author.id === user.id);
+    const msgs = collected.map((m) => {
+      return `**${user.username}#${user.discriminator}:** ${m.content}`;
+    });
+    // if (msgs.size < 10) return message.reply('This user does not have enough recent messages!');
+    // TODO Use a loop to generate this
+    
+    const quotes = msgs.join("\n");
+    // const embed = new MessageEmbed()
+    //   .setTitle('**Quotes**')
+    //   .setAuthor(quoteUser.username, quoteUser.avatarURL)
+    //   .setColor(0x00CCFF)
+    //   .setDescription()
+    //   .setTimestamp();
+    message.channel.send(quotes, {
+      split: true
+    });
   }
 };
