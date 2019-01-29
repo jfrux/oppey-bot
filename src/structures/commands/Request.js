@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { DMChannel } = require("discord.js");
 const inflection = require("inflection");
 // const { Command } = require('@yamdbf/core');
 const Command = require("../Command");
@@ -177,6 +178,7 @@ module.exports = class extends Command {
     return this.normalizeResponse(json, query);
   }
   async run(message, value) {
+    const isDM = message.channel instanceof DMChannel;
     let requestUrl = `${this.getBaseURL()}${this.getEndpoint()}.json?q=${value}`;
     const label = this.getLabel();
     if (value.length) {
@@ -195,13 +197,21 @@ module.exports = class extends Command {
       // responses.forEach((resp, index) => {
       //   message.channel.send(resp);
       // });f
-      message.reply(`here are the top results for your search. Choose the result you would like to show.`);
       const newMenu = new RC.Menu(responses[0], buttons, {
         owner: message.author.id
       });
       this.client.menuHandler.addMenus(newMenu);
-
-      const menuMessage = await message.channel.sendMenu(newMenu);
+      let menuMessage;
+      if (isDM) {
+        responses.forEach((response) => {
+          message.author.send({
+            embed: response
+          });
+        })
+      } else {
+        message.reply(`here are the top results for your search.`);
+        menuMessage = await message.channel.sendMenu(newMenu);
+      }
       // const menuFilter = (reaction, user) => {
       //   console.dir(reaction.emoji.name)
       //   console.dir(emojis);
