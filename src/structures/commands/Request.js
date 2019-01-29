@@ -68,14 +68,27 @@ module.exports = class extends Command {
       }
       // embed.setImage(`${resp.image}`);
     }
+
+    if (resp.attachment_url) {
+      let attachment = resp.attachment_url;
+      if (attachment.endsWith(".png") || attachment.endsWith(".jpg") || attachment.endsWith(".webp")) {
+        embed.thumbnail = {
+          url: attachment
+        }
+      }
+    }
     if (resp.title) {
       embed.title = resp.title;
     }
     if (publicUrl) {
       embed.url = publicUrl;
     }
+    
     if (resp.body) {
       embed.description = resp.body;
+    }
+    if (!resp.title && resp.url) {
+      embed.description = `${embed.description}\n\n[Go to message...](${resp.url})`;
     }
     if (resp.fields) {
       embed.fields = [];
@@ -101,6 +114,8 @@ module.exports = class extends Command {
         footer.push(`Edited ${createdAt.format(DATE_FORMAT)}`)
       }
     }
+
+    
     if (footer.length) {
       embed.footer = {
         text: footer.join(" - ")
