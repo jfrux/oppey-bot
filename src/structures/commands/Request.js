@@ -2,9 +2,10 @@ require('dotenv').config();
 const inflection = require("inflection");
 // const { Command } = require('@yamdbf/core');
 const Command = require("../Command");
-
+const moment = require("moment");
 const RC = require('reaction-core');
 const fetch = require('node-fetch');
+const DATE_FORMAT = "MM/DD/YYYY hh:mmA";
 const emojis = [
   //"\u0030\u20E3",//zero
   "\u0031\u20E3", //:one:
@@ -86,7 +87,25 @@ module.exports = class extends Command {
         })
       });
     }
+    let footer = [];
+    let createdAt,updatedAt;
+    if (resp.created_at) {
+      createdAt = moment(resp.created_at);
+      footer.push(`Posted ${createdAt.format(DATE_FORMAT)}`)
+    }
 
+    if (resp.updated_at) {
+      createdAt = moment(resp.created_at);
+      updatedAt = moment(resp.updated_at);
+      if (createdAt.diff(updatedAt, 'minutes') > 0) {
+        footer.push(`Edited ${createdAt.format(DATE_FORMAT)}`)
+      }
+    }
+    if (footer.length) {
+      embed.footer = {
+        text: footer.join(" - ")
+      }
+    }
     return embed;
   }
 
