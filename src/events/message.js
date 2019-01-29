@@ -5,7 +5,9 @@ module.exports = async (client,message) => {
   const excludeChannels = require("../constants/exclude_channels.js");
   const excludeUsers = require("../constants/exclude_users.js");
   const isDM = message.channel instanceof DMChannel;
-  if (isDM || excludeUsers.includes(parseInt(message.author.id)) || excludeChannels.includes(parseInt(message.channel.id))) {
+  const isCommand = message.content.startsWith(`${client.commandPrefix}history`);
+  console.log("This is a command... do not insert!");
+  if (isCommand || isDM || excludeUsers.includes(parseInt(message.author.id)) || excludeChannels.includes(parseInt(message.channel.id))) {
     return;
   }
   try {
