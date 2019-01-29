@@ -5,7 +5,7 @@ module.exports = async (client,message) => {
   const excludeChannels = require("../constants/exclude_channels.js");
   const excludeUsers = require("../constants/exclude_users.js");
   const isDM = message.channel instanceof DMChannel;
-  const isCommand = message.content.startsWith(`${client.commandPrefix}history`);
+  const isCommand = message.content.startsWith(`${client.commandPrefix}history`) || message.content.startsWith(`${client.commandPrefix} history`);
   if (isCommand || isDM || excludeUsers.includes(parseInt(message.author.id)) || excludeChannels.includes(parseInt(message.channel.id))) {
     return;
   }
