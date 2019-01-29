@@ -16,7 +16,8 @@ module.exports = async (client,message) => {
       discord_channel_id: message.channel.id,
       attachment_ids: {
         ...message.attachments.array()
-      }
+      },
+      jump_url: message.url
     });
   } catch (e) {
     console.error("Failed to archive message...",e);
