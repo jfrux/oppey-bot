@@ -13,7 +13,8 @@ module.exports = {
     "subaru": "Subaru",
     "tesla": "Tesla",
     "toyota": "Toyota",
-    "volkswagen": "Volkswagen"
+    "volkswagen": "Volkswagen",
+    "other": "Other Vehicles"
   },
   LOCATIONS: {
     "au": "Australia",
