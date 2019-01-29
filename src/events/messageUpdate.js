@@ -20,6 +20,6 @@ module.exports = async (client, oldMessage, newMessage) => {
       });
     }
   } catch (e) {
-    console.error("Failed to archive message...");
+    console.error("Failed to update message...",e);
   }
 };

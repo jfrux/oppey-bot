@@ -19,7 +19,7 @@ module.exports = async (client,message) => {
       }
     });
   } catch (e) {
-    console.error("Failed to archive message...");
+    console.error("Failed to archive message...",e);
   }
   
   try {
@@ -31,6 +31,6 @@ module.exports = async (client,message) => {
       });
     }
   } catch (e) {
-    console.error("Failed to update last seen...");
+    console.error("Failed to update last seen...",e);
   }
 };

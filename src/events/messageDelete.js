@@ -14,6 +14,6 @@ module.exports = async (client, message) => {
     discordMessageModel.destroy();
     }
   } catch (e) {
-    console.error("Failed to archive message...");
+    console.error("Failed to delete message...",e);
   }
 };
