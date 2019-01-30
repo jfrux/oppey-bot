@@ -43,7 +43,7 @@ module.exports = class extends Command {
 	}
 
   // TODO: Needs refactored to use master class to DRY up some of this code.
-	run(message, args) {
+	async run(message, args) {
     let member = message.member;
     const availableRoleKeys = {};
     // const discordServerAdmin = this.client.channels.find(c => c.name === "discord-server-admin");
@@ -62,23 +62,29 @@ module.exports = class extends Command {
       const roles = this.availableRoles[group];
       const roleKeys = Object.keys(roles);
       rolesString = rolesString.concat('```yaml\n');
-      roleKeys.forEach((role,roleIndex) => {
+      roleKeys.forEach(async (role,roleIndex) => {
         const roleKey = role;
         const roleLabel = roles[role];
         availableRoleKeys[role] = roleLabel;
-        let desc;
-        switch (group) {
-          case "MANUFACTURERS":
-            desc = `For ${roleLabel} extended support.`;
-            break;
-          case "LOCATIONS":
-            desc = `For ${roleLabel} location channels.`;
-            break;
-          case "MISC":
-            desc = `For ${roleLabel} related topic channels.`;
-            break;
-        } 
-        rolesString = rolesString.concat(`${roleKey}: ${desc}\n`);
+        console.log("roleLabel:",roleLabel);
+        if (roleLabel) {
+          let roleInfo = await message.guild.roles.find(role => role.name === roleLabel);
+          let desc;
+          if (roleInfo) {
+            switch (group) {
+              case "MANUFACTURERS":
+                desc = `For ${roleLabel} extended support.`;
+                break;
+              case "LOCATIONS":
+                desc = `For ${roleLabel} location channels.`;
+                break;
+              case "MISC":
+                desc = `For ${roleLabel} related topic channels.`;
+                break;
+            } 
+          }
+          rolesString = rolesString.concat(`${roleKey}: ${desc}\n`);
+        }
       });
       rolesString = rolesString.concat('```');
     });

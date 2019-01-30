@@ -82,10 +82,10 @@ ${footer}`);
     }
     // console.log("roleChoice:",roleChoice);
     const selectedRole = availableRoleKeys[roleChoice];
-    // console.log("selectedRole:",selectedRole);
+    console.log("selectedRole:",selectedRole);
     if (selectedRole) {
       let myRole = message.guild.roles.find(role => role.name === selectedRole);
-      
+      console.log("myRole:",myRole);
       if(member.roles.has(myRole.id)) {
         // member.roles.remove(myRole).catch(console.error);
 
