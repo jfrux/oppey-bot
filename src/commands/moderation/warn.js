@@ -41,14 +41,19 @@ module.exports = class WarnCommand extends Command {
     if (!message.member.roles.has(modrole)) {
       if (!message.member.roles.has(adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('modrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add mod @role\``);
     }
-    args.user.send(`You have been warned on the server "${message.guild}"!
-Staff member: ${message.author.tag}
-Reason: "${args.reason}"`).catch(console.error);
+    args.user.send(`:oncoming_police_car:`);
+    args.user.send(`**WOOOP WOOOP! Oppey here...**
+I just figured I'd give you a friend heads up...
+One of our community staff have placed a warning alert on your profile due to the following:
+\`\`\`diff
+- ${args.reason}
+\`\`\`
+Please avoid this behavior as we want to keep the community clean and fun for everyone.`).catch(console.error);
     const embed = new MessageEmbed()
       .setTitle(':bangbang: **Moderation action** :scales:')
-      .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
+      .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.displayAvatarURL()}`)
       .setColor(0xFFFF00)
-      .setDescription(`**Action:** Warning \n**User:** ${args.user.user.tag} (${args.user.id}) \n**Reason:** ${args.reason}`)
+      .setDescription(`**Action:** Warning \n**User:** ${args.user.username} (${args.user.username}) \n**Reason:** ${args.reason}`)
       .setTimestamp();
     message.delete(1);
     message.guild.channels.get(modlog).send({
