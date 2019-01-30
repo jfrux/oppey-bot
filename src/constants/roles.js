@@ -1,7 +1,7 @@
 module.exports = {
   MANUFACTURERS: {
     "acura": "Acura",
-    "chrysler": "Chrylser",
+    "chrysler": "Chrysler",
     "ford": "Ford",
     "gm": "General Motors",
     "genesis": "Genesis",

@@ -85,22 +85,21 @@ ${footer}`);
     console.log("selectedRole:",selectedRole);
     if (selectedRole) {
       let myRole = message.guild.roles.find(role => role.name === selectedRole);
-      console.log("myRole:",myRole);
-      if(member.roles.has(myRole.id)) {
-        // member.roles.remove(myRole).catch(console.error);
-
-        message.reply(`You are already in the **${selectedRole}** channel group.`)
-      } else {
-        member.roles.add(myRole).catch(console.error);
-        message.reply(`You have **joined** the **${selectedRole}** channel group.`)
-
+      if (myRole) {
+        if(member.roles.has(myRole.id)) {
+          member.roles.remove(myRole).catch(console.error);
+          message.reply(`You have **left** the **${selectedRole}** channel group.`)
+        } else {
+          member.roles.add(myRole).catch(console.error);
+          message.reply(`You have **joined** the **${selectedRole}** channel group.`)
+        }
+        return
       }
-    } else {
-      message.channel.send(`I can't find that on my list. ${hitOnDm}`);
+    }
+    message.channel.send(`I can't find that on my list. ${hitOnDm}`);
       member.send(`Here are the available channel groups you can join...
 ${rolesString}
 ${footer}`);
       return
-    }
 	}
 }
