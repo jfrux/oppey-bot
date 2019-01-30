@@ -38,6 +38,7 @@ client.registry
   .registerGroups([
 		['utilities', 'Utilities'],
 		['info', 'Discord Information'],
+		['github', 'GitHub'],
 		['chat', 'Chat'],
 		['search', 'Search'],
 		['me', 'Manage Your Info'],
