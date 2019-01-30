@@ -68,21 +68,18 @@ module.exports = class extends Command {
         availableRoleKeys[role] = roleLabel;
         console.log("roleLabel:",roleLabel);
         if (roleLabel) {
-          let roleInfo = await message.guild.roles.find(role => role.name === roleLabel);
           let desc;
-          if (roleInfo) {
-            switch (group) {
-              case "MANUFACTURERS":
-                desc = `For ${roleLabel} extended support.`;
-                break;
-              case "LOCATIONS":
-                desc = `For ${roleLabel} location channels.`;
-                break;
-              case "MISC":
-                desc = `For ${roleLabel} related topic channels.`;
-                break;
-            } 
-          }
+          switch (group) {
+            case "MANUFACTURERS":
+              desc = `For ${roleLabel} extended support.`;
+              break;
+            case "LOCATIONS":
+              desc = `For ${roleLabel} location channels.`;
+              break;
+            case "MISC":
+              desc = `For ${roleLabel} related topic channels.`;
+              break;
+          } 
           rolesString = rolesString.concat(`${roleKey}: ${desc}\n`);
         }
       });
