@@ -1,32 +1,30 @@
 # Oppey Bot
 
-This is the Discord bot that handles helping and assisting users of Openpilot and Comma.ai hardware and ties data from opc.ai into its responses.
+This is the Discord bot that handles helping and assisting users of Openpilot and Comma.ai hardware and ties data from opc.ai into its responses. It also has very few "fun" commands as this isn't that type of Discord server and is focused on discussions around helping getting started and vehicle support.
 
-Original "Guide Bot" Boilerplate is Updated and Maintained by the Idiot's Guide Community.
-
-This command handler is 98% compatible with [Evie's selfbot](https://github.com/eslachance/evie.selfbot)
-and 99% compatible with commands from [York's Tutorial Bot](https://github.com/AnIdiotsGuide/Tutorial-Bot/tree/Episode-10-Part-2).
+The command system is now fully based on the latest code in discord.js/Commando.
 
 ## Development
-### Environment
-- `git` command line ([Windows](https://git-scm.com/download/win) | [Linux](https://git-scm.com/download/linux) | [MacOS](https://git-scm.com/download/mac)) installed
-- `node` [Version 8.0.0 or higher](https://nodejs.org)
+We welcome pull requests.
+
+### Getting started
+- `yarn` Install Yarn Package Manager. Mac: `brew install yarn` or https://yarnpkg.com/
+- `node` Version 11+ recommended but I think you can get away with lower.
+  Mac: `brew install yarn` or [https://nodejs.org](https://nodejs.org)
 
 You also need the bot's token. This was created by jfrux in his Discord account. 
 
-### Downloading
-
-In a command prompt in your projects folder (wherever that may be) run the following:
-
 `git clone https://github.com/openpilot-community/oppey-bot.git`
 `cd oppey-bot`
-`npm install`
+`yarn install`
 
 You will need to provide your own bot token from the Discord Developer Portal so you can test your Oppey bot changes with your own instance.
 
-The installer will create the `config.js` file for you.
+Create a `config.js` based on `config.js.example` if it's not too outdated.
+You'll also need a killer looking `.env` based on `.env.example`
+Hit me up if there are any keys I should share although I probably won't as that's what infosec keeps telling me to NOT do.
 
-## Starting the bot
+To start the bot, run:
+`yarn dev`
 
-To start the bot, in the command prompt, run the following command:
-`node index.js`
+Follow the *friendly* error messages for info on how to get it running...
