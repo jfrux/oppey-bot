@@ -11,7 +11,8 @@ module.exports = async (client) => {
       require('../db/migrations/20190122090705_add_field_to_discord_users.js'),
       require('../db/migrations/20190122090709_add_last_seen_to_discord_users.js'),
       require('../db/migrations/20190122090710_create_message_archive_for_search.js'),
-      require('../db/migrations/20190122090711_add_url_to_message_archive.js')
+      require('../db/migrations/20190122090711_add_url_to_message_archive.js'),
+      require('../db/migrations/20190122090715_add_discord_user_repos_table.js')
     ],
     connection: DATABASE_URL,
     autoLoad: true

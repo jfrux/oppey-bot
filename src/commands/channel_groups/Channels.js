@@ -106,6 +106,7 @@ ${footer}`);
           member.roles.add(myRole).catch(console.error);
           message.reply(`You have **joined** the **${selectedRole}** channel group.`)
         }
+        return
       }
     }
     message.channel.send(`I can't find that on my list. ${hitOnDm}`);

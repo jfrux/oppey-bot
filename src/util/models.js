@@ -27,6 +27,7 @@ module.exports = (client) => {
   store.Model('DiscordUser', function(){
     // this is the `definition scope`
     this.hasMany('discord_user_vehicles', { })
+    this.hasMany('discord_user_repositories', { })
     this.belongsTo('user');
   });
 
@@ -37,6 +38,18 @@ module.exports = (client) => {
     })
   });
 
+  store.Model('DiscordUserRepository', function(){
+    // this is the `definition scope`
+    this.belongsTo('repository', {
+      model: 'Repository'
+    });
+    this.belongsTo('discord_user', {
+      model: "DiscordUser"
+    })
+  });
+  store.Model('Repository', function(){
+    this.hasMany('discord_user_repositories');
+  });
   store.Model('Guide', function(){
 
   });

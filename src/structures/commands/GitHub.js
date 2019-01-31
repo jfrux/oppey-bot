@@ -54,9 +54,10 @@ module.exports = class extends Command {
     const ghMethod = info.githubMethod;
     const ghCommand = inflection.dasherize(inflection.underscore(ghMethod));
     const ghCommandParts = ghCommand.split('-');
+    console.log(ghCommandParts);
     const ghCommandActionName = ghCommandParts[0];
     const ghCommandItemName = ghCommandParts.slice(1,ghCommandParts.length).join(" ");
-    const commandName = `${ghPrefix}-${ghCommand}`;
+    const commandName = `${ghPrefix}-${ghGroup}-${ghCommand}`;
     const apiGroup = api[ghGroup];
     const apiMethod = apiGroup[ghMethod];
     const apiRouteInfo = ROUTES[ghGroup][ghMethod];
@@ -64,9 +65,14 @@ module.exports = class extends Command {
     const apiParams = ROUTES[ghGroup][ghMethod]['params'];
     const paramKeys = Object.keys(apiParams);
     const commandDescription = `${inflection.pluralize(inflection.capitalize(ghCommandActionName))} a ${ghGroup} ${ghCommandItemName}.`;
-    
     let requiredArgs = [];
     let args = [];
+    let objectLabel = "";
+    if (ghCommandParts.includes("for")) {
+      objectLabel = ghCommandParts[ghCommandParts.length];
+    } else {
+      objectLabel = ghGroupSingular;
+    }
     paramKeys.forEach((key) => {
       const param = apiParams[key];
       let paramLabel;
@@ -75,9 +81,9 @@ module.exports = class extends Command {
         paramLabel = `name of the ${key}`;
       } else {
         if (param.required) {
-          paramLabel = `${ghGroupSingular}'s ${key}`;
+          paramLabel = `${objectLabel}'s ${key}`;
         } else {
-          paramLabel = `${inflection.singularize(ghCommandItemName)} ${key}`
+          paramLabel = `${objectLabel} ${key}`
         }
       }
       let prompt = `Enter the ${paramLabel}?`;
@@ -152,7 +158,7 @@ module.exports = class extends Command {
     const resp = await this.apiMethod(args);
     const data = resp.data;
     console.log(`[GitHub] ${this.ghCommand} completed.`);
-    const responses = this._normalizeResponse(data);
+    let responses = this._normalizeResponse(data);
     
     if (!responses) {
       message.reply(`No GitHub for those **${label}** parameters...`);
@@ -278,7 +284,7 @@ module.exports = class extends Command {
         });
       }
     } else if (typeof json === 'object') {
-      responses.push(this._normalizeItem(resp));
+      responses.push(this._normalizeItem(json));
     }
 
     if (responses.length) {
