@@ -6,9 +6,10 @@ module.exports = class ProfileCommand extends Command {
 			name: 'profile',
       group: 'me',
       guildOnly: false,
-			memberName: 'profile',
+      memberName: 'profile',
+      aliases: ['my-profile','view-profile'],
 			description: 'Responds with a user\'s profile.',
-      example: [ `profle`, 'profile Oppey#0001', 'profile 0000000000000000000' ],
+      example: [ `profle`, 'profile @User#1234', 'profile 0000000000000000000' ],
 			args: [
 				{
 					key: 'user',

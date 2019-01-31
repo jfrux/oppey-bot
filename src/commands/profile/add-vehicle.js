@@ -3,10 +3,10 @@ const inflection = require("inflection");
 module.exports = class ProfileCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'add-vehicle',
+			name: 'add-my-car',
 			group: 'me',
-      memberName: 'add-vehicle',
-      aliases: ['addvehicle'],
+      memberName: 'add-my-car',
+      aliases: ['my-car', 'add-vehicle', 'add-my-vehicle', 'addvehicle'],
 			description: 'Adds a vehicle to your profile.',
       example: [ "add-vehicle 2017 Honda Pilot", "add-vehicle 2018 Toyota RAV4 'XLE Hybrid'", "add-vehicle 2018 'Alfa Romeo' Giulia" ],
 			args: [

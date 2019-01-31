@@ -4,10 +4,10 @@ const inflection = require("inflection");
 module.exports = class ProfileCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'delete-vehicle',
+			name: 'remove-my-car',
 			group: 'me',
-      memberName: 'delete-vehicle',
-      aliases: ['remove-vehicle'],
+      memberName: 'remove-my-car',
+      aliases: ['not-my-car', 'remove-vehicle', 'delete-vehicle', 'removemycar', 'removemyvehicle'],
 			description: 'Removes a vehicle from your profile.',
       example: [ 'remove-vehicle 2017 Honda Pilot', 'remove-vehicle 2019 Honda Accord Touring' ],
 			args: [

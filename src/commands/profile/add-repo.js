@@ -8,12 +8,12 @@ const github = new Octokit({
 module.exports = class AddVehicleCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'profile-add-repo',
-      memberName: 'profile-add-repo',
+			name: 'add-my-repo',
+      memberName: 'add-my-repo',
       group: 'me',
-      aliases:  ['add-my-repo'],
-			description: 'Adds a favorite Openpilot repo to your profile.',
-      example: [ "profile-add-repo 2017 Honda Pilot", "profile-add-repo 2018 Toyota RAV4 'XLE Hybrid'", "profile-add-repo 2018 'Alfa Romeo' Giulia" ],
+      aliases:  ['profile-add-repo', 'fav-repo'],
+			description: 'Adds a GitHub repo to your favorites.',
+      example: [ "add-my-repo commaai/openpilot", "add-my-repo arne182/openpilot" ],
 			args: [
 				{
 					key: 'repo',
