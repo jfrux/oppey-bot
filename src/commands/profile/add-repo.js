@@ -11,6 +11,7 @@ module.exports = class AddVehicleCommand extends Command {
 			name: 'profile-add-repo',
       memberName: 'profile-add-repo',
       group: 'me',
+      aliases:  ['add-my-repo'],
 			description: 'Adds a favorite Openpilot repo to your profile.',
       example: [ "profile-add-repo 2017 Honda Pilot", "profile-add-repo 2018 Toyota RAV4 'XLE Hybrid'", "profile-add-repo 2018 'Alfa Romeo' Giulia" ],
 			args: [
