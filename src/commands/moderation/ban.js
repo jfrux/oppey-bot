@@ -9,6 +9,7 @@ module.exports = class BanCommand extends Command {
       group: 'moderation',
       aliases: ['banish', 'begone'],
       memberName: 'ban',
+      userPermissions: ['BAN_MEMBERS'],
       description: 'Bans a user.',
       details: oneLine`
         Banning is a powerful moderation tool with many applications.

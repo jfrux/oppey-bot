@@ -21,6 +21,7 @@ module.exports = class WikiCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'wiki',
+      hidden: true,
       group: 'search',
       memberName: 'wiki',
       description: 'Search the Comma.ai Wiki and return top result.',

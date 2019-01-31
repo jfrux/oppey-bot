@@ -9,7 +9,8 @@ module.exports = class AddFaqCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'add-faq',
-			group: 'moderation',
+			group: 'knowledge',
+      userPermissions: ['MANAGE_MESSAGES'],
 			memberName: 'add-faq',
 			description: 'Adds a new FAQ.',
       example: [ "add-faq (this uses prompts instead of inline)", "add-faq 'What is an EON?' 'It\'s a cool device!" ],

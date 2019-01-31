@@ -9,6 +9,7 @@ module.exports = class LockdownCommand extends Command {
       name: 'lockdown',
       group: 'moderation',
       memberName: 'lockdown',
+      userPermissions: ['ADMINISTRATOR'],
       description: 'Mutes an entire channel.',
       details: oneLine`
         Do you need to shut an entire channel up for a bit?

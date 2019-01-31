@@ -14,6 +14,7 @@ module.exports = class ChannelCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'channel',
+      hidden: true,
 			aliases: ['channel-info'],
 			group: 'info',
 			memberName: 'channel',

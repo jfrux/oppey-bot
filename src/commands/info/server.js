@@ -10,6 +10,7 @@ module.exports = class ServerCommand extends Command {
 			name: 'server',
 			aliases: ['guild', 'server-info', 'guild-info'],
 			group: 'info',
+      hidden: true,
 			memberName: 'server',
 			description: 'Responds with detailed information on the server.',
 			guildOnly: true,

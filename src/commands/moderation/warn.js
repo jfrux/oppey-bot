@@ -8,6 +8,7 @@ module.exports = class WarnCommand extends Command {
       name: 'warn',
       group: 'moderation',
       memberName: 'warn',
+      userPermissions: ['KICK_MEMBERS'],
       description: 'Warns a user.',
       details: oneLine`
         Warning a user is useful for minor, first time rule violations.

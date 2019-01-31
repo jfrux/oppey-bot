@@ -6,7 +6,8 @@ const { WORDNIK_KEY } = process.env;
 module.exports = class DefineCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'define',
+      name: 'define',
+      hidden: true,
 			aliases: ['dictionary', 'wordnik'],
 			group: 'search',
 			memberName: 'define',

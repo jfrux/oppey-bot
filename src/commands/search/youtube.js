@@ -12,6 +12,7 @@ module.exports = class DefineCommand extends Command {
 		super(client, {
 			name: 'youtube',
 			aliases: ['yt'],
+      hidden: true,
 			group: 'search',
 			memberName: 'youtube',
 			description: 'Returns a YouTube Video',

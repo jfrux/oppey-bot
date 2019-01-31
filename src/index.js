@@ -29,22 +29,24 @@ client.on("commandCancelled",(command, reason, message) => {
 })
 client.registry
   .registerDefaultTypes()
-  .registerDefaultGroups()
+  .registerGroups([
+		['me', 'Manage Your Info'],
+		['search', 'Search'],
+		['chat', 'Chat'],
+		['knowledge', 'Knowledge Base'],
+		['polls', 'Polls'],
+		['moderation', 'Moderation Commands'],
+		['github', 'GitHub'],
+		['info', 'Discord Information'],
+    ['commands', 'Commands'],
+    ['util', 'Utilities'],
+		['other', 'Other']
+  ])
   .registerDefaultCommands({
     help: true,
     prefix: false,
     unknownCommand: false
   })
-  .registerGroups([
-		['utilities', 'Utilities'],
-		['info', 'Discord Information'],
-		['github', 'GitHub'],
-		['chat', 'Chat'],
-		['search', 'Search'],
-		['me', 'Manage Your Info'],
-		['moderation', 'Moderation Commands'],
-		['other', 'Other']
-  ])
   .registerCommandsIn(path.join(__dirname, "commands"))
   .registerTypesIn(path.join(__dirname, 'types'));
 

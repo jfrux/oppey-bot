@@ -3,17 +3,17 @@ const Command = require('../../structures/Command');
 module.exports = class ProfileCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'profile',
+			name: 'share-profile',
       group: 'me',
       guildOnly: false,
-      memberName: 'profile',
-      aliases: ['my-profile','view-profile'],
-			description: 'Sends your or a user\'s profile to you via DM.',
-      example: [ `profle`, 'profile @User#1234', 'profile 0000000000000000000' ],
+      memberName: 'share-profile',
+      aliases: ['show-profile','share-my-profile'],
+			description: 'Shares your profile to the public channel.',
+      example: [ `share-profile` ],
 			args: [
 				{
 					key: 'user',
-					prompt: 'Which user do you want to get the profile of?',
+					prompt: 'Which user do you want to share the profile of?',
 					type: 'user',
 					default: message => message.author
 				}
@@ -22,21 +22,10 @@ module.exports = class ProfileCommand extends Command {
 	}
 
 	async run(message, { user }) {
-    const client = this.client;
-    const isDM = message.channel.type === "dm";
-    const DiscordUser = client.orm.Model('DiscordUser');
-    // const User = client.orm.Model("User");
-    let discordUserModel = await DiscordUser.find(user.id);
+    const messageUser = message.author;
+    let discordUserModel = await this.fetchDbUser(messageUser);
     let userProfile = await discordUserModel.user;
     let isSelf = (message.author.id === user.id);
-    if (!discordUserModel) {
-      console.log("USER NOT FOUND, CREATING IT!");
-      discordUserModel = await DiscordUser.create({
-        id: user.id,
-        avatar: user.displayAvatarURL(),
-        username: user.username
-      });
-    }
 
     let profileData = [];
     const vehicles = await discordUserModel.discord_user_vehicles;
@@ -109,7 +98,7 @@ module.exports = class ProfileCommand extends Command {
     }
     
     
-    await message.author.send({
+    await message.channel.send({
       embed: {
         author: {
           name: user.tag
@@ -118,20 +107,19 @@ module.exports = class ProfileCommand extends Command {
         thumbnail: {
           url: discordUserModel && discordUserModel.avatar ? discordUserModel.avatar : user.displayAvatarUrl()
         },
-        description: isSelf ? `[Manage your profile](https://opc.ai/users/${message.author.username}/edit)` : null,
         footer: {
           text: ``
         }
       }
     });
-    if (isDM) return;
-    if (isSelf) {
-      let newMessage = await message.reply("I just sent you a DM with your profile info.");
-      setTimeout(() => {
-        newMessage.delete(500);
-      },5000);
-    } else {
-      message.delete(500);
-    }
+    // if (isDM) return;
+    // if (isSelf) {
+    //   let newMessage = await message.reply("I just sent you a DM with your profile info.");
+    //   setTimeout(() => {
+    //     newMessage.delete(500);
+    //   },5000);
+    // } else {
+    //   message.delete(500);
+    // }
 	}
 };

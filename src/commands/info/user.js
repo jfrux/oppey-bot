@@ -15,6 +15,7 @@ module.exports = class UserCommand extends Command {
 			name: 'user',
 			aliases: ['user-info', 'member', 'member-info'],
 			group: 'info',
+      hidden: true,
 			memberName: 'user',
 			description: 'Responds with detailed information on a user.',
 			clientPermissions: ['EMBED_LINKS'],

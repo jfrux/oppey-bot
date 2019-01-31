@@ -6,7 +6,8 @@ module.exports = class IDCommand extends Command {
 			name: 'id',
 			aliases: ['user-id', 'member-id'],
 			group: 'info',
-			memberName: 'id',
+      memberName: 'id',
+      hidden: true,
 			description: 'Responds with a user\'s ID.',
 			args: [
 				{

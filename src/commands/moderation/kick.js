@@ -8,6 +8,7 @@ module.exports = class KickCommand extends Command {
       name: 'kick',
       group: 'moderation',
       memberName: 'kick',
+      userPermissions: ['KICK_MEMBERS'],
       description: 'Kicks a user.',
       details: oneLine`
         Kicking is a powerful moderation tool with many applications.

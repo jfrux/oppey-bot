@@ -8,6 +8,7 @@ module.exports = class PurgeCommand extends Command {
       aliases: ['apocalypse', 'clear', 'clean'],
       group: 'moderation',
       memberName: 'prune',
+      userPermissions: ['MANAGE_MESSAGES'],
       description: 'Deletes a specific number of messages.',
       details: oneLine`
         This command deletes a specific number of messages.

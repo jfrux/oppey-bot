@@ -10,6 +10,7 @@ module.exports = class MuteCommand extends Command {
       aliases: ['silence', 'turnoff', 'off', 'stfu'],
       group: 'moderation',
       memberName: 'mute',
+      userPermissions: ['ADMINISTRATOR'],
       description: 'Disables a user\'s ability to talk.',
       details: oneLine`
 				This command mutes a specified user from text and voice chat.

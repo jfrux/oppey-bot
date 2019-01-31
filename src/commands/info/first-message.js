@@ -7,6 +7,7 @@ module.exports = class FirstMessageCommand extends Command {
 			name: 'first-message',
 			aliases: ['first-msg'],
 			group: 'info',
+      hidden: true,
 			memberName: 'first-message',
 			description: 'Responds with the first message ever sent to a channel.',
 			clientPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY'],

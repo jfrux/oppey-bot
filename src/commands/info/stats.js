@@ -8,6 +8,7 @@ module.exports = class ServerCommand extends Command {
 			name: 'stats',
 			group: 'info',
 			memberName: 'stats',
+      hidden: true,
 			description: 'Responds with stats on the server.',
 			guildOnly: true,
 			clientPermissions: ['EMBED_LINKS']

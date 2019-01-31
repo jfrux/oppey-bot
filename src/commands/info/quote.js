@@ -9,6 +9,7 @@ module.exports = class QuoteCommand extends Command {
     super(client, {
       name: 'quote',
       group: 'info',
+      hidden: true,
       memberName: 'quote',
       description: 'Quotes a specified user.',
       details: oneLine`

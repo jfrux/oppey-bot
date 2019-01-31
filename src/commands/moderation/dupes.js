@@ -8,14 +8,14 @@ module.exports = class PruneCommand extends Command {
 			name: 'dupes',
 			group: 'moderation',
 			memberName: 'dupes',
+			userPermissions: ['ADMINISTRATOR'],
 			description: 'Lists duplicate usernames...',
 			guildOnly: true,
 			throttling: {
 				usages: 1,
 				duration: 10
 			},
-			clientPermissions: ['READ_MESSAGE_HISTORY', 'MANAGE_MESSAGES'],
-			userPermissions: ['KICK_MEMBERS']
+			clientPermissions: ['READ_MESSAGE_HISTORY', 'MANAGE_MESSAGES']
 		});
 	}
 

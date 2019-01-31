@@ -8,6 +8,7 @@ module.exports = class AvatarCommand extends Command {
 			aliases: ['profile-picture', 'profile-pic', 'pfp'],
 			group: 'info',
 			memberName: 'avatar',
+      hidden: true,
 			description: 'Responds with a user\'s avatar.',
 			args: [
 				{

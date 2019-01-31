@@ -8,6 +8,7 @@ module.exports = class DiscriminatorCommand extends Command {
 			name: 'discriminator',
 			aliases: ['discrim', 'search-discrim', 'search-discriminator'],
 			group: 'info',
+      hidden: true,
 			memberName: 'discriminator',
 			description: 'Searches for other users with a certain discriminator.',
 			args: [

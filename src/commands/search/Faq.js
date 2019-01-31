@@ -3,10 +3,11 @@ module.exports = class extends Command {
 	constructor(client) {
 		super(client, {
       name: "faq",
+      hidden: true,
       memberName: 'faq',
       guildOnly: false,
       description: "Search for a FAQ",
-      group: "search",
+      group: "knowledge",
       usage: "<prefix>faq <search>",
       aliases: ["f"],
       roles: ["Community Member"]

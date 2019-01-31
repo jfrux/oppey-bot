@@ -9,6 +9,7 @@ module.exports = class SoftBanCommand extends Command {
       aliases: ['gentleban', 'gentlyban', 'silentban'],
       group: 'moderation',
       memberName: 'softban',
+      userPermissions: ['BAN_MEMBERS'],
       description: 'Softbans a user.',
       details: oneLine`
 				This command softbans a user.

@@ -6,6 +6,7 @@ module.exports = class EmojiImageCommand extends Command {
 			name: 'emoji-image',
 			aliases: ['big-emoji', 'emote-image', 'big-emote'],
 			group: 'info',
+      hidden: true,
 			memberName: 'emoji-image',
 			description: 'Responds with an emoji\'s full-scale image.',
 			guildOnly: true,

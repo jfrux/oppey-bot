@@ -6,7 +6,8 @@ module.exports = class extends Command {
       memberName: 'capability',
       guildOnly: false,
       description: "Search for a Vehicle Capability (Lane Keep Assist, etc.)",
-      group: "search",
+      group: "knowledge",
+      hidden: true,
       usage: "<prefix>cap <search>",
       aliases: ["cap","term"]
     });

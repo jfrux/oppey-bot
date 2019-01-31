@@ -8,6 +8,7 @@ module.exports = class AvatarCommand extends Command {
 			name: 'last-seen',
       group: 'info',
       aliases: ['lastseen'],
+      hidden: true,
 			memberName: 'last-seen',
 			description: 'Responds with a user\'s last-seen date.',
 			args: [

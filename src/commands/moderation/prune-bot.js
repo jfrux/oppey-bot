@@ -7,6 +7,7 @@ module.exports = class PruneCommand extends Command {
       name: 'prune-bot',
       group: 'moderation',
       memberName: 'prune-bot',
+      userPermissions: ['MANAGE_MESSAGES'],
       description: 'Deletes messages sent by the bot.',
       details: oneLine`
         Deletes a specified number of messages sent by the bot.

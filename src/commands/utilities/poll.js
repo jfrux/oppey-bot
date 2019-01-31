@@ -6,7 +6,7 @@ module.exports = class PollCommand extends Command {
   constructor(client) {
     super(client, {
       name: "poll",
-      group: "utilities",
+      group: "polls",
       memberName: "poll",
       description: "Creates a poll with up to 10 choices.",
       examples: [

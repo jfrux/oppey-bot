@@ -6,7 +6,7 @@ module.exports = class mathCommand extends commando.Command {
         super(client, {
             name: 'math',
             aliases: ['calc'],
-            group: 'utilities',
+            group: 'util',
             memberName: 'math',
             description: 'Calculate anything',
             examples: ['math {equation to solve}', 'math -10 - abs(-3) + 2^5'],

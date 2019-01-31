@@ -6,7 +6,8 @@ module.exports = class extends Command {
       memberName: 'repo',
       guildOnly: false,
       description: "Search for a fork of Openpilot",
-      group: "search",
+      group: "knowledge",
+      hidden: true,
       usage: "<prefix>repo <search>",
       aliases: ["repo","fork"],
       roles: ["Community Member"]

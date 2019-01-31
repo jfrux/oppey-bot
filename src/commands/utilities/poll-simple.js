@@ -5,12 +5,12 @@ const path = require("path");
 module.exports = class VoteCommand extends Command {
   constructor(client) {
     super(client, {
-      name: "yes-or-no",
-      group: "utilities",
-      memberName: "yes-or-no",
+      name: "yesno",
+      group: "polls",
+      memberName: "yesno",
       description: "Starts a yes/no poll.",
-      examples: ['yes-or-no "Do you like to vote?" 5'],
-      aliases: ['yesno','yesorno'],
+      examples: ['yesno "Do you like to vote?" 5'],
+      aliases: ['yes-or-no','yesno','yesorno'],
       args: [
         {
           key: "question",

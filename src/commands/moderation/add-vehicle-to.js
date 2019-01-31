@@ -5,6 +5,7 @@ module.exports = class ProfileCommand extends Command {
 		super(client, {
 			name: 'add-vehicle-to',
       group: 'moderation',
+      userPermissions: ['MANAGE_MESSAGES'],
       memberName: 'add-vehicle-to',
       guildOnly: true,
 			description: 'Adds a vehicle to a user\'s profile.',

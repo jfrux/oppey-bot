@@ -12,7 +12,7 @@ module.exports = class GoogleCommand extends Command {
 		super(client, {
 			name: 'search',
 			aliases: ['s','find','lookup'],
-			group: 'search',
+			group: 'knowledge',
 			memberName: 'search',
 			description: 'Searches for relevant content from the community returning the top result.',
 			args: [

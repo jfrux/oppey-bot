@@ -6,7 +6,7 @@ module.exports = class extends Command {
       memberName: 'history',
       guildOnly: false,
       description: "Search for Discord history from the archives.",
-      group: "search",
+      group: "knowledge",
       usage: "<prefix>history <search>",
       roles: ["Community Member"]
     });
