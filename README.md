@@ -15,7 +15,9 @@ We welcome pull requests.
 You also need the bot's token. This was created by jfrux in his Discord account. 
 
 `git clone https://github.com/openpilot-community/oppey-bot.git`
+
 `cd oppey-bot`
+
 `yarn install`
 
 You will need to provide your own bot token from the Discord Developer Portal so you can test your Oppey bot changes with your own instance.
