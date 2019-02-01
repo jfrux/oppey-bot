@@ -28,6 +28,7 @@ client.on("commandCancelled",(command, reason, message) => {
 });
 
 client.on("commandInvalid", (command, message) => {
+  console.log("COMMAND INVALID!");
   command.reactSentErrorDM(message);
   // setTimeout(() => {
   //   message.delete(500);
@@ -35,10 +36,8 @@ client.on("commandInvalid", (command, message) => {
   return false;
 });
 client.on("commandError", (command, err, message, args, fromPattern) => {
-  console.log("error:",err);
-  if (message.guild && message.guild.emojis) {
-    command.reactSentErrorDM(message);
-  }
+  console.log("COMMAND INVALID!");
+  command.reactSentErrorDM(message);
   // setTimeout(() => {
   //   message.delete(500);
   // },10000);
