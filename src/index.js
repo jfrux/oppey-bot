@@ -36,9 +36,9 @@ client.on("commandInvalid", (command, message) => {
 });
 client.on("commandError", (command, err, message, args, fromPattern) => {
   console.log("error:",err);
-  // if (message) {
-  //   command.reactSentErrorDM(message);
-  // }
+  if (message.guild && message.guild.emojis) {
+    command.reactSentErrorDM(message);
+  }
   // setTimeout(() => {
   //   message.delete(500);
   // },10000);
