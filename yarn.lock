@@ -46,9 +46,9 @@
     universal-user-agent "^2.0.1"
 
 "@octokit/rest@^16.13.4":
-  version "16.14.0"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.14.0.tgz#18d0223589b65ba46e0bd2c4aa4cb6d4c0d1d7cd"
-  integrity sha512-PxKd+mAdgTTXQCgKm7HaEWX0+7Quf00cDsM0cFnW2o0y835TEuTAu3TMzmGsi+CqF8sAHeFKi+RJu6wkRr1uaA==
+  version "16.14.1"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.14.1.tgz#d7c65be7b8c78c889b121619422e7cf5335b1239"
+  integrity sha512-etBdt7br4aSUmgTnaO3pRodzVLhwGQTqUbMrEIdFBGjWlJYfoTa9LieIAtdig6UaDs6InPk0isguPZxU7vCTlQ==
   dependencies:
     "@octokit/request" "2.3.0"
     before-after-hook "^1.2.0"
@@ -853,16 +853,16 @@ diff@^3.5.0:
   resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
   integrity sha512-A46qtFgd+g7pDZinpnwiRJtxbC1hpgf0uzP3iG89scHk0AUC7A1TGxf5OiiOUv/JMZR8GOt8hL900hV0bOy5xA==
 
-"discord.js-commando@git+https://github.com/jfrux/Commando.git#feature/dm-versus-reply-invalid-cmd":
+"discord.js-commando@https://github.com/discordjs/Commando.git":
   version "0.11.0-dev"
-  resolved "git+https://github.com/jfrux/Commando.git#e95acefeb66e961af13489bbdac64628d8166222"
+  resolved "https://github.com/discordjs/Commando.git#3dfe6588918e683133bfaf2178f991a1f365ffd4"
   dependencies:
     common-tags "^1.8.0"
     require-all "^3.0.0"
 
-"discord.js-commando@https://github.com/discordjs/Commando.git":
+discord.js-commando@jfrux/Commando.git#feature/dm-versus-reply-invalid-cmd:
   version "0.11.0-dev"
-  resolved "https://github.com/discordjs/Commando.git#3dfe6588918e683133bfaf2178f991a1f365ffd4"
+  resolved "https://codeload.github.com/jfrux/Commando/tar.gz/4cfc456101ed0c95b13e5a43829a0b634486bf1d"
   dependencies:
     common-tags "^1.8.0"
     require-all "^3.0.0"
@@ -1970,9 +1970,9 @@ lodash@^4.13.1, lodash@^4.15.0, lodash@^4.17.1, lodash@^4.17.10, lodash@^4.17.11
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
 
 logform@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/logform/-/logform-2.1.1.tgz#7461e8445c1528adb4e9ae2cf277ba3b64b84ff1"
-  integrity sha512-PARKXBrI4Mf3FTB7yDW/CPAHbbtqTYbzBVk58F8wXX3q3sGbmbkLjksbAxkKCh4GNtq0En1YMJYzMeeyxOKUBg==
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/logform/-/logform-2.1.2.tgz#957155ebeb67a13164069825ce67ddb5bb2dd360"
+  integrity sha512-+lZh4OpERDBLqjiwDLpAWNQu6KMjnlXH2ByZwCuSqVPJletw0kTWJf5CgSNAUKn1KUkv3m2cUz/LK8zyEy7wzQ==
   dependencies:
     colors "^1.2.1"
     fast-safe-stringify "^2.0.4"

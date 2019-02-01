@@ -28,7 +28,7 @@ client.on("commandCancelled",(command, reason, message) => {
 });
 
 client.on("commandInvalid", (command, message) => {
-  console.log("COMMAND INVALID!");
+  console.log("COMMAND INVALID!",message);
   command.reactSentErrorDM(message);
   // setTimeout(() => {
   //   message.delete(500);

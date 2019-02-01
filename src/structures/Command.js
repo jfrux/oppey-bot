@@ -11,14 +11,12 @@ module.exports = class extends Command {
 
   async reactSentDM(message) {
     console.log(message);
-    if (!message.guild) return;
     const emoji = await message.guild.emojis.find(emoji => emoji.name === 'command_success_check_your_dm');
 
     await message.react(emoji);
   }
   async reactSentErrorDM(message) {
     console.log(message);
-    if (!message.guild) return;
     const emoji = await message.guild.emojis.find(emoji => emoji.name === 'command_error_check_your_dm');
     await message.react(emoji);
   }
