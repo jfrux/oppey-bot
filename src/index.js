@@ -35,7 +35,10 @@ client.on("commandInvalid", (command, message) => {
   return false;
 });
 client.on("commandError", (command, err, message, args, fromPattern) => {
-  command.reactSentErrorDM(message);
+  console.log("error:",err);
+  // if (message) {
+  //   command.reactSentErrorDM(message);
+  // }
   // setTimeout(() => {
   //   message.delete(500);
   // },10000);

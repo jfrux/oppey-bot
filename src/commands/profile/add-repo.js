@@ -64,18 +64,22 @@ ${client.commandPrefix}profile-add-repo owner_name/repo_name'
       const ownername = repoParts[0];
       const reponame = repoParts[1];
       let ghRepo = await github.repos.get({owner:ownername, repo:reponame});
+      const { login, avatar_url, url } = ghRepo.data.owner;
       
+
       dbRepo = await Repository.create({ 
-        name: ghRepo.name,
-        full_name: ghRepo.full_name,
-        owner_login: ghRepo.owner.login,
-        owner_avatar_url: ghRepo.owner.avatar_url,
-        owner_url: ghRepo.owner.url,
-        url: ghRepo.html_url
+        name: ghRepo.data.name,
+        full_name: ghRepo.data.full_name,
+        owner_login: login,
+        owner_avatar_url: avatar_url,
+        owner_url: url,
+        url: ghRepo.data.html_url,
+        created_at: new Date(),
+        updated_at: new Date()
       });
     }
 
-    console.log('dbRepoId',dbRepo);
+    // console.log('dbRepoId',dbRepo);
 
     let user_repo = {
       discord_user_id: user.id,
@@ -88,12 +92,13 @@ ${client.commandPrefix}profile-add-repo owner_name/repo_name'
     let repoMatches = await user.discord_user_repositories.where(user_repo);
     
     if (repoMatches.length) {
+      this.reactSentDM(message);
       message.reply(`:white_check_mark:  **${repo}** is already in your favorite repositories.`);
       return;
     }
 
     const userRepos = await user.discord_user_repositories;
     await userRepos.create(user_repo);
-    message.reply(`:white_check_mark:  **${repo}** is now in your favorite repositories.`);
+    message.reply(`:white_check_mark: **${repo}** is now in your favorite repositories.`);
   }
 }
