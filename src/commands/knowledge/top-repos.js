@@ -47,7 +47,7 @@ module.exports = class ProfileCommand extends Command {
     });
 
     console.log(reposFound);
-    message.channel.send(stripIndents`Here are the top ${reposFound.length} ${reponame} repos:
+    message.channel.send(stripIndents`Here are the top favorited ${reposFound.length} ${reponame} repos:
     ${reposFound.join('\n')}`);
 	}
 };
