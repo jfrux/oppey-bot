@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando');
+const Command = require('../../structures/Command.js');
 const { oneLine } = require('common-tags');
 const { MessageEmbed } = require('discord.js');
 
@@ -11,7 +11,7 @@ module.exports = class WarnCommand extends Command {
       userPermissions: ['KICK_MEMBERS'],
       description: 'Warns a user.',
       details: oneLine`
-        Warning a user is useful for minor, first time rule violations.
+        Warning a user is useful for minor, first time issues.
         This command warns a user, DMs the user warned, and posts in the mod log channel.
         Permission is locked to moderators and above.
 			`,
@@ -19,12 +19,14 @@ module.exports = class WarnCommand extends Command {
       args: [{
         key: 'user',
         label: 'user',
+        wait: 0,
         prompt: 'Who would you like to warn? Please mention one only.',
         type: 'user',
         infinite: false
       },
       {
         key: 'reason',
+        wait: 0,
         label: 'reason',
         prompt: 'Why is the user being warned?',
         type: 'string',
@@ -44,7 +46,7 @@ module.exports = class WarnCommand extends Command {
     }
     args.user.send(`:oncoming_police_car:`);
     args.user.send(`**WOOOP WOOOP! Oppey here...**
-I just figured I'd give you a friend heads up...
+I just figured I'd give you a friendly heads up...
 One of our community staff have placed a warning alert on your profile due to the following:
 \`\`\`diff
 - ${args.reason}

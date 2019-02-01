@@ -1,6 +1,8 @@
 const Command = require('../../structures/Command');
 const inflection = require("inflection");
-
+/**
+ * TODO: This could easily be added to the other remove-vehicle command doing similar "user" swapping property
+ * */ 
 module.exports = class ProfileCommand extends Command {
 	constructor(client) {
 		super(client, {

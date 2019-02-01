@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando');
+const Command = require('../../structures/Command.js');
 const { oneLine } = require('common-tags');
 
 module.exports = class PruneCommand extends Command {
@@ -37,7 +37,6 @@ module.exports = class PruneCommand extends Command {
     console.log("msgArray:",msgArray);
     msgArray.length = messagecount + 1;
     msgArray.map(m => m.delete().catch(console.error));
-    message.channel.send(`:fire: I'm removing **__my__** last ${messagecount} messages.`);
-
+    // message.channel.send(`:fire: I'm removing **__my__** last ${messagecount} messages.`);
   }
 };

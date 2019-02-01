@@ -116,7 +116,7 @@ module.exports = class extends Command {
     });
     super(client, {
       ...info,
-      group: 'github',
+      group: 'experimental',
       name: commandName,
       memberName: commandName,
       description: commandDescription,

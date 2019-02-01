@@ -7,14 +7,14 @@ const markdown = new Markdown();
 const querystring = require('querystring');
 const { GOOGLE_KEY, GOOGLE_CUSTOM_SEARCH_ID } = process.env;
 
-module.exports = class GoogleCommand extends Command {
+module.exports = class CommunityWebSearchCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'search',
 			aliases: ['s','find','lookup'],
 			group: 'knowledge',
 			memberName: 'search',
-			description: 'Searches for relevant content from the community returning the top result.',
+			description: 'Searches for relevant content from the community returning the top result from opc.ai and community.comma.ai.',
 			args: [
 				{
 					key: 'query',

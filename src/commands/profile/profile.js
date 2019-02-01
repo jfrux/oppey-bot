@@ -22,28 +22,25 @@ module.exports = class ProfileCommand extends Command {
 	}
 
 	async run(message, { user }) {
-    const client = this.client;
     const isDM = message.channel.type === "dm";
-    const DiscordUser = client.orm.Model('DiscordUser');
-    // const User = client.orm.Model("User");
-    let discordUserModel = await DiscordUser.find(user.id);
+    let discordUserModel = await this.fetchDbUser(user);
     let userProfile = await discordUserModel.user;
     let isSelf = (message.author.id === user.id);
-    if (!discordUserModel) {
-      console.log("USER NOT FOUND, CREATING IT!");
-      discordUserModel = await DiscordUser.create({
-        id: user.id,
-        avatar: user.displayAvatarURL(),
-        username: user.username
-      });
-    }
 
     let profileData = [];
     const vehicles = await discordUserModel.discord_user_vehicles;
+    const repositories = await discordUserModel.discord_user_repositories;
+
+    if (repositories) {
+      let repositoriesOutput = [];
+
+    }
     if (vehicles) {
       let vehiclesOutput = [];
       vehicles.forEach((vehicle) => {
-        console.log("vehicle:",vehicle)
+        if (vehicle.vehicle_config) {
+          console.log("has_vehicle_config:",vehicle.vehicle_config);
+        }
         let vehicleString = [];
         if (vehicle.vehicle_year) {
           vehicleString.push(vehicle.vehicle_year);
@@ -126,10 +123,11 @@ module.exports = class ProfileCommand extends Command {
     });
     if (isDM) return;
     if (isSelf) {
-      let newMessage = await message.reply("I just sent you a DM with your profile info.");
-      setTimeout(() => {
-        newMessage.delete(500);
-      },5000);
+      this.reactSentDM(message);
+      // let newMessage = await message.reply("I just sent you a DM with your profile info.");
+      // setTimeout(() => {
+      //   newMessage.delete(500);
+      // },5000);
     } else {
       message.delete(500);
     }

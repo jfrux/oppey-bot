@@ -1,11 +1,14 @@
 const Command = require('../../structures/Command');
 const inflection = require("inflection");
+/**
+ * TODO: This could easily be added to the other add-vehicle command doing similar "user" swapping property
+ * */ 
 module.exports = class ProfileCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'add-vehicle-to',
       group: 'moderation',
-      userPermissions: ['MANAGE_MESSAGES'],
+      userPermissions: ['MANAGE_NICKNAMES'],
       memberName: 'add-vehicle-to',
       guildOnly: true,
 			description: 'Adds a vehicle to a user\'s profile.',

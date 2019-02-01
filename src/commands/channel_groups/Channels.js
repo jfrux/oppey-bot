@@ -86,9 +86,9 @@ module.exports = class extends Command {
       rolesString = rolesString.concat('```');
     });
     if (!roleChoice) {
-      message.channel.send(`Hey ${member}! ${hitOnDm}`);
+      await this.reactSentDM(message);
       
-      member.send(`Here are the available channel groups...
+      await member.send(`Here are the available channel groups...
 ${rolesString}
 ${footer}`);
       return
@@ -100,11 +100,11 @@ ${footer}`);
       let myRole = message.guild.roles.find(role => role.name === selectedRole);
       if (myRole) {
         if(member.roles.has(myRole.id)) {
-          member.roles.remove(myRole).catch(console.error);
-          message.reply(`You have **left** the **${selectedRole}** channel group.`)
+          await member.roles.remove(myRole).catch(console.error);
+          await message.reply(`You have **left** the **${selectedRole}** channel group.`)
         } else {
-          member.roles.add(myRole).catch(console.error);
-          message.reply(`You have **joined** the **${selectedRole}** channel group.`)
+          await member.roles.add(myRole).catch(console.error);
+          await message.reply(`You have **joined** the **${selectedRole}** channel group.`)
         }
         return
       }

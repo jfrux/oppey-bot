@@ -17,12 +17,12 @@ const commaWiki = new MediaWiki({
 })
 
 Promise.promisifyAll( commaWiki );
-module.exports = class WikiCommand extends commando.Command {
+module.exports = class CommaWikiSearch extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'wiki',
       hidden: true,
-      group: 'search',
+      group: 'knowledge',
       memberName: 'wiki',
       description: 'Search the Comma.ai Wiki and return top result.',
       examples: ['wiki Giraffe', 'wiki Install Openpilot'],

@@ -16,9 +16,8 @@ const client = new Client({
 	commandPrefix: OPPEY_PREFIX,
 	owner: OWNERS.split(','),
 	invite: INVITE,
-  disableEveryone: true,
-	unknownCommandResponse: false,
-	disabledEvents: ['TYPING_START']
+  disableEveryone: true
+	// disabledEvents: ['TYPING_START']
 });
 // client.reactionHandler = reactionHandler;
 
@@ -26,7 +25,21 @@ client.setProvider(new KeyvProvider(new Keyv(DATABASE_URL, { table: 'discord_cac
 client.on("commandCancelled",(command, reason, message) => {
   message.delete(500);
   return false;
-})
+});
+
+client.on("commandInvalid", (command, reason, message) => {
+  console.error("COMMAND BLOCKED!");
+  if (reason === 'usage') {
+    command.reactSentErrorDM(message);
+    setTimeout(() => {
+      message.delete(500);
+    },10000);
+  }
+  return false;
+});
+
+// client.dispatcher.addInhibitor((message) => message.channel.id === process.env.NUMBER_CHANNEL_ID);
+
 client.registry
   .registerDefaultTypes()
   .registerGroups([
@@ -36,11 +49,10 @@ client.registry
 		['knowledge', 'Knowledge Base'],
 		['polls', 'Polls'],
 		['moderation', 'Moderation Commands'],
-		['github', 'GitHub'],
 		['info', 'Discord Information'],
     ['commands', 'Commands'],
     ['util', 'Utilities'],
-		['other', 'Other']
+		['experimental', 'Experimental']
   ])
   .registerDefaultCommands({
     help: true,

@@ -5,7 +5,7 @@ module.exports = class ProfileCommand extends Command {
 		super(client, {
 			name: 'who-drives',
 			memberName: 'who-drives',
-      group: 'moderation',
+      group: 'knowledge',
       guildOnly: false,
       aliases: ['looking-for'],
       userPermissions: ['MANAGE_MESSAGES'],
