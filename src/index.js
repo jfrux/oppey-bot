@@ -27,7 +27,7 @@ client.on("commandCancelled",(command, reason, message) => {
   return false;
 });
 
-client.on("commandInvalid", (command, reason, message) => {
+client.on("commandInvalid", (command, message) => {
   console.error("COMMAND BLOCKED!");
   if (reason === 'usage') {
     command.reactSentErrorDM(message);
