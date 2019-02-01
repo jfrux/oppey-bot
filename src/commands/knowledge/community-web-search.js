@@ -49,20 +49,20 @@ module.exports = class CommunityWebSearchCommand extends Command {
 		return msg.channel.send(searchEmbed);
 	}
 
-	async searchGoogle(query, nsfw) {
-    console.log("searchingGoogle:",query);
-		const { text } = await request
-			.get('https://www.google.com/search')
-			.query({
-				safe: nsfw ? 'off' : 'on',
-				q: query
-			});
-		const $ = cheerio.load(text);
-		let href = $('.r').first().find('a').first().attr('href');
-		if (!href) return null;
-		href = querystring.parse(href.replace('/url?', ''));
-		return href.q;
-	}
+	// async searchGoogle(query, nsfw) {
+  //   console.log("searchingGoogle:",query);
+	// 	const { text } = await request
+	// 		.get('https://www.google.com/search')
+	// 		.query({
+	// 			safe: nsfw ? 'off' : 'on',
+	// 			q: query
+	// 		});
+	// 	const $ = cheerio.load(text);
+	// 	let href = $('.r').first().find('a').first().attr('href');
+	// 	if (!href) return null;
+	// 	href = querystring.parse(href.replace('/url?', ''));
+	// 	return href.q;
+	// }
 
 	async customSearch(query, nsfw) {
     console.log("customSearch:",query);

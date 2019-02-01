@@ -28,16 +28,19 @@ client.on("commandCancelled",(command, reason, message) => {
 });
 
 client.on("commandInvalid", (command, message) => {
-  console.error("COMMAND BLOCKED!");
-  if (reason === 'usage') {
-    command.reactSentErrorDM(message);
-    setTimeout(() => {
-      message.delete(500);
-    },10000);
-  }
+  command.reactSentErrorDM(message);
+  // setTimeout(() => {
+  //   message.delete(500);
+  // },10000);
   return false;
 });
-
+client.on("commandError", (command, err, message, args, fromPattern) => {
+  command.reactSentErrorDM(message);
+  // setTimeout(() => {
+  //   message.delete(500);
+  // },10000);
+  return false;
+});
 // client.dispatcher.addInhibitor((message) => message.channel.id === process.env.NUMBER_CHANNEL_ID);
 
 client.registry
