@@ -1,4 +1,8 @@
 const { DMChannel } = require("discord.js");
+const dialogflow = require('dialogflow');
+const { DIALOGFLOW_PROJECT_ID } = process.env;
+
+const uuid = require('uuid');
 module.exports = async (client,message) => {
   const DiscordUser = client.orm.Model('DiscordUser');
   const DiscordMessage = client.orm.Model('DiscordMessage');
@@ -34,5 +38,42 @@ module.exports = async (client,message) => {
     }
   } catch (e) {
     console.error("Failed to update last seen...",e);
+  }
+  if (message.channel.name === "ask-oppey-the-bot") {
+    // A unique identifier for the given session
+    const sessionId = uuid.v4();
+    // Create a new session
+    const sessionClient = new dialogflow.SessionsClient();
+    console.log("PROJECT_ID:",DIALOGFLOW_PROJECT_ID);
+    console.log("sessionId:",sessionId);
+    const sessionPath = sessionClient.sessionPath(DIALOGFLOW_PROJECT_ID, sessionId);
+    // The text query request.
+    const request = {
+      session: sessionPath,
+      queryInput: {
+        text: {
+          // The query to send to the dialogflow agent
+          text: message.content,
+          // The language used by the client (en-US)
+          languageCode: 'en-US',
+        },
+      },
+    };
+
+    // Send request and log result
+    const responses = await sessionClient.detectIntent(request);
+    // console.log('Detected intent');
+    const result = responses[0].queryResult;
+    // console.log(`  Query: ${result.queryText}`);
+    // console.log(`  Response: ${result.fulfillmentText}`);
+    
+    
+    if (result.intent) {
+      if (result.intent.displayName !== 'Default Fallback Intent') {
+        message.reply(result.fulfillmentText);
+      }
+    } else {
+      console.log(`  No intent matched.`);
+    }
   }
 };

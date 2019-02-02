@@ -32,6 +32,7 @@
     "chalk": "^2.4.1",
     "commando-provider-keyv": "^2.0.1",
     "common-tags": "^1.8.0",
+    "dialogflow": "^0.8.0",
     "discord.js-commando": "jfrux/Commando.git#feature/dm-versus-reply-invalid-cmd",
     "dotenv": "^6.2.0",
     "glob": "^7.1.3",
