@@ -1,6 +1,6 @@
 const { DMChannel } = require("discord.js");
 const dialogflow = require('dialogflow');
-const { DIALOGFLOW_PROJECT_ID } = process.env;
+const { DIALOGFLOW_PROJECT_ID, DIALOGFLOW_CREDENTIALS_EMAIL, DIALOGFLOW_CREDENTIALS_PRIVATE_KEY } = process.env;
 
 const uuid = require('uuid');
 module.exports = async (client,message) => {
@@ -43,7 +43,12 @@ module.exports = async (client,message) => {
     // A unique identifier for the given session
     const sessionId = uuid.v4();
     // Create a new session
-    const sessionClient = new dialogflow.SessionsClient();
+    const sessionClient = new dialogflow.SessionsClient({
+      credentials: {
+        client_email: DIALOGFLOW_CREDENTIALS_EMAIL,
+        private_key: DIALOGFLOW_CREDENTIALS_PRIVATE_KEY.replace(/\\n/g, '\n')
+      }
+    });
     console.log("PROJECT_ID:",DIALOGFLOW_PROJECT_ID);
     console.log("sessionId:",sessionId);
     const sessionPath = sessionClient.sessionPath(DIALOGFLOW_PROJECT_ID, sessionId);
