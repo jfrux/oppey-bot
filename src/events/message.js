@@ -10,36 +10,45 @@ module.exports = async (client,message) => {
   const excludeUsers = require("../constants/exclude_users.js");
   const isDM = message.channel instanceof DMChannel;
   const isCommand = message.content.startsWith(`${client.commandPrefix}history`) || message.content.startsWith(`${client.commandPrefix} history`);
-  if (isCommand || isDM || excludeUsers.includes(parseInt(message.author.id)) || excludeChannels.includes(parseInt(message.channel.id))) {
+  if (message.author == client.user) {
     return;
   }
-  try {
-    let discordMessageModel = DiscordMessage.create({
-      id: message.id,
-      content: message.content,
-      discord_user_id: message.author.id,
-      discord_channel_id: message.channel.id,
-      attachment_ids: {
-        ...message.attachments.array()
-      },
-      jump_url: message.url
-    });
-  } catch (e) {
-    console.error("Failed to archive message...",e);
-  }
-  
-  try {
-    let discordUserModel = DiscordUser.find(message.author.id);
-    if (discordUserModel) {
-      discordUserModel.update({
-        last_seen_at: new Date(),
-        last_seen_in: message.channel.id
+
+  // Check if the bot's user was tagged in the message
+  const didMentionOppey = message.content.includes(client.user.toString());
+  // console.log("didMentionOppey:",didMentionOppey);
+  if (!isCommand && !isDM && !excludeUsers.includes(parseInt(message.author.id)) && !excludeChannels.includes(parseInt(message.channel.id))) {
+    try {
+      let discordMessageModel = DiscordMessage.create({
+        id: message.id,
+        content: message.content,
+        discord_user_id: message.author.id,
+        discord_channel_id: message.channel.id,
+        attachment_ids: {
+          ...message.attachments.array()
+        },
+        jump_url: message.url
       });
+    } catch (e) {
+      console.error("Failed to archive message...",e);
     }
-  } catch (e) {
-    console.error("Failed to update last seen...",e);
+
+    try {
+      let discordUserModel = DiscordUser.find(message.author.id);
+      if (discordUserModel) {
+        discordUserModel.update({
+          last_seen_at: new Date(),
+          last_seen_in: message.channel.id
+        });
+      }
+    } catch (e) {
+      console.error("Failed to update last seen...",e);
+    }
   }
-  if (message.channel.name === "ask-oppey-the-bot") {
+  const isBotChannel = message.channel.name === 'ask-oppey-the-bot';
+  const hasQuestionMark = message.content.includes("?");
+  if (isDM || didMentionOppey || isBotChannel) {
+    const plainMessage = message.content.replace(client.user,'');
     // A unique identifier for the given session
     const sessionId = uuid.v4();
     // Create a new session
@@ -58,7 +67,7 @@ module.exports = async (client,message) => {
       queryInput: {
         text: {
           // The query to send to the dialogflow agent
-          text: message.content,
+          text: plainMessage,
           // The language used by the client (en-US)
           languageCode: 'en-US',
         },
@@ -71,14 +80,28 @@ module.exports = async (client,message) => {
     const result = responses[0].queryResult;
     // console.log(`  Query: ${result.queryText}`);
     // console.log(`  Response: ${result.fulfillmentText}`);
-    
-    
-    if (result.intent) {
-      if (result.intent.displayName !== 'Default Fallback Intent') {
-        message.reply(result.fulfillmentText);
-      }
-    } else {
-      console.log(`  No intent matched.`);
+    console.log(responses);
+    const isDefaultIntent = result.intent ? result.intent.displayName === 'Default Fallback Intent' : false;
+    const responseText = result.fulfillmentText;
+    let responseFunction;
+
+    if (isDM) {
+      // responseFunction = message.reply;
+      message.author.send(responseText);
     }
+    if (isBotChannel && didMentionOppey) {
+      // responseFunction = message.channel.send;
+      message.channel.send(responseText);
+    } else if (isBotChannel && hasQuestionMark) {
+      message.channel.send(responseText);
+    }
+    if (!isBotChannel && didMentionOppey) {
+      // responseFunction = message.reply;
+      message.reply(responseText);
+    }
+    
+    // console.log(responseFunction);
+    // console.log(responseText);
+    // await responseFunction(responseText);
   }
 };
