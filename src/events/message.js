@@ -89,6 +89,7 @@ module.exports = async (client,message) => {
       // responseFunction = message.reply;
       message.author.send(responseText);
     }
+
     if (isBotChannel && didMentionOppey) {
       // responseFunction = message.channel.send;
       message.channel.send(responseText);
@@ -97,7 +98,11 @@ module.exports = async (client,message) => {
     }
     if (!isBotChannel && didMentionOppey) {
       // responseFunction = message.reply;
-      message.reply(responseText);
+      message.channel.send(responseText);
+    }
+
+    if (isBotChannel || isDM) {
+      message.channel.send(responseText);
     }
     
     // console.log(responseFunction);
