@@ -15,7 +15,7 @@ module.exports = async (client,message) => {
   }
 
   // Check if the bot's user was tagged in the message
-  const didMentionOppey = message.content.includes(client.user.toString());
+  const didMentionOppey = message.content.includes(client.user.toString()) || message.content.includes("Oppey");
   // console.log("didMentionOppey:",didMentionOppey);
   if (!isCommand && !isDM && !excludeUsers.includes(parseInt(message.author.id)) && !excludeChannels.includes(parseInt(message.channel.id))) {
     try {
@@ -48,7 +48,7 @@ module.exports = async (client,message) => {
   const isBotChannel = message.channel.name === 'ask-oppey-the-bot';
   const hasQuestionMark = message.content.includes("?");
   if (isDM || didMentionOppey || isBotChannel) {
-    const plainMessage = message.content.replace(client.user,'');
+    const plainMessage = message.content.replace(client.user,'Oppey');
     // A unique identifier for the given session
     const sessionId = uuid.v4();
     // Create a new session
