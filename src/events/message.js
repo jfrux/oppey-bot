@@ -15,7 +15,7 @@ module.exports = async (client,message) => {
   }
 
   // Check if the bot's user was tagged in the message
-  const didMentionOppey = message.content.includes(client.user.toString()) || message.content.includes("Oppey") || message.content.includes("oppey-bot");
+  const didMentionOppey = message.content.includes(client.user.toString()) || message.content.includes("Oppey") || message.content.includes("Opps") || message.content.includes("oppey-bot");
   // console.log("didMentionOppey:",didMentionOppey);
   if (!isCommand && !isDM && !excludeUsers.includes(parseInt(message.author.id)) && !excludeChannels.includes(parseInt(message.channel.id))) {
     try {
@@ -45,11 +45,12 @@ module.exports = async (client,message) => {
       console.error("Failed to update last seen...",e);
     }
   }
+
   const isBotChannel = message.channel.name === 'ask-oppey-the-bot';
   const hasQuestionMark = message.content.includes("?");
-  if (isDM || didMentionOppey || isBotChannel) {
-    const plainMessage = message.content.replace(client.user,'Oppey');
-    // A unique identifier for the given session
+  let plainMessage;
+  if (isDM || didMentionOppey || isBotChannel || hasQuestionMark) {
+    plainMessage = message.content.replace('Oppey','');
     const sessionId = uuid.v4();
     // Create a new session
     const sessionClient = new dialogflow.SessionsClient({
@@ -58,8 +59,6 @@ module.exports = async (client,message) => {
         private_key: DIALOGFLOW_CREDENTIALS_PRIVATE_KEY.replace(/\\n/g, '\n')
       }
     });
-    console.log("PROJECT_ID:",DIALOGFLOW_PROJECT_ID);
-    console.log("sessionId:",sessionId);
     const sessionPath = sessionClient.sessionPath(DIALOGFLOW_PROJECT_ID, sessionId);
     // The text query request.
     const request = {
@@ -80,7 +79,6 @@ module.exports = async (client,message) => {
     const result = responses[0].queryResult;
     // console.log(`  Query: ${result.queryText}`);
     // console.log(`  Response: ${result.fulfillmentText}`);
-    console.log(responses);
     const isDefaultIntent = result.intent ? result.intent.displayName === 'Default Fallback Intent' : false;
     const responseText = result.fulfillmentText;
     let responseFunction;
