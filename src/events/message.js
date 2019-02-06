@@ -47,10 +47,10 @@ module.exports = async (client,message) => {
   }
 
   const isBotChannel = message.channel.name === 'ask-oppey-the-bot';
-  const hasQuestionMark = message.content.includes("?");
+  const hasQuestionMark = message.content.includes("?") || message.content.endsWith("?");
   let plainMessage;
   if (isDM || didMentionOppey || isBotChannel || hasQuestionMark) {
-    plainMessage = message.content.replace('Oppey','');
+    plainMessage = message.content;
     const sessionId = uuid.v4();
     // Create a new session
     const sessionClient = new dialogflow.SessionsClient({
@@ -77,8 +77,8 @@ module.exports = async (client,message) => {
     const responses = await sessionClient.detectIntent(request);
     // console.log('Detected intent');
     const result = responses[0].queryResult;
-    // console.log(`  Query: ${result.queryText}`);
-    // console.log(`  Response: ${result.fulfillmentText}`);
+    console.log(`Query: ${result.queryText}`);
+    console.log(`Response: ${result.fulfillmentText}`);
     const isDefaultIntent = result.intent ? result.intent.displayName === 'Default Fallback Intent' : false;
     const responseText = result.fulfillmentText;
     let responseFunction;
