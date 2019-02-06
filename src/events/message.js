@@ -93,16 +93,20 @@ module.exports = async (client,message) => {
     if (isBotChannel && didMentionOppey) {
       // responseFunction = message.channel.send;
       message.channel.send(responseText);
+      return;
     } else if (isBotChannel && hasQuestionMark) {
       message.channel.send(responseText);
+      return;
     }
     if (!isBotChannel && didMentionOppey) {
       // responseFunction = message.reply;
       message.channel.send(responseText);
+      return;
     }
 
     if (isBotChannel || isDM) {
       message.channel.send(responseText);
+      return;
     }
     
     // console.log(responseFunction);
