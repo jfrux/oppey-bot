@@ -15,7 +15,7 @@ module.exports = async (client,message) => {
   }
 
   // Check if the bot's user was tagged in the message
-  const didMentionOppey = message.content.includes(client.user.toString()) || message.content.includes("Oppey");
+  const didMentionOppey = message.content.includes(client.user.toString()) || message.content.includes("Oppey") || message.content.includes("oppey-bot");
   // console.log("didMentionOppey:",didMentionOppey);
   if (!isCommand && !isDM && !excludeUsers.includes(parseInt(message.author.id)) && !excludeChannels.includes(parseInt(message.channel.id))) {
     try {
