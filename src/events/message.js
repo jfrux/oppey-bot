@@ -45,12 +45,10 @@ module.exports = async (client,message) => {
       console.error("Failed to update last seen...",e);
     }
   }
-
+  let cleanMessage = message.cleanContent;
   const isBotChannel = message.channel.name === 'ask-oppey-the-bot';
   const hasQuestionMark = message.content.includes("?") || message.content.endsWith("?");
-  let plainMessage;
   if (isDM || didMentionOppey || isBotChannel || hasQuestionMark) {
-    plainMessage = message.content;
     const sessionId = uuid.v4();
     // Create a new session
     const sessionClient = new dialogflow.SessionsClient({
@@ -66,7 +64,7 @@ module.exports = async (client,message) => {
       queryInput: {
         text: {
           // The query to send to the dialogflow agent
-          text: plainMessage,
+          text: cleanMessage,
           // The language used by the client (en-US)
           languageCode: 'en-US',
         },
@@ -79,10 +77,12 @@ module.exports = async (client,message) => {
     const result = responses[0].queryResult;
     console.log(`Query: ${result.queryText}`);
     console.log(`Response: ${result.fulfillmentText}`);
+    // console.dir(result);
     const isDefaultIntent = result.intent ? result.intent.displayName === 'Default Fallback Intent' : false;
     const responseText = result.fulfillmentText;
     let responseFunction;
 
+    if (!responseText) return;
     if (isDM) {
       // responseFunction = message.reply;
       message.author.send(responseText);
