@@ -1,11 +1,24 @@
+require('dotenv').config();
 const nhtsa = require('nhtsa');
 const { DATABASE_URL } = process.env;
+console.log("DATABASE_URL:",DATABASE_URL)
 const COLOR = require('chalk');
 const Store = require('openrecord/store/postgres')
 const models = require("../util/models.js");
 const path = require("path");
 module.exports = async (client) => {
   client.orm = new Store({
+    inflection: {
+      'django_content_types' : 'django_content_type',
+      'auth_permissions': 'auth_permission',
+      'auth_groups': 'auth_group',
+      'django_admin_logs': 'django_admin_log',
+      'auth_users': 'auth_user',
+      'untitled_tables': 'untitled_table',
+      'django_chatterbot_tags': 'django_chatterbot_tag',
+      'django_chatterbot_statements': 'django_chatterbot_statement',
+      'django_sessions': 'django_session'
+    },
     migrations: [
       require('../db/migrations/20190122090701_add_initial_structure.js'),
       require('../db/migrations/20190122090705_add_field_to_discord_users.js'),

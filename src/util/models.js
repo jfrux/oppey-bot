@@ -57,4 +57,5 @@ module.exports = (client) => {
   store.Model('Guide', function(){
 
   });
+
 };

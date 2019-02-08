@@ -1,7 +1,9 @@
 const { DMChannel } = require("discord.js");
 const dialogflow = require('dialogflow');
-const { DIALOGFLOW_PROJECT_ID, DIALOGFLOW_CREDENTIALS_EMAIL, DIALOGFLOW_CREDENTIALS_PRIVATE_KEY } = process.env;
+const fetch = require('node-fetch');
 
+const { DIALOGFLOW_PROJECT_ID, DIALOGFLOW_CREDENTIALS_EMAIL, DIALOGFLOW_CREDENTIALS_PRIVATE_KEY } = process.env;
+const ML_MODE = "oppey_ml";
 const uuid = require('uuid');
 module.exports = async (client,message) => {
   const DiscordUser = client.orm.Model('DiscordUser');
@@ -47,42 +49,56 @@ module.exports = async (client,message) => {
   }
   let cleanMessage = message.cleanContent;
   const isBotChannel = message.channel.name === 'ask-oppey-the-bot';
+  let responseText;
   const hasQuestionMark = message.content.includes("?") || message.content.endsWith("?");
   if (isDM || didMentionOppey || isBotChannel || hasQuestionMark) {
-    const sessionId = uuid.v4();
-    // Create a new session
-    const sessionClient = new dialogflow.SessionsClient({
-      credentials: {
-        client_email: DIALOGFLOW_CREDENTIALS_EMAIL,
-        private_key: DIALOGFLOW_CREDENTIALS_PRIVATE_KEY.replace(/\\n/g, '\n')
-      }
-    });
-    const sessionPath = sessionClient.sessionPath(DIALOGFLOW_PROJECT_ID, sessionId);
-    // The text query request.
-    const request = {
-      session: sessionPath,
-      queryInput: {
-        text: {
-          // The query to send to the dialogflow agent
-          text: cleanMessage,
-          // The language used by the client (en-US)
-          languageCode: 'en-US',
+    if (ML_MODE === "dialogflow") {
+      const sessionId = uuid.v4();
+      // Create a new session
+      const sessionClient = new dialogflow.SessionsClient({
+        credentials: {
+          client_email: DIALOGFLOW_CREDENTIALS_EMAIL,
+          private_key: DIALOGFLOW_CREDENTIALS_PRIVATE_KEY.replace(/\\n/g, '\n')
+        }
+      });
+      const sessionPath = sessionClient.sessionPath(DIALOGFLOW_PROJECT_ID, sessionId);
+      // The text query request.
+      const request = {
+        session: sessionPath,
+        queryInput: {
+          text: {
+            // The query to send to the dialogflow agent
+            text: cleanMessage,
+            // The language used by the client (en-US)
+            languageCode: 'en-US',
+          },
         },
-      },
-    };
+      };
 
-    // Send request and log result
-    const responses = await sessionClient.detectIntent(request);
-    // console.log('Detected intent');
-    const result = responses[0].queryResult;
-    console.log(`Query: ${result.queryText}`);
-    console.log(`Response: ${result.fulfillmentText}`);
-    // console.dir(result);
-    const isDefaultIntent = result.intent ? result.intent.displayName === 'Default Fallback Intent' : false;
-    const responseText = result.fulfillmentText;
+      // Send request and log result
+      const responses = await sessionClient.detectIntent(request);
+      // console.log('Detected intent');
+      const result = responses[0].queryResult;
+      console.log(`Query: ${result.queryText}`);
+      console.log(`Response: ${result.fulfillmentText}`);
+      // console.dir(result);
+      const isDefaultIntent = result.intent ? result.intent.displayName === 'Default Fallback Intent' : false;
+      responseText = result.fulfillmentText;
+    } else if (ML_MODE === "oppey_ml") {
+      const req = await fetch('http://0.0.0.0:8000/api/chat/', { 
+        method: 'POST', 
+        body: JSON.stringify({ text: cleanMessage }),
+        headers: { 'Content-Type': 'application/json' } 
+      });
+      const json = await req.json();
+      console.log("OppeyML Response:",json);
+      if (json && json.text) {
+      responseText = json.text;
+      }
+    }
     let responseFunction;
 
-    if (!responseText) return;
+    if (!responseText || isCommand) return;
     if (isDM) {
       // responseFunction = message.reply;
       message.author.send(responseText);
