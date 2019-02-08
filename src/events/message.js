@@ -85,7 +85,7 @@ module.exports = async (client,message) => {
       const isDefaultIntent = result.intent ? result.intent.displayName === 'Default Fallback Intent' : false;
       responseText = result.fulfillmentText;
     } else if (ML_MODE === "oppey_ml") {
-      const req = await fetch('http://0.0.0.0:8000/api/chat/', { 
+      const req = await fetch('https://oppey-ml-api.herokuapp.com/api/chat/', { 
         method: 'POST', 
         body: JSON.stringify({ text: cleanMessage }),
         headers: { 'Content-Type': 'application/json' } 
