@@ -85,15 +85,22 @@ module.exports = async (client,message) => {
       const isDefaultIntent = result.intent ? result.intent.displayName === 'Default Fallback Intent' : false;
       responseText = result.fulfillmentText;
     } else if (ML_MODE === "oppey_ml") {
-      const req = await fetch('https://oppey-ml-api.herokuapp.com/api/chat/', { 
-        method: 'POST', 
-        body: JSON.stringify({ text: cleanMessage }),
-        headers: { 'Content-Type': 'application/json' } 
-      });
-      const json = await req.json();
-      console.log("OppeyML Response:",json);
-      // if (json && json.text && json.text.length > 50) {
-      responseText = json.text;
+      console.log(`Sending request to Oppey ML...\n
+"${cleanMessage}"`)
+      try {
+        const req = await fetch('https://oppey-ml-api.herokuapp.com/api/chat/', { 
+          method: 'POST',
+          body: JSON.stringify({ text: cleanMessage }),
+          headers: { 'Content-Type': 'application/json' } 
+        });
+        const json = await req.json();
+        console.log("OppeyML Response:",json);
+        // if (json && json.text && json.text.length > 50) {
+        responseText = json.text;
+      } catch (e) {
+        console.log("Request to Oppey ML failed...",e);
+      }
+      
       // }
     }
     let responseFunction;
