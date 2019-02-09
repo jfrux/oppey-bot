@@ -92,9 +92,9 @@ module.exports = async (client,message) => {
       });
       const json = await req.json();
       console.log("OppeyML Response:",json);
-      if (json && json.text && json.text.length > 50) {
+      // if (json && json.text && json.text.length > 50) {
       responseText = json.text;
-      }
+      // }
     }
     let responseFunction;
 
