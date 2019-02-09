@@ -12,7 +12,7 @@ module.exports = async (client,message) => {
   const excludeUsers = require("../constants/exclude_users.js");
   const isDM = message.channel instanceof DMChannel;
   const isCommand = message.content.startsWith(`${client.commandPrefix}history`) || message.content.startsWith(`${client.commandPrefix} history`);
-  if (message.author == client.user) {
+  if (message.author == client.user || isCommand) {
     return;
   }
 
@@ -92,7 +92,7 @@ module.exports = async (client,message) => {
       });
       const json = await req.json();
       console.log("OppeyML Response:",json);
-      if (json && json.text) {
+      if (json && json.text && json.text.length > 50) {
       responseText = json.text;
       }
     }
