@@ -33,7 +33,7 @@ module.exports = (client) => {
 
   store.Model('DiscordUserVehicle', function(){
     // this is the `definition scope`
-    this.belongsTo('VehicleConfig');
+    this.belongsTo('vehicle_config');
     this.belongsTo('discord_user', {
       model: "DiscordUser"
     })
