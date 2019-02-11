@@ -2,7 +2,7 @@ const { DMChannel } = require("discord.js");
 const dialogflow = require('dialogflow');
 const fetch = require('node-fetch');
 
-const { DIALOGFLOW_PROJECT_ID, DIALOGFLOW_CREDENTIALS_EMAIL, DIALOGFLOW_CREDENTIALS_PRIVATE_KEY } = process.env;
+const { OPPEY_ML_HOST, DIALOGFLOW_PROJECT_ID, DIALOGFLOW_CREDENTIALS_EMAIL, DIALOGFLOW_CREDENTIALS_PRIVATE_KEY } = process.env;
 const ML_MODE = "oppey_ml";
 const uuid = require('uuid');
 module.exports = async (client,message) => {
@@ -21,7 +21,7 @@ module.exports = async (client,message) => {
   // console.log("didMentionOppey:",didMentionOppey);
   if (!isCommand && !isDM && !excludeUsers.includes(parseInt(message.author.id)) && !excludeChannels.includes(parseInt(message.channel.id))) {
     try {
-      let discordMessageModel = DiscordMessage.create({
+      DiscordMessage.create({
         id: message.id,
         content: message.content,
         discord_user_id: message.author.id,
@@ -52,6 +52,10 @@ module.exports = async (client,message) => {
   let responseText;
   const hasQuestionMark = message.content.includes("?") || message.content.endsWith("?");
   if (isDM || didMentionOppey || isBotChannel || hasQuestionMark) {
+
+      /**
+     * MODE: DIALOGFLOW
+     */
     if (ML_MODE === "dialogflow") {
       const sessionId = uuid.v4();
       // Create a new session
@@ -84,13 +88,18 @@ module.exports = async (client,message) => {
       // console.dir(result);
       const isDefaultIntent = result.intent ? result.intent.displayName === 'Default Fallback Intent' : false;
       responseText = result.fulfillmentText;
+    
+    
+      /**
+     * MODE: OPPEY ML
+     */
     } else if (ML_MODE === "oppey_ml") {
       console.log(`Sending request to Oppey ML...\n
 "${cleanMessage}"`)
       try {
-        const req = await fetch('https://oppey-ml-api.herokuapp.com/api/chat/', { 
+        const req = await fetch(OPPEY_ML_HOST, { 
           method: 'POST',
-          body: JSON.stringify({ text: cleanMessage }),
+          body: JSON.stringify({ text: cleanMessage, channel: message.channel.id }),
           headers: { 'Content-Type': 'application/json' } 
         });
         const json = await req.json();

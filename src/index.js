@@ -20,7 +20,6 @@ const client = new Client({
 	// disabledEvents: ['TYPING_START']
 });
 // client.reactionHandler = reactionHandler;
-console.log("DB_URL:",DATABASE_URL);
 client.setProvider(new KeyvProvider(new Keyv(DATABASE_URL, { table: 'discord_caches' })));
 client.on("commandCancelled",(command, reason, message) => {
   message.delete(500);

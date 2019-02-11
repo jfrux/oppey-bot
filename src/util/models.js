@@ -2,17 +2,14 @@ module.exports = (client) => {
   // Models
   const store = client.orm;
   
-  store.Model('HardwareItem', function(){
-    // this is the `definition scope`
-  });
-  store.Model('HardwareItem', function(){
-    // this is the `definition scope`
+  store.Model('HardwareItem', function() {
+    this.hasMany('user_hardware_items')
   });
 
   store.Model('UserHardwareItem', function(){
     // this is the `definition scope`
-    // this.belongsTo('user')
-    // this.belongsTo('hardware_item')
+    this.belongsTo('user')
+    this.belongsTo('hardware_item')
   });
 
   store.Model('User', function(){
@@ -38,6 +35,10 @@ module.exports = (client) => {
       model: "DiscordUser"
     })
   });
+  store.Model('DiscordChannel', function(){
+    // this is the `definition scope`
+    this.hasMany('discord_messages');
+  });
 
   store.Model('DiscordUserRepository', function(){
     // this is the `definition scope`
@@ -54,8 +55,6 @@ module.exports = (client) => {
   store.Model('Repository', function(){
     this.hasMany('discord_user_repositories');
   });
-  store.Model('Guide', function(){
-
-  });
+  store.Model('Guide');
 
 };
