@@ -11,7 +11,9 @@ module.exports = async (client,message) => {
   const excludeChannels = require("../constants/exclude_channels.js");
   const excludeUsers = require("../constants/exclude_users.js");
   const isDM = message.channel instanceof DMChannel;
-  const isCommand = message.content.startsWith(`${client.commandPrefix}history`) || message.content.startsWith(`${client.commandPrefix} history`);
+  console.log("IS IT A COMMAND?",message.isCommand);
+  const isCommand = message.content.startsWith(`${client.commandPrefix}`) || message.content.startsWith(`${client.commandPrefix}history`);
+  
   if (message.author == client.user || isCommand) {
     return;
   }
@@ -114,7 +116,7 @@ module.exports = async (client,message) => {
     }
     let responseFunction;
 
-    if (!responseText || isCommand) return;
+    if (!responseText || isCommand || isDM) return;
     if (isDM) {
       // responseFunction = message.reply;
       message.author.send(responseText);
